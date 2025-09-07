@@ -1,70 +1,53 @@
 <!doctype html>
 <html lang="hu">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Horváth Tamás – Gyors, modern weboldalak és webshopok</title>
-  <meta name="description" content="Gyors, modern, mobilbarát weboldalak és webshopok kisvállalkozásoknak. 30.000 Ft-tól. AI- és Google-integrációval is." />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Horváth Tamás – Weboldal & Webshop</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root{ --bg:#0b0f14; --panel:#0f1620cc; --accent:#7dd3fc; --accent2:#a78bfa; --text:#e8eef6; --muted:#9fb0c3; --ok:#34d399; }
-    *{box-sizing:border-box} html,body{height:100%} html{scroll-behavior:smooth}
-    body{
-      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif; color:var(--text);
-      background: radial-gradient(1200px 800px at 10% 10%, #132032 0%, transparent 60%),
-                  radial-gradient(900px 700px at 90% 30%, #211a35 0%, transparent 60%),
-                  linear-gradient(180deg, #0b0f14 0%, #0b0f14 100%);
-      background-attachment: fixed;
+    :root{
+      --bg:#0b0f14; --panel:#101826ee; --accent:#22d3ee; --accent2:#a78bfa;
+      --text:#e8eef6; --muted:#a2b2c6;
     }
-    .container{max-width:1100px; margin:0 auto; padding:0 18px}
-    .section{padding:36px 0}
-    .glass{
-      background: var(--panel); backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%);
-      border:1px solid rgba(255,255,255,.08); box-shadow: 0 10px 30px rgba(0,0,0,.35); border-radius: 18px; padding:18px;
-    }
-
-    /* Header + nav */
-    header{position:sticky; top:0; z-index:50; backdrop-filter: blur(10px);
-      background: rgba(11,15,20,.55); border-bottom:1px solid rgba(255,255,255,.06);}
-    .nav{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0}
-    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px}
-    .brand img{width:36px; height:36px; border-radius:50%; object-fit:cover}
-    .menu{display:flex; gap:16px; align-items:center}
-    .menu a{color:var(--muted); text-decoration:none; font-weight:600}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+         color:var(--text);background:#0b0f14;}
+    .container{max-width:1100px;margin:0 auto;padding:0 18px}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.6);
+           backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{font-weight:800;font-size:18px}
+    .menu{display:flex;gap:16px}
+    .menu a{color:var(--muted);text-decoration:none;font-weight:600}
     .menu a:hover{color:var(--text)}
-    .btn{display:inline-flex; align-items:center; gap:10px; border:none; border-radius:14px; padding:12px 16px; font-weight:700; cursor:pointer;
-      background: linear-gradient(140deg, var(--accent), var(--accent2)); color:#0b0f14; box-shadow:0 10px 24px rgba(0,0,0,.35)}
-    .btn.ghost{background:transparent; color:var(--text); border:1px solid rgba(255,255,255,.12)}
-
-    /* Hero */
+    .btn{display:inline-flex;align-items:center;gap:10px;border:none;border-radius:14px;
+         padding:12px 16px;font-weight:700;cursor:pointer;
+         background:linear-gradient(140deg,var(--accent),var(--accent2));
+         color:#0b0f14;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+    .section{padding:40px 0}
+    .glass{background:var(--panel);border:1px solid rgba(255,255,255,.08);
+           border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
     .hero{padding:64px 0 30px}
-    .hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:28px}
-    .hero h1{font-size:clamp(28px, 3.8vw, 48px); margin:0 0 10px; line-height:1.1}
-    .lead{color:var(--muted); font-size:clamp(14px, 1.7vw, 18px)}
-    .badge{display:inline-flex; gap:8px; align-items:center; color:#0b0f14; font-weight:800; text-transform:uppercase; letter-spacing:.5px; font-size:12px; padding:8px 12px; border-radius:999px;
-      background: linear-gradient(140deg, var(--accent), var(--ok)); width:max-content}
-
-    /* Grid helpers */
-    .grid{display:grid; gap:16px}
-
-    /* Inputs */
-    input, textarea{width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.05); color:var(--text)}
-    input::placeholder, textarea::placeholder{color:#a2b2c6}
-
-    /* Mobilbarát törések */
-    @media(max-width:900px){
-      .hero-grid{grid-template-columns:1fr}
-      .menu{flex-wrap:wrap; gap:10px}
-      .btn{width:100%; justify-content:center}
-    }
+    .grid{display:grid;gap:16px}
+    .cols-2{grid-template-columns:1.2fr .8fr}
+    @media(max-width:900px){.cols-2{grid-template-columns:1fr}.menu{flex-wrap:wrap}}
+    .lead{color:var(--muted)}
+    .tag{display:inline-block;background:linear-gradient(140deg,var(--accent),var(--accent2));
+         color:#0b0f14;font-weight:900;padding:8px 12px;border-radius:999px;font-size:12px}
+    .pricing{grid-template-columns:repeat(3,1fr)}
+    @media(max-width:900px){.pricing{grid-template-columns:1fr}}
+    footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--muted);text-align:center}
+    /* Kontakt linkek színe */
+    #kapcsolat a { color:#9bd6ff; text-decoration:underline; font-weight:700; }
+    #kapcsolat a:hover { opacity:.9; }
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
-      <div class="brand"><img src="profil.jpg" alt="Horváth Tamás"> Horváth Tamás</div>
+      <div class="brand">Horváth Tamás</div>
       <nav class="menu">
         <a href="#referenciak">Referenciák</a>
         <a href="#arak">Árak</a>
@@ -75,96 +58,85 @@
   </header>
 
   <main>
-    <!-- HERO -->
     <section class="hero container">
-      <div class="hero-grid">
+      <div class="grid cols-2">
         <div class="glass">
-          <span class="badge">Gyors, modern, mobilbarát</span>
-          <h1>Weboldal & Webshop <span style="background:linear-gradient(140deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent">kisvállalkozásoknak</span></h1>
-          <p class="lead">Horváth Tamás vagyok, Szabolcsbákáról. Web- és AI-fejlesztőként gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció is.</p>
+          <span class="tag">Gyors, modern, mobilbarát</span>
+          <h1>Weboldal & Webshop <br><span style="background:linear-gradient(140deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">kisvállalkozásoknak</span></h1>
+          <p class="lead">Horváth Tamás vagyok Szabolcsbákáról. Web- és AI-fejlesztőként gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció is.</p>
         </div>
         <div class="glass">
-          <img src="profil.jpg" alt="Horváth Tamás portré" style="width:100%; border-radius:14px;">
+          <img src="profil.jpg" alt="Profil kép" style="width:100%;border-radius:14px">
         </div>
       </div>
     </section>
 
-    <!-- REFERENCIÁK (1 demo kártya) -->
+    <!-- Referenciák -->
     <section id="referenciak" class="section container">
       <h2>Referenciák</h2>
-      <div class="grid">
+      <div class="grid" style="grid-template-columns:repeat(3,1fr); gap:16px">
         <div class="glass">
-          <h3>Demo #1</h3>
-          <p>Hamarosan feltöltve…</p>
+          <h3>Demo #1 – Szolgáltatás oldal</h3>
+          <p>Egyszerű bemutatkozó oldal</p>
+          <p><a href="/demo1/" target="_blank" rel="noopener">Megnyitás</a></p>
+        </div>
+        <div class="glass">
+          <h3>Demo #2 – Landing page</h3>
+          <p>Modern, mobilbarát üzleti oldal</p>
+          <p><a href="/demo2/" target="_blank" rel="noopener">Megnyitás</a></p>
+        </div>
+        <div class="glass">
+          <h3>Demo #3 – Webshop</h3>
+          <p>Termékkártyák + kosár gomb (mockup)</p>
+          <p><a href="/demo-shop/" target="_blank" rel="noopener">Megnyitás</a></p>
         </div>
       </div>
     </section>
 
-    <!-- ÁRAK -->
+    <!-- Árak -->
     <section id="arak" class="section container">
       <h2>Árak (induló csomagok)</h2>
-      <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="grid pricing">
         <div class="glass">
           <h3>Alap oldal</h3>
-          <div style="font-size:28px; font-weight:800">30.000 Ft</div>
-          <ul>
-            <li>1 oldalas bemutatkozó</li>
-            <li>Mobilbarát dizájn</li>
-            <li>Google Térkép beágyazás</li>
-          </ul>
-        </div>
-        <div class="glass" style="border:2px solid rgba(125,211,252,.35)">
-          <h3>Mini webshop</h3>
-          <div style="font-size:28px; font-weight:800">120.000 Ft</div>
-          <ul>
-            <li>20–30 termék</li>
-            <li>Kosár + rendelés (utánvét/átutalás)</li>
-            <li>Egyszerű admin (CSV/JSON)</li>
-          </ul>
+          <div style="font-size:28px;font-weight:800">30.000 Ft</div>
+          <p>Egyszerű bemutatkozó oldal modern dizájnnal</p>
         </div>
         <div class="glass">
-          <h3>Profi webshop</h3>
-          <div style="font-size:28px; font-weight:800">240.000 Ft+</div>
-          <ul>
-            <li>100+ termék, kategóriák, kuponok</li>
-            <li>Online fizetés (Barion/SimplePay)</li>
-            <li>SEO és analitika</li>
-          </ul>
+          <h3>Mini webshop</h3>
+          <div style="font-size:28px;font-weight:800">120.000 Ft</div>
+          <p>20–30 termék, kosár funkció, egyszerű admin</p>
+        </div>
+        <div class="glass">
+          <h3>Prémium webshop</h3>
+          <div style="font-size:28px;font-weight:800">240.000 Ft+</div>
+          <p>100+ termék, összetett funkciók, SEO és analitika</p>
         </div>
       </div>
-      <div style="margin-top:12px; color:var(--muted)">*Az árak tájékoztató jellegűek. Egyedi igény esetén személyre szabott ajánlat.</div>
     </section>
 
-    <!-- KAPCSOLAT – Formspree űrlap -->
+    <!-- Kapcsolat -->
     <section id="kapcsolat" class="section container">
       <h2>Kapcsolat</h2>
       <div class="glass">
         <form action="https://formspree.io/f/myzdldqk" method="POST">
-          <input type="hidden" name="_subject" value="Új ajánlatkérés a honlapról">
-          <input type="hidden" name="_language" value="hu">
-          <input type="text" name="_gotcha" style="display:none">
-          <p><label>Név:<br><input type="text" name="nev" required placeholder="Név"></label></p>
-          <p><label>Email:<br><input type="email" name="_replyto" required placeholder="email@pelda.hu"></label></p>
-          <p><label>Üzenet:<br><textarea name="uzenet" rows="5" required placeholder="Miben segíthetek?"></textarea></label></p>
-          <p><button type="submit" class="btn">Üzenet küldése</button></p>
+          <label>Név:<br><input type="text" name="name" required></label><br><br>
+          <label>Email:<br><input type="email" name="_replyto" required></label><br><br>
+          <label>Üzenet:<br><textarea name="message" rows="4" required></textarea></label><br><br>
+          <button type="submit" class="btn">Üzenet küldése</button>
         </form>
-
-        <hr style="border:0; border-top:1px solid rgba(255,255,255,.1); margin:16px 0">
-        <p><strong>Email:</strong> <a href="mailto:htamas495@gmail.com">htamas495@gmail.com</a><br>
-           <strong>Telefon:</strong> <a href="tel:+36206240970">+36 20 624 0970</a><br>
-           <strong>Város:</strong> Szabolcsbáka<br>
-           <strong>Facebook:</strong> <a href="https://www.facebook.com/profile.php?id=100082492992098" target="_blank" rel="noopener">Profil megnyitása</a>
+        <p style="margin-top:16px">
+          <strong>Email:</strong> <a href="mailto:htamas495@gmail.com">htamas495@gmail.com</a><br>
+          <strong>Telefon:</strong> <a href="tel:+36206240970">+36 20 624 0970</a><br>
+          <strong>Város:</strong> Szabolcsbáka<br>
+          <strong>Facebook:</strong> <a href="https://www.facebook.com/profile.php?id=100082492992098" target="_blank">Profil megnyitása</a>
         </p>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
-      <div>© <span id="year"></span> Horváth Tamás. Minden jog fenntartva.</div>
-    </div>
+    © 2025 Horváth Tamás. Minden jog fenntartva.
   </footer>
-
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
