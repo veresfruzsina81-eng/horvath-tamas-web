@@ -1,2 +1,47 @@
 <!doctype html>
-<html><body><h1>Demo1 üres oldal</h1></body></html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Webshop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; font-family:Inter, sans-serif; background:#0b0f14; color:#e8eef6; }
+    header { background:#1f2937; padding:20px; text-align:center; font-weight:800; font-size:22px; }
+    .section { padding:40px 20px; max-width:1100px; margin:0 auto; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+    .card { background:#1f2937; padding:20px; border-radius:12px; text-align:center; }
+    .card img { max-width:100%; border-radius:8px; margin-bottom:10px; }
+    .price { font-weight:800; font-size:20px; margin:10px 0; }
+    .btn { background:linear-gradient(140deg,#7dd3fc,#a78bfa); color:#0b0f14; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:700; }
+    footer { background:#111827; padding:20px; text-align:center; color:#9fb0c3; }
+  </style>
+</head>
+<body>
+  <header>Demo Webshop</header>
+  <section class="section">
+    <h2>Termékek</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="https://via.placeholder.com/200x150" alt="Termék 1">
+        <h3>Termék 1</h3>
+        <div class="price">5 990 Ft</div>
+        <button class="btn">Kosárba</button>
+      </div>
+      <div class="card">
+        <img src="https://via.placeholder.com/200x150" alt="Termék 2">
+        <h3>Termék 2</h3>
+        <div class="price">9 990 Ft</div>
+        <button class="btn">Kosárba</button>
+      </div>
+      <div class="card">
+        <img src="https://via.placeholder.com/200x150" alt="Termék 3">
+        <h3>Termék 3</h3>
+        <div class="price">12 990 Ft</div>
+        <button class="btn">Kosárba</button>
+      </div>
+    </div>
+  </section>
+  <footer>© Demo3 – Webshop mockup</footer>
+</body>
+</html>
