@@ -5,77 +5,87 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Horváth Tamás – Weboldal & Webshop</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<meta name="description" content="Gyors, modern, mobilbarát weboldalak és webshopok készítése – Horváth Tamás. AI integráció, keresőoptimalizált tartalom, reszponzív design.">
 <style>
-:root{ --bg:#0b0f14; --panel:#101826ee; --accent:#22d3ee; --accent2:#a78bfa; --text:#e8eef6; --muted:#a2b2c6; }
+:root{
+  --bg:#0b0f14; --panel:#101826ee; --panel2:#0f172a;
+  --accent:#22d3ee; --accent2:#a78bfa; --text:#e8eef6; --muted:#a2b2c6;
+}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text); background:#0b0f14;}
-.container{max-width:1100px;margin:0 auto;padding:0 18px}
-header.sticky{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.6); backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-.brand{font-weight:800;font-size:18px}
-.menu{display:flex;gap:16px}
-.menu a{color:var(--muted);text-decoration:none;font-weight:600}
-.menu a:hover{color:var(--text)}
-.btn{display:inline-flex;align-items:center;gap:10px;border:none;border-radius:14px; padding:12px 16px;font-weight:700;cursor:pointer;
-     background:linear-gradient(140deg,var(--accent),var(--accent2)); color:#0b0f14;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text); background:var(--bg);}
+img{max-width:100%;display:block}
+a{color:inherit}
+
+.container{max-width:1140px;margin:0 auto;padding:0 18px}
 .section{padding:40px 0}
-.glass{background:var(--panel);border:1px solid rgba(255,255,255,.08); border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.hero{padding:64px 0 30px}
-.grid{display:grid;gap:16px}
+.glass{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.grid{display:grid;gap:18px}
 .cols-2{grid-template-columns:1.2fr .8fr}
-@media(max-width:900px){.cols-2{grid-template-columns:1fr}.menu{flex-wrap:wrap}}
+@media(max-width:900px){.cols-2{grid-template-columns:1fr}}
+
+header.sticky{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.6);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+.brand{font-weight:900;font-size:18px}
+.menu{display:flex;gap:16px;flex-wrap:wrap}
+.menu a{color:var(--muted);text-decoration:none;font-weight:700}
+.menu a:hover{color:var(--text)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;border:none;border-radius:14px;padding:12px 16px;font-weight:800;cursor:pointer;
+     background:linear-gradient(140deg,var(--accent),var(--accent2)); color:#0b0f14;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.btn:active{transform:translateY(1px)}
+.tag{display:inline-block;background:linear-gradient(140deg,var(--accent),var(--accent2));color:#0b0f14;font-weight:900;padding:8px 12px;border-radius:999px;font-size:12px}
 .lead{color:var(--muted)}
-.tag{display:inline-block;background:linear-gradient(140deg,var(--accent),var(--accent2)); color:#0b0f14;font-weight:900;padding:8px 12px;border-radius:999px;font-size:12px}
+
+.hero{padding:64px 0 30px}
 .pricing{grid-template-columns:repeat(3,1fr)}
 @media(max-width:900px){.pricing{grid-template-columns:1fr}}
 footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--muted);text-align:center}
-#kapcsolat a { color:#9bd6ff; text-decoration:underline; font-weight:700; }
-#kapcsolat a:hover { opacity:.9; }
 
-/* ===== DEMÓ nézetek (fullscreen) ===== */
+/* ===== Demó nézetek – teljes képernyő ===== */
 .hidden{display:none !important}
 .demo-header{position:sticky;top:0;z-index:60;background:#0b0f14;border-bottom:1px solid rgba(255,255,255,.08)}
 .demo-wrap{min-height:100dvh;display:flex;flex-direction:column}
-.demo-body{flex:1;max-width:1100px;margin:0 auto;padding:24px 18px}
+.demo-body{flex:1;max-width:1140px;margin:0 auto;padding:24px 18px}
 .card{background:#1f2937;padding:20px;border-radius:12px;margin:10px 0}
 .grid-fit{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-.back{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--text);padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer}
+.back{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--text);padding:10px 14px;border-radius:12px;font-weight:800;cursor:pointer}
 .back:hover{border-color:#fff}
-.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#0ea5e9;color:#0b0f14;font-weight:800;font-size:12px}
-.kartya{background:#1f2937;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#0ea5e9;color:#0b0f14;font-weight:900;font-size:12px}
+.kartya{background:#111827;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
 .kartya h3{margin:0 0 8px}
 
-/* --- Demo1 (szolgáltatás/portfólió) --- */
+/* Demo1 – Fodrász */
 .d1-hero{position:relative;border-radius:18px;overflow:hidden}
-.d1-hero img{width:100%;height:300px;object-fit:cover;filter:brightness(.7)}
+.d1-hero img{width:100%;height:380px;object-fit:cover;filter:brightness(.75)}
 .d1-hero .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
-.d1-hero h1{font-size:34px;margin:4px 0}
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.gallery img{width:100%;height:150px;object-fit:cover;border-radius:10px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.gallery img{width:100%;height:170px;object-fit:cover;border-radius:12px;transition:transform .2s ease}
+.gallery img:hover{transform:scale(1.02)}
 
-/* --- Demo2 (landing) --- */
+/* Demo2 – Landing */
 .lp-hero{background:linear-gradient(140deg,#7dd3fc,#a78bfa);color:#0b0f14;border-radius:18px;padding:28px}
 .lp-hero h1{margin:0;font-size:36px}
 .lp-steps{counter-reset:st}
 .lp-step{position:relative;padding-left:42px}
-.lp-step:before{counter-increment:st;content:counter(st);position:absolute;left:0;top:.1rem;width:28px;height:28px;border-radius:8px;background:#0b0f14;color:#e8eef6;display:grid;place-items:center;font-weight:800}
+.lp-step:before{counter-increment:st;content:counter(st);position:absolute;left:0;top:.1rem;width:28px;height:28px;border-radius:8px;background:#0b0f14;color:#e8eef6;display:grid;place-items:center;font-weight:900}
 
-/* --- DemoShop (PRO) --- */
+/* DemoShop – webshop */
 .shop-topbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:14px}
 .shop-logo{font-weight:900;font-size:20px}
 .shop-search{flex:1;display:flex;gap:8px}
-.shop-search input, .shop-search select{width:100%;background:#111827;border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#e8eef6;padding:10px}
+.shop-search input, .shop-search select{width:100%;background:#0b1220;border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#e8eef6;padding:10px}
 .shop-search .row{display:flex;gap:8px}
-.shop-cartbtn{background:transparent;border:1px solid rgba(255,255,255,.25);color:#e8eef6;border-radius:10px;padding:8px 12px;font-weight:800;cursor:pointer}
-.shop-cartbtn .badge{background:#22d3ee;color:#0b0f14;margin-left:6px}
 .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.prod{background:#111827;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.prod{background:#0b1220;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s ease}
+.prod:hover{transform:translateY(-2px)}
 .prod img{width:100%;height:170px;object-fit:cover}
 .p-body{padding:12px;display:flex;flex-direction:column;gap:8px}
 .p-head{display:flex;justify-content:space-between;gap:8px;align-items:center}
 .price{font-weight:900}
 .add{border:none;border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:800;background:linear-gradient(140deg,#22d3ee,#a78bfa);color:#0b0f14}
+.shop-cartbtn{background:transparent;border:1px solid rgba(255,255,255,.25);color:#e8eef6;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.shop-cartbtn .badge{background:#22d3ee;color:#0b0f14;margin-left:6px}
 .cart-drawer{position:fixed;right:-420px;top:0;bottom:0;width:360px;background:#0b0f14;border-left:1px solid rgba(255,255,255,.12);padding:16px;transition:right .3s ease;z-index:80}
 .cart-drawer.open{right:0}
 .cart-list{display:flex;flex-direction:column;gap:10px;margin:12px 0;max-height:55vh;overflow:auto}
@@ -84,15 +94,17 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
 .cart-total{display:flex;align-items:center;justify-content:space-between;font-weight:900;margin-top:8px}
 .checkout{width:100%;margin-top:12px}
 .small{font-size:12px;opacity:.75}
+details summary{cursor:pointer;font-weight:800;margin:6px 0}
 </style>
 </head>
 <body>
+
 <!-- ===== FŐOLDAL ===== -->
 <div id="main-site">
-  <header class="sticky">
+  <header class="sticky" role="banner">
     <div class="container nav">
       <div class="brand">Horváth Tamás</div>
-      <nav class="menu">
+      <nav class="menu" aria-label="Főmenü">
         <a href="#referenciak">Referenciák</a>
         <a href="#arak">Árak</a>
         <a href="#kapcsolat">Kapcsolat</a>
@@ -101,40 +113,44 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
     </div>
   </header>
 
-  <main>
+  <main id="content">
     <section class="hero container">
       <div class="grid cols-2">
         <div class="glass">
           <span class="tag">Gyors, modern, mobilbarát</span>
-          <h1>Weboldal & Webshop <br>
+          <h1 style="margin:10px 0 6px">Weboldal & Webshop<br>
             <span style="background:linear-gradient(140deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">
               kisvállalkozásoknak
             </span>
           </h1>
-          <p class="lead">Horváth Tamás vagyok Szabolcsbákáról. Web- és AI-fejlesztőként gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció is.</p>
+          <p class="lead">Horváth Tamás vagyok Szabolcsbákáról. Web- és AI-fejlesztőként gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, TTS és Google-kereső integráció is.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+            <a class="btn" href="#referenciak">Referenciák</a>
+            <a class="btn" style="background:linear-gradient(140deg,#a78bfa,#22d3ee)" href="#kapcsolat">Kapcsolat</a>
+          </div>
         </div>
         <div class="glass">
-          <img src="profil.jpg" alt="Profil kép" style="width:100%;border-radius:14px">
+          <img src="profil.jpg" alt="Horváth Tamás – fejlesztő" style="width:100%;border-radius:14px">
         </div>
       </div>
     </section>
 
     <section id="referenciak" class="section container">
       <h2>Referenciák</h2>
-      <div class="grid" style="grid-template-columns:repeat(3,1fr); gap:16px">
+      <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:18px">
         <div class="glass">
           <h3>Demo #1 – Szolgáltatás oldal</h3>
-          <p>Bemutatkozó/portfólió oldal modern designnal.</p>
+          <p>Bemutatkozó/portfólió oldal modern dizájnnal.</p>
           <p><a class="btn" href="?demo=demo1">Megnyitás</a></p>
         </div>
         <div class="glass">
           <h3>Demo #2 – Landing page</h3>
-          <p>Kampányhoz optimalizált landing, tiszta CTA-k.</p>
+          <p>Kampány landing tiszta CTA-kkal, mérhető konverzióval.</p>
           <p><a class="btn" href="?demo=demo2">Megnyitás</a></p>
         </div>
         <div class="glass">
           <h3>Demo #3 – Webshop</h3>
-          <p>Kereső, kategóriák, élő kosár (mock fizetés).</p>
+          <p>Kereső, kategória/ár szűrő, élő kosár (demo).</p>
           <p><a class="btn" href="?demo=demoshop">Megnyitás</a></p>
         </div>
       </div>
@@ -145,18 +161,18 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
       <div class="grid pricing">
         <div class="glass">
           <h3>Alap oldal</h3>
-          <div style="font-size:28px;font-weight:800">30.000 Ft</div>
-          <p>Egyszerű bemutatkozó oldal modern dizájnnal</p>
+          <div style="font-size:28px;font-weight:900">30.000 Ft</div>
+          <p>Egyszerű bemutatkozó oldal modern dizájnnal.</p>
         </div>
         <div class="glass">
           <h3>Mini webshop</h3>
-          <div style="font-size:28px;font-weight:800">120.000 Ft</div>
-          <p>20–30 termék, kosár funkció, egyszerű admin</p>
+          <div style="font-size:28px;font-weight:900">120.000 Ft</div>
+          <p>20–30 termék, kosár funkció, egyszerű admin.</p>
         </div>
         <div class="glass">
           <h3>Prémium webshop</h3>
-          <div style="font-size:28px;font-weight:800">240.000 Ft+</div>
-          <p>100+ termék, összetett funkciók, SEO és analitika</p>
+          <div style="font-size:28px;font-weight:900">240.000 Ft+</div>
+          <p>100+ termék, összetett funkciók, SEO és analitika.</p>
         </div>
       </div>
     </section>
@@ -165,9 +181,9 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
       <h2>Kapcsolat</h2>
       <div class="glass">
         <form action="https://formspree.io/f/myzdldqk" method="POST">
-          <label>Név:<br><input type="text" name="name" required></label><br><br>
-          <label>Email:<br><input type="email" name="_replyto" required></label><br><br>
-          <label>Üzenet:<br><textarea name="message" rows="4" required></textarea></label><br><br>
+          <label>Név<br><input type="text" name="name" required style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1220;color:#e8eef6"></label><br><br>
+          <label>Email<br><input type="email" name="_replyto" required style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1220;color:#e8eef6"></label><br><br>
+          <label>Üzenet<br><textarea name="message" rows="4" required style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1220;color:#e8eef6"></textarea></label><br><br>
           <button type="submit" class="btn">Üzenet küldése</button>
         </form>
         <p style="margin-top:16px">
@@ -185,7 +201,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
 
 <!-- ===== DEMÓK (FULLSCREEN) ===== -->
 
-<!-- Demo #1 -->
+<!-- Demo #1 – Fodrász -->
 <div id="view-demo1" class="hidden demo-wrap">
   <header class="demo-header">
     <div class="nav container">
@@ -194,54 +210,72 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
     </div>
   </header>
   <div class="demo-body">
+
     <div class="d1-hero">
-      <img src="https://picsum.photos/seed/szalon-hero/1400/500" alt="">
+      <img src="img/hair-hero.jpg" alt="Fodrászszalon – hero kép">
       <div class="overlay">
         <div>
           <span class="badge">Fodrászat • Portfólió</span>
-          <h1>Modern Fodrászat – Szabolcsbáka</h1>
-          <p>Friss, letisztult arculat – mobilon és asztali gépen is profi megjelenés.</p>
+          <h1 style="font-size:40px;margin:8px 0 6px">Modern Fodrászat – Szabolcsbáka</h1>
+          <p>Gyors időpont, minőségi anyagok, személyre szabott tanácsadás.</p>
+          <div style="margin-top:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <a href="#kapcsolat" class="btn">Időpontot kérek</a>
+            <a href="?demo=demo2" class="btn" style="background:linear-gradient(140deg,#a78bfa,#22d3ee)">Nézd meg a Landinget</a>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="grid-fit" style="margin-top:14px">
-      <div class="kartya">
-        <h3>Mit kap az ügyfél?</h3>
-        <ul>
-          <li>Gyors, reszponzív weboldal</li>
-          <li>Időpontkérés űrlap</li>
-          <li>Google Térkép és Facebook link</li>
-          <li>SEO-barát szövegmezők</li>
-        </ul>
-      </div>
+    <div class="grid-fit" style="margin-top:16px">
       <div class="kartya">
         <h3>Szolgáltatások</h3>
         <ul>
           <li>✂️ Férfi / 💇‍♀️ Női hajvágás</li>
-          <li>🎨 Festés, melír</li>
+          <li>🎨 Festés, melír, tónus korrekció</li>
           <li>🧴 Ápolás, formázás</li>
+          <li>👶 Gyerek hajvágás</li>
         </ul>
-        <div style="margin-top:8px" class="grid-fit">
-          <a href="#kapcsolat" class="btn">Időpontot kérek</a>
-          <a href="?demo=demo2" class="btn" style="background:linear-gradient(140deg,#a78bfa,#22d3ee)">Nézd meg a Landinget</a>
-        </div>
+      </div>
+      <div class="kartya">
+        <h3>Ár-irányok</h3>
+        <ul>
+          <li>Férfi hajvágás: <strong>3 500–5 500 Ft</strong></li>
+          <li>Női hajvágás: <strong>5 900–9 900 Ft</strong></li>
+          <li>Festés, melír: <strong>9 900 Ft-tól</strong></li>
+        </ul>
+        <p class="small">*Tájékoztató jellegű, részletes árat helyben adunk.</p>
       </div>
     </div>
 
     <div class="kartya">
       <h3>Galéria</h3>
       <div class="gallery">
-        <img src="https://picsum.photos/seed/szalon1/800/600" alt="">
-        <img src="https://picsum.photos/seed/szalon2/800/600" alt="">
-        <img src="https://picsum.photos/seed/szalon3/800/600" alt="">
-        <img src="https://picsum.photos/seed/szalon4/800/600" alt="">
+        <img src="img/hair1.jpg" alt="Férfi hajvágás">
+        <img src="img/hair2.jpg" alt="Női frizura">
+        <img src="img/hair3.jpg" alt="Hajfestés, melír">
+        <img src="img/hair4.jpg" alt="Frizurakészítés">
+      </div>
+    </div>
+
+    <div class="grid-fit">
+      <div class="kartya">
+        <h3>Miért minket?</h3>
+        <ul>
+          <li>✅ Gyors időpont, pontos kezdés</li>
+          <li>✅ Kímélő, minőségi termékek</li>
+          <li>✅ 100% elégedettségi fókusz</li>
+        </ul>
+      </div>
+      <div class="kartya">
+        <h3>Vélemény</h3>
+        <p>„Mindig azt kapom, amit szeretnék – ajánlom!”</p>
+        <p class="small">— Ügyfél visszajelzés</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Demo #2 -->
+<!-- Demo #2 – Landing -->
 <div id="view-demo2" class="hidden demo-wrap">
   <header class="demo-header">
     <div class="nav container">
@@ -250,27 +284,35 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
     </div>
   </header>
   <div class="demo-body">
-    <div class="lp-hero">
-      <span class="badge">Kampány landing</span>
-      <h1>Üzleti Landing Page</h1>
-      <p>Gyors betöltés, tiszta üzenet, mérhető konverziók.</p>
+
+    <div class="lp-hero" style="display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center;overflow:hidden">
+      <div>
+        <span class="badge">Kampány landing</span>
+        <h1 style="margin:6px 0 8px">Üzleti Landing Page</h1>
+        <p>Gyors betöltés, tiszta üzenet, mérhető konverziók. Ideális Facebook/Google hirdetésekhez.</p>
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn" href="#kapcsolat">Ajánlatot kérek</a>
+          <a class="btn" style="background:linear-gradient(140deg,#0ea5e9,#22d3ee)" href="?demo=demo1">Portfólió oldal</a>
+        </div>
+      </div>
+      <img src="img/lp-hero.jpg" alt="Landing illusztráció" style="width:100%;border-radius:14px">
     </div>
 
-    <div class="grid-fit">
+    <div class="grid-fit" style="margin-top:16px">
       <div class="kartya">
         <h3>Előnyök</h3>
         <ul>
-          <li>⚡ 1–2 mp feletti LCP (gyors)</li>
+          <li>⚡ 1–2 mp LCP (gyors)</li>
           <li>📱 100% mobilbarát</li>
-          <li>🔎 SEO-ready, meta címkék</li>
-          <li>📈 Google Analytics események</li>
+          <li>🔎 SEO meta / OpenGraph</li>
+          <li>📈 GA4 esemény-mérés</li>
         </ul>
       </div>
       <div class="kartya">
-        <h3>Hogyan épül fel?</h3>
+        <h3>Felépítés</h3>
         <div class="lp-steps">
           <p class="lp-step"><strong>Hős szakasz:</strong> 1 mondatos value prop + CTA</p>
-          <p class="lp-step"><strong>Bizalom:</strong> ikonok/előnyök, referenciák</p>
+          <p class="lp-step"><strong>Bizalom:</strong> előnyök/ikonok, rövid refik</p>
           <p class="lp-step"><strong>Akció:</strong> űrlap vagy hívás gomb</p>
         </div>
       </div>
@@ -281,15 +323,31 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
       </div>
     </div>
 
+    <div class="grid-fit">
+      <div class="kartya">
+        <h3>Eredmény fókusz</h3>
+        <p><strong>+38%</strong> több űrlap-beadás (átlag) egyhetes A/B teszten.</p>
+        <p class="small">*Demo adat – a pontos eredmény kampánytól függ.</p>
+      </div>
+      <div class="kartya" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center">
+        <div>
+          <h3>Section + vizuál</h3>
+          <p>Tiszta layout, jól olvasható tipográfia, fókuszált CTA-k.</p>
+        </div>
+        <img src="img/lp-feature.jpg" alt="Landing részlet" style="width:100%;border-radius:12px">
+      </div>
+    </div>
+
     <div class="kartya">
-      <h3>Vélemény</h3>
-      <p>„Két nap alatt készen lett az oldal, és az első héten 17 érdeklődés jött be.”</p>
-      <p class="small">— Kovács M., kisvállalkozó</p>
+      <h3>GYIK</h3>
+      <details open><summary>Mi a készülési idő?</summary><p>Egyszerű landing: 2–3 nap. Haladó: 5–7 nap.</p></details>
+      <details><summary>Milyen mérések lesznek?</summary><p>GA4 események: gombkattintás, űrlap, scroll, stb.</p></details>
+      <details><summary>Hogyan kapok ajánlatot?</summary><p>Írj a kapcsolati űrlapon, 24 órán belül válaszolok.</p></details>
     </div>
   </div>
 </div>
 
-<!-- Demo #3 – WEBSHOP PRO -->
+<!-- Demo #3 – Webshop -->
 <div id="view-demoshop" class="hidden demo-wrap">
   <header class="demo-header">
     <div class="nav container">
@@ -297,9 +355,8 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
       <button class="back" onclick="returnToMain()">← Vissza a főoldalra</button>
     </div>
   </header>
-
   <div class="demo-body">
-    <!-- TOP BAR: logo + kereső + szűrők + kosár -->
+
     <div class="shop-topbar">
       <div class="shop-logo">DemoShop</div>
       <div class="shop-search">
@@ -318,11 +375,9 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
       <button class="shop-cartbtn" onclick="toggleCart()">Kosár <span id="cartCount" class="badge">0</span></button>
     </div>
 
-    <!-- Termékrács -->
-    <div id="productGrid" class="products"></div>
+    <div id="productGrid" class="products" aria-live="polite"></div>
   </div>
 
-  <!-- Kosár fiók -->
   <aside id="cartDrawer" class="cart-drawer" aria-hidden="true">
     <div style="display:flex;align-items:center;justify-content:space-between">
       <h3 style="margin:0">Kosár</h3>
@@ -338,14 +393,12 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--mut
   </aside>
 </div>
 
-<!-- Router JS -->
+<!-- ===== Router ===== -->
 <script>
 function qsDemo(){ const m = location.search.match(/[?&]demo=(demo1|demo2|demoshop)\b/); return m?m[1]:null; }
 function showDemo(which){
   document.getElementById('main-site').classList.toggle('hidden', !!which);
-  document.getElementById('view-demo1').classList.add('hidden');
-  document.getElementById('view-demo2').classList.add('hidden');
-  document.getElementById('view-demoshop').classList.add('hidden');
+  ['view-demo1','view-demo2','view-demoshop'].forEach(id=>document.getElementById(id).classList.add('hidden'));
   if(which){
     document.getElementById('view-'+which).classList.remove('hidden');
     window.scrollTo({top:0, behavior:'instant'});
@@ -357,18 +410,18 @@ window.addEventListener('load', ()=> showDemo(qsDemo()));
 window.addEventListener('popstate', ()=> showDemo(qsDemo()));
 </script>
 
-<!-- Webshop logika -->
+<!-- ===== Webshop logika ===== -->
 <script>
 const PRODUCTS = [
-  {id:'p1',  name:'Wireless Fejhallgató', price:5990,  cat:'Elektronika', img:'https://picsum.photos/seed/headphones/800/600', desc:'BT 5.0, 20 óra üzemidő'},
-  {id:'p2',  name:'Okos óra',             price:9990,  cat:'Elektronika', img:'https://picsum.photos/seed/smartwatch/800/600', desc:'Pulzusmérés, értesítések'},
-  {id:'p3',  name:'Bluetooth Hangszóró',  price:12990, cat:'Elektronika', img:'https://picsum.photos/seed/speaker/800/600', desc:'Vízálló, mély basszus'},
-  {id:'p4',  name:'Sport Fülhallgató',    price:7990,  cat:'Sport',       img:'https://picsum.photos/seed/earbuds/800/600', desc:'Cserélhető gumiharang'},
-  {id:'p5',  name:'Futócipő',             price:18990, cat:'Sport',       img:'https://picsum.photos/seed/runningshoe/800/600', desc:'Könnyű, párnázott talp'},
-  {id:'p6',  name:'Edzőpóló',             price:4990,  cat:'Ruházat',     img:'https://picsum.photos/seed/shirt/800/600', desc:'Gyorsan száradó anyag'},
-  {id:'p7',  name:'Kapucnis Pulóver',     price:12990, cat:'Ruházat',     img:'https://picsum.photos/seed/hoodie/800/600', desc:'Kapucni, kenguruzseb'},
-  {id:'p8',  name:'USB-C Töltő',          price:3490,  cat:'Elektronika', img:'https://picsum.photos/seed/charger/800/600', desc:'20W gyorstöltés'},
-  {id:'p9',  name:'Notebook Táska',       price:14990, cat:'Elektronika', img:'https://picsum.photos/seed/laptopbag/800/600', desc:'15.6”-ig, vízlepergető'}
+  {id:'p1',  name:'Wireless Fejhallgató', price:5990,  cat:'Elektronika', img:'img/shop-headphones.jpg', desc:'BT 5.0, 20 óra üzemidő'},
+  {id:'p2',  name:'Okos óra',             price:9990,  cat:'Elektronika', img:'img/shop-watch.jpg',       desc:'Pulzusmérés, értesítések'},
+  {id:'p3',  name:'Bluetooth Hangszóró',  price:12990, cat:'Elektronika', img:'img/shop-speaker.jpg',     desc:'Vízálló, mély basszus'},
+  {id:'p4',  name:'Sport Fülhallgató',    price:7990,  cat:'Sport',       img:'img/shop-earbuds.jpg',     desc:'Edzéshez tervezve'},
+  {id:'p5',  name:'Futócipő',             price:18990, cat:'Sport',       img:'img/shop-shoes.jpg',       desc:'Könnyű, párnázott talp'},
+  {id:'p6',  name:'Edzőpóló',             price:4990,  cat:'Ruházat',     img:'img/shop-shirt.jpg',       desc:'Gyorsan száradó anyag'},
+  {id:'p7',  name:'Kapucnis Pulóver',     price:12990, cat:'Ruházat',     img:'img/shop-hoodie.jpg',      desc:'Kapucni, kenguruzseb'},
+  {id:'p8',  name:'USB-C Töltő',          price:3490,  cat:'Elektronika', img:'img/shop-charger.jpg',     desc:'20W gyorstöltés'},
+  {id:'p9',  name:'Notebook Táska',       price:14990, cat:'Elektronika', img:'img/shop-bag.jpg',         desc:'15.6”-ig, vízlepergető'}
 ];
 
 const grid = document.getElementById('productGrid');
@@ -418,7 +471,6 @@ function renderProducts(){
   const filtered = applyFilters(PRODUCTS);
   grid.innerHTML = filtered.map(productCard).join('') || '<p>Nincs találat a szűrésre.</p>';
 }
-
 [qEl,catEl,minEl,maxEl].forEach(el=> el && el.addEventListener('input', renderProducts));
 
 function addToCart(id){
@@ -426,7 +478,11 @@ function addToCart(id){
   if(it) it.qty++; else CART.push({id, qty:1});
   updateCartUI();
 }
-
+function incQty(id){ const it=CART.find(x=>x.id===id); if(it){it.qty++; updateCartUI();} }
+function decQty(id){
+  const i=CART.findIndex(x=>x.id===id);
+  if(i>-1){ CART[i].qty--; if(CART[i].qty<=0) CART.splice(i,1); updateCartUI(); }
+}
 function updateCartUI(){
   if(!cartList) return;
   const items = CART.map(ci=>{
@@ -437,7 +493,7 @@ function updateCartUI(){
         <div style="flex:1">
           <div style="font-weight:800">${p.name}</div>
           <div class="small">${p.cat}</div>
-          <div style="display:flex;gap:6px;align-items:center;margin-top:4px">
+          <div style="display:flex;gap:6px;align-items:center;margin-top:6px">
             <button class="shop-cartbtn" onclick="decQty('${ci.id}')">−</button>
             <span>${ci.qty}</span>
             <button class="shop-cartbtn" onclick="incQty('${ci.id}')">+</button>
@@ -453,14 +509,8 @@ function updateCartUI(){
   const count = CART.reduce((s,ci)=> s + ci.qty, 0);
   cartCountEl.textContent = count;
 }
-
-function incQty(id){ const it=CART.find(x=>x.id===id); if(it){it.qty++; updateCartUI();} }
-function decQty(id){
-  const i=CART.findIndex(x=>x.id===id);
-  if(i>-1){ CART[i].qty--; if(CART[i].qty<=0) CART.splice(i,1); updateCartUI(); }
-}
-
 function toggleCart(){ cartDrawer.classList.toggle('open'); }
 </script>
+
 </body>
 </html>
