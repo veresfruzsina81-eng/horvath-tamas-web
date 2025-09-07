@@ -11,7 +11,7 @@
     html,body{height:100%;margin:0}
     body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text); background:#0b0f14;}
     .container{max-width:1100px;margin:0 auto;padding:0 18px}
-    header{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.6); backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    header.sticky{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.6); backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
     .brand{font-weight:800;font-size:18px}
     .menu{display:flex;gap:16px}
@@ -30,184 +30,206 @@
     .pricing{grid-template-columns:repeat(3,1fr)}
     @media(max-width:900px){.pricing{grid-template-columns:1fr}}
     footer{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;color:var(--muted);text-align:center}
-    /* Kontakt linkek színe */
     #kapcsolat a { color:#9bd6ff; text-decoration:underline; font-weight:700; }
     #kapcsolat a:hover { opacity:.9; }
 
-    /* DEMÓ NÉZŐ (fülek + tartalom) */
-    .demo-view{margin-top:20px}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-    .tab{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:700}
-    .tab.active{background:linear-gradient(140deg,var(--accent),var(--accent2)); color:#0b0f14; border-color:transparent}
-    .demo-pane{display:none}
-    .demo-pane.active{display:block}
+    /* ===== Teljes képernyős DEMÓ nézetek ===== */
+    .hidden{display:none !important}
+    .demo-header{position:sticky;top:0;z-index:60;background:#0b0f14;border-bottom:1px solid rgba(255,255,255,.08)}
+    .demo-wrap{min-height:100dvh;display:flex;flex-direction:column}
+    .demo-body{flex:1;max-width:1100px;margin:0 auto;padding:24px 18px}
     .card{background:#1f2937;padding:20px;border-radius:12px;margin:10px 0}
-    .grid-demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+    .grid-demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
     .btn-shop{background:linear-gradient(140deg,#7dd3fc,#a78bfa);color:#0b0f14; border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700}
+    .back{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--text);padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer}
+    .back:hover{border-color:#fff}
   </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand">Horváth Tamás</div>
-      <nav class="menu">
-        <a href="#referenciak">Referenciák</a>
-        <a href="#arak">Árak</a>
-        <a href="#kapcsolat">Kapcsolat</a>
-        <a class="btn" href="#kapcsolat">Kérek ajánlatot</a>
-      </nav>
+  <!-- ===== FŐOLDAL (normál nézet) ===== -->
+  <div id="main-site">
+    <header class="sticky">
+      <div class="container nav">
+        <div class="brand">Horváth Tamás</div>
+        <nav class="menu">
+          <a href="#referenciak">Referenciák</a>
+          <a href="#arak">Árak</a>
+          <a href="#kapcsolat">Kapcsolat</a>
+          <a class="btn" href="#kapcsolat">Kérek ajánlatot</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div class="grid cols-2">
+          <div class="glass">
+            <span class="tag">Gyors, modern, mobilbarát</span>
+            <h1>Weboldal & Webshop <br>
+              <span style="background:linear-gradient(140deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">
+                kisvállalkozásoknak
+              </span>
+            </h1>
+            <p class="lead">Horváth Tamás vagyok Szabolcsbákáról. Web- és AI-fejlesztőként gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció is.</p>
+          </div>
+          <div class="glass">
+            <img src="profil.jpg" alt="Profil kép" style="width:100%;border-radius:14px">
+          </div>
+        </div>
+      </section>
+
+      <!-- Referenciák: külön "aloldalt" nyitnak -->
+      <section id="referenciak" class="section container">
+        <h2>Referenciák</h2>
+        <div class="grid" style="grid-template-columns:repeat(3,1fr); gap:16px">
+          <div class="glass">
+            <h3>Demo #1 – Szolgáltatás oldal</h3>
+            <p>Egyszerű bemutatkozó oldal</p>
+            <p><a class="btn" href="?demo=demo1">Megnyitás</a></p>
+          </div>
+          <div class="glass">
+            <h3>Demo #2 – Landing page</h3>
+            <p>Modern, mobilbarát üzleti oldal</p>
+            <p><a class="btn" href="?demo=demo2">Megnyitás</a></p>
+          </div>
+          <div class="glass">
+            <h3>Demo #3 – Webshop</h3>
+            <p>Termékkártyák + kosár gomb (mockup)</p>
+            <p><a class="btn" href="?demo=demoshop">Megnyitás</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Árak -->
+      <section id="arak" class="section container">
+        <h2>Árak (induló csomagok)</h2>
+        <div class="grid pricing">
+          <div class="glass">
+            <h3>Alap oldal</h3>
+            <div style="font-size:28px;font-weight:800">30.000 Ft</div>
+            <p>Egyszerű bemutatkozó oldal modern dizájnnal</p>
+          </div>
+          <div class="glass">
+            <h3>Mini webshop</h3>
+            <div style="font-size:28px;font-weight:800">120.000 Ft</div>
+            <p>20–30 termék, kosár funkció, egyszerű admin</p>
+          </div>
+          <div class="glass">
+            <h3>Prémium webshop</h3>
+            <div style="font-size:28px;font-weight:800">240.000 Ft+</div>
+            <p>100+ termék, összetett funkciók, SEO és analitika</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kapcsolat -->
+      <section id="kapcsolat" class="section container">
+        <h2>Kapcsolat</h2>
+        <div class="glass">
+          <form action="https://formspree.io/f/myzdldqk" method="POST">
+            <label>Név:<br><input type="text" name="name" required></label><br><br>
+            <label>Email:<br><input type="email" name="_replyto" required></label><br><br>
+            <label>Üzenet:<br><textarea name="message" rows="4" required></textarea></label><br><br>
+            <button type="submit" class="btn">Üzenet küldése</button>
+          </form>
+          <p style="margin-top:16px">
+            <strong>Email:</strong> <a href="mailto:htamas495@gmail.com">htamas495@gmail.com</a><br>
+            <strong>Telefon:</strong> <a href="tel:+36206240970">+36 20 624 0970</a><br>
+            <strong>Város:</strong> Szabolcsbáka<br>
+            <strong>Facebook:</strong> <a href="https://www.facebook.com/profile.php?id=100082492992098" target="_blank" rel="noopener">Profil megnyitása</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>© 2025 Horváth Tamás. Minden jog fenntartva.</footer>
+  </div><!-- /main-site -->
+
+  <!-- ===== DEMÓ NÉZETEK (FULLSCREEN) ===== -->
+  <!-- Demo 1 -->
+  <div id="view-demo1" class="hidden demo-wrap">
+    <header class="demo-header">
+      <div class="nav container">
+        <div class="brand">Demo #1 – Szolgáltatás oldal</div>
+        <button class="back" onclick="returnToMain()">← Vissza a főoldalra</button>
+      </div>
+    </header>
+    <div class="demo-body">
+      <div class="card" style="text-align:center;font-weight:800">Modern Fodrászat</div>
+      <div class="card">
+        <p>Bemutatkozó oldal minta. Rövid szöveg a szolgáltatásról, nyitvatartásról, elérhetőségről.</p>
+        <ul>
+          <li>Férfi hajvágás</li>
+          <li>Női hajvágás</li>
+          <li>Festés, melír</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align:center;color:#9fb0c3">© Demo1 – Szolgáltatás weboldal</div>
     </div>
-  </header>
+  </div>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero container">
-      <div class="grid cols-2">
-        <div class="glass">
-          <span class="tag">Gyors, modern, mobilbarát</span>
-          <h1>Weboldal & Webshop <br><span style="background:linear-gradient(140deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">kisvállalkozásoknak</span></h1>
-          <p class="lead">Horváth Tamás vagyok Szabolcsbákáról. Web- és AI-fejlesztőként gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció is.</p>
-        </div>
-        <div class="glass">
-          <img src="profil.jpg" alt="Profil kép" style="width:100%;border-radius:14px">
-        </div>
+  <!-- Demo 2 -->
+  <div id="view-demo2" class="hidden demo-wrap">
+    <header class="demo-header">
+      <div class="nav container">
+        <div class="brand">Demo #2 – Landing page</div>
+        <button class="back" onclick="returnToMain()">← Vissza a főoldalra</button>
       </div>
-    </section>
-
-    <!-- DEMÓ NÉZŐ (rögtön a hero után; betöltéskor demo1 aktív) -->
-    <section id="demo-view" class="section container">
-      <h2>Demó bemutató</h2>
-      <div class="demo-view glass">
-        <div class="tabs">
-          <button class="tab active" data-demo="demo1">Demo #1 – Szolgáltatás oldal</button>
-          <button class="tab" data-demo="demo2">Demo #2 – Landing page</button>
-          <button class="tab" data-demo="demoshop">Demo #3 – Webshop</button>
-        </div>
-
-        <!-- Demo #1 -->
-        <div id="demo1" class="demo-pane active">
-          <header class="card" style="text-align:center;font-weight:800">Demo #1 – Szolgáltatás oldal</header>
-          <div class="card">
-            <h3>Modern Fodrászat</h3>
-            <p>Bemutatkozó oldal minta. Rövid szöveg a szolgáltatásról, nyitvatartásról, elérhetőségről.</p>
-            <ul>
-              <li>Férfi hajvágás</li>
-              <li>Női hajvágás</li>
-              <li>Festés, melír</li>
-            </ul>
-          </div>
-          <footer class="card" style="text-align:center;color:#9fb0c3">© Demo1 – Szolgáltatás weboldal</footer>
-        </div>
-
-        <!-- Demo #2 -->
-        <div id="demo2" class="demo-pane">
-          <header class="card" style="text-align:center;font-weight:800;background:linear-gradient(140deg,#7dd3fc,#a78bfa);color:#0b0f14">
-            Demo #2 – Landing Page
-          </header>
-          <div class="card">
-            <h2 style="margin-top:0">Üzleti Landing Page</h2>
-            <p>Modern, mobilbarát landing oldal demó. Rövid előnyök, tiszta szerkezet.</p>
-            <div class="grid-demo" style="margin-top:10px">
-              <div class="card"><h3>Gyors</h3><p>Mobilra optimalizált, gyors betöltés.</p></div>
-              <div class="card"><h3>Modern</h3><p>Letisztult, trendi kinézet.</p></div>
-              <div class="card"><h3>Olcsó</h3><p>Kedvező induló árak kisvállalkozásoknak.</p></div>
-            </div>
-          </div>
-          <footer class="card" style="text-align:center;color:#9fb0c3">© Demo2 – Landing page</footer>
-        </div>
-
-        <!-- Demo #3 – Webshop mockup -->
-        <div id="demoshop" class="demo-pane">
-          <header class="card" style="text-align:center;font-weight:800">Demo #3 – Webshop</header>
-          <div class="grid-demo">
-            <div class="card">
-              <h3>Termék 1</h3>
-              <div class="price" style="font-weight:800">5 990 Ft</div>
-              <button class="btn-shop" type="button">Kosárba</button>
-            </div>
-            <div class="card">
-              <h3>Termék 2</h3>
-              <div class="price" style="font-weight:800">9 990 Ft</div>
-              <button class="btn-shop" type="button">Kosárba</button>
-            </div>
-            <div class="card">
-              <h3>Termék 3</h3>
-              <div class="price" style="font-weight:800">12 990 Ft</div>
-              <button class="btn-shop" type="button">Kosárba</button>
-            </div>
-          </div>
-          <footer class="card" style="text-align:center;color:#9fb0c3">© Demo3 – Webshop mockup</footer>
-        </div>
+    </header>
+    <div class="demo-body">
+      <div class="card" style="text-align:center;font-weight:800;background:linear-gradient(140deg,#7dd3fc,#a78bfa);color:#0b0f14">
+        Üzleti Landing Page
       </div>
-    </section>
-
-    <!-- Árak -->
-    <section id="arak" class="section container">
-      <h2>Árak (induló csomagok)</h2>
-      <div class="grid pricing">
-        <div class="glass">
-          <h3>Alap oldal</h3>
-          <div style="font-size:28px;font-weight:800">30.000 Ft</div>
-          <p>Egyszerű bemutatkozó oldal modern dizájnnal</p>
-        </div>
-        <div class="glass">
-          <h3>Mini webshop</h3>
-          <div style="font-size:28px;font-weight:800">120.000 Ft</div>
-          <p>20–30 termék, kosár funkció, egyszerű admin</p>
-        </div>
-        <div class="glass">
-          <h3>Prémium webshop</h3>
-          <div style="font-size:28px;font-weight:800">240.000 Ft+</div>
-          <p>100+ termék, összetett funkciók, SEO és analitika</p>
-        </div>
+      <div class="grid-demo">
+        <div class="card"><h3>Gyors</h3><p>Mobilra optimalizált, gyors betöltés.</p></div>
+        <div class="card"><h3>Modern</h3><p>Letisztult, trendi kinézet.</p></div>
+        <div class="card"><h3>Olcsó</h3><p>Kedvező induló ár kisvállalkozásoknak.</p></div>
       </div>
-    </section>
+      <div class="card" style="text-align:center;color:#9fb0c3">© Demo2 – Landing page</div>
+    </div>
+  </div>
 
-    <!-- Kapcsolat -->
-    <section id="kapcsolat" class="section container">
-      <h2>Kapcsolat</h2>
-      <div class="glass">
-        <form action="https://formspree.io/f/myzdldqk" method="POST">
-          <label>Név:<br><input type="text" name="name" required></label><br><br>
-          <label>Email:<br><input type="email" name="_replyto" required></label><br><br>
-          <label>Üzenet:<br><textarea name="message" rows="4" required></textarea></label><br><br>
-          <button type="submit" class="btn">Üzenet küldése</button>
-        </form>
-        <p style="margin-top:16px">
-          <strong>Email:</strong> <a href="mailto:htamas495@gmail.com">htamas495@gmail.com</a><br>
-          <strong>Telefon:</strong> <a href="tel:+36206240970">+36 20 624 0970</a><br>
-          <strong>Város:</strong> Szabolcsbáka<br>
-          <strong>Facebook:</strong> <a href="https://www.facebook.com/profile.php?id=100082492992098" target="_blank" rel="noopener">Profil megnyitása</a>
-        </p>
+  <!-- Demo Shop -->
+  <div id="view-demoshop" class="hidden demo-wrap">
+    <header class="demo-header">
+      <div class="nav container">
+        <div class="brand">Demo #3 – Webshop</div>
+        <button class="back" onclick="returnToMain()">← Vissza a főoldalra</button>
       </div>
-    </section>
-  </main>
-
-  <footer>
-    © 2025 Horváth Tamás. Minden jog fenntartva.
-  </footer>
+    </header>
+    <div class="demo-body">
+      <div class="grid-demo">
+        <div class="card"><h3>Termék 1</h3><div class="price" style="font-weight:800">5 990 Ft</div><button class="btn-shop" type="button">Kosárba</button></div>
+        <div class="card"><h3>Termék 2</h3><div class="price" style="font-weight:800">9 990 Ft</div><button class="btn-shop" type="button">Kosárba</button></div>
+        <div class="card"><h3>Termék 3</h3><div class="price" style="font-weight:800">12 990 Ft</div><button class="btn-shop" type="button">Kosárba</button></div>
+      </div>
+      <div class="card" style="text-align:center;color:#9fb0c3">© Demo3 – Webshop mockup</div>
+    </div>
+  </div>
 
   <script>
-    // Fülek kezelése + hash-ből választás (#demo=demo1|demo2|demoshop)
-    const tabs = document.querySelectorAll('.tab');
-    const panes = document.querySelectorAll('.demo-pane');
-
-    function showDemo(id){
-      tabs.forEach(t=>t.classList.toggle('active', t.dataset.demo===id));
-      panes.forEach(p=>p.classList.toggle('active', p.id===id));
-      // URL hash frissítése (nem ugrál fel-le)
-      history.replaceState(null,'', '#demo='+id);
+    // Router-szerű váltás ugyanabban a fájlban: ?demo=demo1|demo2|demoshop
+    function qsDemo(){ const m = location.search.match(/[?&]demo=(demo1|demo2|demoshop)\b/); return m?m[1]:null; }
+    function showDemo(which){
+      // Főoldal vs demó nézetek
+      document.getElementById('main-site').classList.toggle('hidden', !!which);
+      document.getElementById('view-demo1').classList.add('hidden');
+      document.getElementById('view-demo2').classList.add('hidden');
+      document.getElementById('view-demoshop').classList.add('hidden');
+      if(which){
+        document.getElementById('view-'+which).classList.remove('hidden');
+        // görgetés tetejére demó nézetben
+        window.scrollTo({top:0, behavior:'instant'});
+      }
     }
-
-    tabs.forEach(t=>{
-      t.addEventListener('click', ()=> showDemo(t.dataset.demo));
-    });
-
-    // Betöltéskor: hash alapján választás, különben demo1
-    (function init(){
-      const m = location.hash.match(/demo=(demo1|demo2|demoshop)/);
-      showDemo(m ? m[1] : 'demo1');
-    })();
+    function returnToMain(){
+      history.pushState(null,'', location.pathname); // query törlése
+      showDemo(null);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    // betöltéskor és előzmény navigációnál is működjön
+    window.addEventListener('load', ()=> showDemo(qsDemo()));
+    window.addEventListener('popstate', ()=> showDemo(qsDemo()));
   </script>
 </body>
 </html>
