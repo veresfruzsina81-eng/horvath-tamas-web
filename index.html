@@ -6,10 +6,7 @@
   <title>Horváth Tamás – Weboldal & Webshop</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#0b0f14; --panel:#101826ee; --accent:#22d3ee; --accent2:#a78bfa;
-      --text:#e8eef6; --muted:#a2b2c6;
-    }
+    :root{ --bg:#0b0f14; --panel:#101826ee; --accent:#22d3ee; --accent2:#a78bfa; --text:#e8eef6; --muted:#a2b2c6; }
     *{box-sizing:border-box}
     html,body{height:100%;margin:0}
     body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
@@ -42,6 +39,12 @@
     /* Kontakt linkek színe */
     #kapcsolat a { color:#9bd6ff; text-decoration:underline; font-weight:700; }
     #kapcsolat a:hover { opacity:.9; }
+    .demo-section{padding:60px 20px;background:#111827;margin-top:40px;border-radius:14px}
+    .demo-section h2{margin-top:0}
+    .card{background:#1f2937;padding:20px;border-radius:12px;margin:10px 0}
+    .grid-demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+    .btn-shop{background:linear-gradient(140deg,#7dd3fc,#a78bfa);color:#0b0f14;
+              border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700}
   </style>
 </head>
 <body>
@@ -78,17 +81,17 @@
         <div class="glass">
           <h3>Demo #1 – Szolgáltatás oldal</h3>
           <p>Egyszerű bemutatkozó oldal</p>
-          <p><a href="/demo1/" target="_blank" rel="noopener">Megnyitás</a></p>
+          <p><a href="#demo1" class="btn">Megnyitás</a></p>
         </div>
         <div class="glass">
           <h3>Demo #2 – Landing page</h3>
           <p>Modern, mobilbarát üzleti oldal</p>
-          <p><a href="/demo2/" target="_blank" rel="noopener">Megnyitás</a></p>
+          <p><a href="#demo2" class="btn">Megnyitás</a></p>
         </div>
         <div class="glass">
           <h3>Demo #3 – Webshop</h3>
           <p>Termékkártyák + kosár gomb (mockup)</p>
-          <p><a href="/demo-shop/" target="_blank" rel="noopener">Megnyitás</a></p>
+          <p><a href="#demoshop" class="btn">Megnyitás</a></p>
         </div>
       </div>
     </section>
@@ -131,6 +134,52 @@
           <strong>Város:</strong> Szabolcsbáka<br>
           <strong>Facebook:</strong> <a href="https://www.facebook.com/profile.php?id=100082492992098" target="_blank">Profil megnyitása</a>
         </p>
+      </div>
+    </section>
+
+    <!-- DEMO 1 -->
+    <section id="demo1" class="demo-section container">
+      <h2>Demo #1 – Szolgáltatás oldal</h2>
+      <div class="glass">
+        <h3>Modern Fodrászat</h3>
+        <p>Bemutatkozó oldal demó. Rövid szöveg a szolgáltatásról, nyitvatartásról, elérhetőségről.</p>
+        <ul>
+          <li>Férfi hajvágás</li>
+          <li>Női hajvágás</li>
+          <li>Festés, melír</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- DEMO 2 -->
+    <section id="demo2" class="demo-section container">
+      <h2>Demo #2 – Landing Page</h2>
+      <div class="grid">
+        <div class="card"><h3>Gyors</h3><p>Mobilra optimalizált, gyors betöltés.</p></div>
+        <div class="card"><h3>Modern</h3><p>Letisztult, trendi kinézet.</p></div>
+        <div class="card"><h3>Olcsó</h3><p>Kedvező induló árak kisvállalkozásoknak.</p></div>
+      </div>
+    </section>
+
+    <!-- DEMO SHOP -->
+    <section id="demoshop" class="demo-section container">
+      <h2>Demo #3 – Webshop</h2>
+      <div class="grid-demo">
+        <div class="card">
+          <h3>Termék 1</h3>
+          <div class="price">5 990 Ft</div>
+          <button class="btn-shop">Kosárba</button>
+        </div>
+        <div class="card">
+          <h3>Termék 2</h3>
+          <div class="price">9 990 Ft</div>
+          <button class="btn-shop">Kosárba</button>
+        </div>
+        <div class="card">
+          <h3>Termék 3</h3>
+          <div class="price">12 990 Ft</div>
+          <button class="btn-shop">Kosárba</button>
+        </div>
       </div>
     </section>
   </main>
