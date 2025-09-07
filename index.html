@@ -8,10 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#0b0f14; --panel:#0f1620cc; --accent:#7dd3fc; --accent2:#a78bfa;
-      --text:#e8eef6; --muted:#9fb0c3; --ok:#34d399;
-    }
+    :root{ --bg:#0b0f14; --panel:#0f1620cc; --accent:#7dd3fc; --accent2:#a78bfa; --text:#e8eef6; --muted:#9fb0c3; --ok:#34d399; }
     *{box-sizing:border-box} html,body{height:100%} html{scroll-behavior:smooth}
     body{
       margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif; color:var(--text);
@@ -23,12 +20,8 @@
     .container{max-width:1100px; margin:0 auto; padding:0 18px}
     .section{padding:36px 0}
     .glass{
-      background: var(--panel);
-      backdrop-filter: blur(12px) saturate(120%);
-      -webkit-backdrop-filter: blur(12px) saturate(120%);
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      border-radius: 18px; padding:18px;
+      background: var(--panel); backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%);
+      border:1px solid rgba(255,255,255,.08); box-shadow: 0 10px 30px rgba(0,0,0,.35); border-radius: 18px; padding:18px;
     }
 
     /* Header + nav */
@@ -54,9 +47,8 @@
 
     /* Grid helpers */
     .grid{display:grid; gap:16px}
-    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
 
-    /* Form inputs */
+    /* Inputs */
     input, textarea{width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.05); color:var(--text)}
     input::placeholder, textarea::placeholder{color:#a2b2c6}
@@ -64,7 +56,6 @@
     /* Mobilbarát törések */
     @media(max-width:900px){
       .hero-grid{grid-template-columns:1fr}
-      .grid.cols-3{grid-template-columns:1fr}
       .menu{flex-wrap:wrap; gap:10px}
       .btn{width:100%; justify-content:center}
     }
@@ -73,9 +64,7 @@
 <body>
   <header>
     <div class="container nav">
-      <div class="brand">
-        <img src="profil.jpg" alt="Horváth Tamás"> Horváth Tamás
-      </div>
+      <div class="brand"><img src="profil.jpg" alt="Horváth Tamás"> Horváth Tamás</div>
       <nav class="menu">
         <a href="#referenciak">Referenciák</a>
         <a href="#arak">Árak</a>
@@ -92,10 +81,7 @@
         <div class="glass">
           <span class="badge">Gyors, modern, mobilbarát</span>
           <h1>Weboldal & Webshop <span style="background:linear-gradient(140deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent">kisvállalkozásoknak</span></h1>
-          <p class="lead">
-            Horváth Tamás vagyok, Szabolcsbákáról. Web- és AI-fejlesztőként gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat.
-            Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció is.
-          </p>
+          <p class="lead">Horváth Tamás vagyok, Szabolcsbákáról. Web- és AI-fejlesztőként gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció is.</p>
         </div>
         <div class="glass">
           <img src="profil.jpg" alt="Horváth Tamás portré" style="width:100%; border-radius:14px;">
@@ -103,20 +89,21 @@
       </div>
     </section>
 
-    <!-- REFERENCIÁK (keretek – később linkekkel) -->
+    <!-- REFERENCIÁK (1 demo kártya) -->
     <section id="referenciak" class="section container">
       <h2>Referenciák</h2>
-      <div class="grid cols-3">
-        <div class="glass"><h3>Demo #1</h3><p>Hamarosan feltöltve…</p></div>
-        <div class="glass"><h3>Demo #2</h3><p>Hamarosan feltöltve…</p></div>
-        <div class="glass"><h3>Demo #3</h3><p>Hamarosan feltöltve…</p></div>
+      <div class="grid">
+        <div class="glass">
+          <h3>Demo #1</h3>
+          <p>Hamarosan feltöltve…</p>
+        </div>
       </div>
     </section>
 
     <!-- ÁRAK -->
     <section id="arak" class="section container">
       <h2>Árak (induló csomagok)</h2>
-      <div class="grid cols-3">
+      <div class="grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="glass">
           <h3>Alap oldal</h3>
           <div style="font-size:28px; font-weight:800">30.000 Ft</div>
@@ -148,22 +135,18 @@
       <div style="margin-top:12px; color:var(--muted)">*Az árak tájékoztató jellegűek. Egyedi igény esetén személyre szabott ajánlat.</div>
     </section>
 
-    <!-- KAPCSOLAT – Formspree űrlap (email a Gmailbe érkezik) -->
+    <!-- KAPCSOLAT – Formspree űrlap -->
     <section id="kapcsolat" class="section container">
       <h2>Kapcsolat</h2>
       <div class="glass">
         <form action="https://formspree.io/f/myzdldqk" method="POST">
-          <!-- Formspree extra mezők -->
           <input type="hidden" name="_subject" value="Új ajánlatkérés a honlapról">
           <input type="hidden" name="_language" value="hu">
-          <!-- anti-spam honeypot -->
           <input type="text" name="_gotcha" style="display:none">
-
           <p><label>Név:<br><input type="text" name="nev" required placeholder="Név"></label></p>
           <p><label>Email:<br><input type="email" name="_replyto" required placeholder="email@pelda.hu"></label></p>
           <p><label>Üzenet:<br><textarea name="uzenet" rows="5" required placeholder="Miben segíthetek?"></textarea></label></p>
           <p><button type="submit" class="btn">Üzenet küldése</button></p>
-          <p style="color:var(--muted); font-size:14px; margin-top:-6px">Beküldés után az üzenet közvetlenül a Gmail fiókodba érkezik.</p>
         </form>
 
         <hr style="border:0; border-top:1px solid rgba(255,255,255,.1); margin:16px 0">
@@ -179,7 +162,6 @@
   <footer>
     <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
       <div>© <span id="year"></span> Horváth Tamás. Minden jog fenntartva.</div>
-      <div style="color:var(--muted)">Készült szeretettel • Glass design • AI-extrák</div>
     </div>
   </footer>
 
