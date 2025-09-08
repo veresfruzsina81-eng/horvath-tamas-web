@@ -2,65 +2,72 @@
 import fetch from "node-fetch";
 
 export async function handler(event) {
-  console.log("=== createPayment start ===");
-
   try {
-    // 🔑 környezeti változók
-    const POSKEY = process.env.BARION_POSKEY;
-    const POSGUID = process.env.BARION_POSGUID; // ha kell a jövőben
-    console.log("POSKEY:", POSKEY ? "OK" : "HIÁNYZIK");
+    console.log("=== createPayment START ===");
 
-    if (!POSKEY) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Nincs beállítva a BARION_POSKEY" })
-      };
+    const POSKEY = process.env.BARION_POSKEY;
+    const POSGUID = process.env.BARION_POSGUID;
+
+    if (!POSKEY || !POSGUID) {
+      throw new Error("POSKEY vagy POSGUID hiányzik a Netlify environment variables közül!");
     }
 
-    // 💳 fizetési adatok
+    const body = JSON.parse(event.body || "{}");
+    const amount = body.amount || 999;
+
     const paymentData = {
       POSKey: POSKEY,
       PaymentType: "Immediate",
       GuestCheckOut: true,
       FundingSources: ["All"],
-      RedirectUrl: "https://horvath-tamas-web.netlify.app/thanks.html",
-      CallbackUrl: "https://horvath-tamas-web.netlify.app/api/barion-callback",
+      Locale: "hu-HU",
+      Currency: "HUF",
       Transactions: [
         {
           POSTransactionId: "demo-" + Date.now(),
-          Payee: "tanulovagyokhatna@gmail.com", // Barion fiók e-mail
-          Total: 999
+          Payee: "", // <- ezt teljesen kivesszük vagy üresen hagyjuk
+          Total: amount,
+          Items: [
+            {
+              Name: "Teszt termék",
+              Description: "Demo vásárlás",
+              Quantity: 1,
+              Unit: "db",
+              UnitPrice: amount,
+              ItemTotal: amount
+            }
+          ]
         }
-      ]
+      ],
+      RedirectUrl: "https://horvath-tamas-web.netlify.app/thanks.html",
+      CallbackUrl: "https://horvath-tamas-web.netlify.app/.netlify/functions/createPayment"
     };
 
-    console.log("Request body:", paymentData);
+    console.log("Barion payload:", paymentData);
 
-    // 🔗 Barion Sandbox API hívás
     const response = await fetch("https://api.test.barion.com/v2/Payment/Start", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(paymentData)
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(paymentData),
     });
 
     const result = await response.json();
-
     console.log("Barion response:", result);
 
-    // ✅ választ mindig adjunk vissza!
+    if (!response.ok) {
+      throw new Error(`Barion API hiba: ${JSON.stringify(result)}`);
+    }
+
     return {
-      statusCode: response.status,
-      body: JSON.stringify(result)
+      statusCode: 200,
+      body: JSON.stringify({ ok: true, paymentUrl: result.GatewayUrl }),
     };
 
-  } catch (error) {
-    console.error("Hiba a createPayment-ben:", error);
+  } catch (err) {
+    console.error("Hiba:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.message })
+      body: JSON.stringify({ ok: false, error: err.message }),
     };
   }
 }
