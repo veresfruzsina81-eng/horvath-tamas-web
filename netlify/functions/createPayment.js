@@ -1,112 +1,52 @@
 // netlify/functions/createPayment.js
-import fetch from "node-fetch";
+import fetch from "node-fetch"; // kötelező a node-fetch
 
 export async function handler(event) {
-  console.info("=== createPayment start ===");
+  console.log("=== createPayment start ===");
 
-  const posKey = process.env.BARION_POSKEY; // Titkos azonosító (POSKey)
-  if (!posKey) {
-    console.error("BARION_POSKEY nincs beállítva");
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ ok: false, message: "Hiányzó BARION_POSKEY." }),
+  try {
+    const body = JSON.parse(event.body);
+    const posKey = process.env.BARION_POSKEY;
+    const payee = process.env.BARION_PAYEE;
+
+    const paymentRequest = {
+      POSKey: posKey,
+      Payee: payee,
+      Transactions: [
+        {
+          POSTransactionId: "demo-" + Date.now(),
+          Payee: payee,
+          Total: body.amount || 999
+        }
+      ],
+      RedirectUrl: "https://horvath-tamas-web.netlify.app/thanks.html",
+      CallbackUrl: "https://horvath-tamas-web.netlify.app/api/barion-callback"
     };
-  }
 
-  // kliens felől opcionálisan jöhet amount (Ft)
-  let req;
-  try {
-    req = JSON.parse(event.body || "{}");
-  } catch {
-    req = {};
-  }
-  const amount = Math.max(1, Number(req.amount || 0) | 0) || 999; // default: 999 Ft demo
+    console.log("Request body:", JSON.stringify(paymentRequest, null, 2));
 
-  // --- Barion Payment/Start payload ---
-  const paymentRequest = {
-    POSKey: posKey,
-    PaymentType: "Immediate",
-    GuestCheckout: true,
-    FundingSources: ["All"],
-    Locale: "hu-HU",
-    Currency: "HUF",
-    PaymentRequestId: "demo-" + Date.now(),
-    PayerHint: "tanulovagyokhatna@gmail.com",
-
-    // VISSZAIRÁNYÍTÁS (siker/megállás után)
-    RedirectUrl: "https://horvath-tamas-web.netlify.app/thanks.html",
-
-    // EGY tranzakció – itt kell a PAYEE = Publikus azonosító (POSGuid)
-    Transactions: [
-      {
-        POSTransactionId: "demo-" + Date.now(),
-        // !!! IDE A PUBLIKUS AZONOSÍTÓ (POSGuid)
-        Payee: "fa2b28b6-5985-4d7e-bd02-de31c40fe36d",
-        Total: amount, // összeg Ft-ban
-        Comment: "DemoShop rendelés (sandbox)"
-      },
-    ],
-  };
-
-  // Sandbox endpoint:
-  const url = "https://api.test.barion.com/v2/Payment/Start";
-
-  try {
-    console.info("Barion payload:", {
-      POSKey: "[OK]",
-      Payee: paymentRequest.Transactions[0].Payee,
-      Total: amount,
-    });
-
-    const resp = await fetch(url, {
+    const response = await fetch("https://api.test.barion.com/v2/Payment/Start", {
       method: "POST",
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify(paymentRequest),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(paymentRequest)
     });
 
-    let data = {};
-    try {
-      data = await resp.json();
-    } catch (e) {
-      console.error("JSON parse hiba:", e);
-    }
+    const data = await response.json();
+    console.log("Barion response:", data);
 
-    console.info("Barion response status:", resp.status);
-    if (data?.Errors?.length) console.error("Barion Errors:", data.Errors);
-
-    if (!resp.ok || data?.Errors?.length) {
-      const firstErr = data?.Errors?.[0];
+    if (data.GatewayUrl) {
       return {
-        statusCode: 502,
-        body: JSON.stringify({
-          ok: false,
-          message:
-            firstErr?.Description ||
-            "A Barion visszautasította a kérést (sandbox).",
-          errors: data?.Errors || [],
-        }),
+        statusCode: 200,
+        body: JSON.stringify({ ok: true, url: data.GatewayUrl })
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ ok: false, error: data })
       };
     }
-
-    // Siker – visszaadjuk a GatewayUrl-t
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ok: true,
-        paymentId: data.PaymentId,
-        status: data.Status,
-        gatewayUrl: data.GatewayUrl,
-      }),
-    };
   } catch (err) {
-    console.error("createPayment kivétel:", err);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        ok: false,
-        message: "Szerverhiba a fizetés indításakor.",
-      }),
-    };
+    console.error("ERROR:", err);
+    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 }
