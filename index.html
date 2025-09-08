@@ -19,7 +19,7 @@ h2{font-weight:900;margin:0 0 18px}
 .grid{display:grid;gap:18px} .cols-2{grid-template-columns:1.15fr .85fr}
 @media (max-width:900px){.cols-2{grid-template-columns:1fr}}
 .glass{background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:20px; box-shadow:0 10px 28px rgba(0,0,0,.28)}
-.card{background:var(--panel);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:18px}
+.card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px}
 .table{width:100%;border-collapse:separate;border-spacing:0 8px}
 .table td,.table th{padding:10px 14px} .table .row{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px}
 .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--brand1);color:#0b0f14;font-weight:900;font-size:12px}
@@ -320,8 +320,8 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
     </div>
     <div id="cartList" class="cart-list"></div>
     <div class="cart-total"><span>Összesen</span><span id="cartTotal">0 Ft</span></div>
-    <!-- Fizetés gomb -->
-    <button class="btn checkout" type="button" onclick="startPayment()">Fizetés Barionnal</button>
+    <!-- Fizetés gomb (lecserélve id-re, onclick nélkül) -->
+    <button id="barionPayBtn" class="btn checkout" type="button">Fizetés Barionnal</button>
     <p class="small">Demo – illusztratív kosár, nincs tényleges fizetés.</p>
   </aside>
 </div>
@@ -434,6 +434,67 @@ async function startPayment(){
 }
 
 if(qsDemo()==='demoshop'){ renderProducts(); }
+</script>
+
+<!-- ===== Barion fizetés script – közvetlenül a </body> elé illesztve ===== -->
+<script>
+/**
+ * Barion fizetés indító – a Netlify functiont hívja,
+ * majd átirányít a Barion (sandbox) fizetőoldalra.
+ */
+async function fizetesBarionnal(amount) {
+  try {
+    const res = await fetch("/.netlify/functions/createPayment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount })
+    });
+
+    // A function JSON-t ad vissza: { GatewayUrl, PaymentId, ... } VAGY { error, errors }
+    const data = await res.json();
+
+    if (data && data.GatewayUrl) {
+      // Siker: mehetünk a Barion oldalra
+      window.location.href = data.GatewayUrl;
+      return;
+    }
+
+    // Ha ide jutunk, hiba volt – mutassuk meg röviden
+    const msg = data?.error
+      || data?.Message
+      || (data?.Errors && JSON.stringify(data.Errors))
+      || "Ismeretlen hiba a fizetés indításakor.";
+    alert("Hiba: " + msg);
+  } catch (err) {
+    alert("Hálózati hiba: " + err.message);
+  }
+}
+
+/**
+ * Segéd: a kosár összegének kiolvasása a #cartTotal elemből (pl. '22 890 Ft').
+ * Visszatér: egész szám (pl. 22890). Ha nem található, 0.
+ */
+function readCartTotal() {
+  const el = document.getElementById("cartTotal");
+  if (!el) return 0;
+  const digits = (el.textContent || "").replace(/[^\d]/g, "");
+  return digits ? parseInt(digits, 10) : 0;
+}
+
+// Gomb esemény: kattintásra indítjuk a fizetést
+(function bindBarionButton(){
+  const btn = document.getElementById("barionPayBtn");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    const amount = readCartTotal();
+    if (!amount || amount < 1) {
+      alert("A kosár üres vagy az összeg érvénytelen.");
+      return;
+    }
+    // Indítás (összeg Ft-ban, egész szám)
+    await fizetesBarionnal(amount);
+  });
+})();
 </script>
 </body>
 </html>
