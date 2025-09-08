@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Horváth Tamás – Weboldal & Webshop</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-<meta name="description" content="Gyors, modern, mobilbarát weboldalak és webshopok – AI integrációval. Horváth Tamás fejlesztő.">
+<meta name="description" content="Weboldalak és webshopok – AI és Excel / Google Sheets integrációval. Horváth Tamás fejlesztő.">
 <style>
 :root{
   --bg:#0b0f14; --panel:#0f172a; --glass:rgba(16,24,38,.78);
@@ -140,6 +140,19 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
 .small{font-size:12px;opacity:.75}
 .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:14px}
 .info-card{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px}
+
+/* --- Demo4 (excel) --- */
+.demo4-excel-panel{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:16px}
+.demo4-excel-title{margin:0 0 8px}
+.demo4-excel-toolbar{display:flex;gap:8px;margin:8px 0 12px}
+.demo4-excel-toolbar input{flex:1;min-width:160px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1220;color:#e8eef6}
+[data-theme="light"] .demo4-excel-toolbar input{background:#fff;color:#0b1220;border-color:rgba(0,0,0,.12)}
+.demo4-excel-toolbar button{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(140deg,var(--brand1),var(--brand2));color:#0b0f14;font-weight:900;cursor:pointer}
+.demo4-excel-status{font-size:.95rem;margin-bottom:8px;opacity:.9}
+.demo4-excel-tablewrap{overflow:auto;border-radius:12px;border:1px solid rgba(255,255,255,.06)}
+.demo4-excel-table{width:100%;border-collapse:collapse;min-width:720px}
+.demo4-excel-table th,.demo4-excel-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.08);white-space:nowrap}
+.demo4-excel-table thead th{position:sticky;top:0;background:rgba(20,28,40,.95);text-align:left;z-index:1}
 </style>
 </head>
 <body>
@@ -171,13 +184,18 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
     <section class="hero container">
       <div class="grid cols-2">
         <div class="glass reveal">
-          <span class="tag">Gyors, modern, mobilbarát</span>
+          <!-- a „Gyors, modern, mobilbarát” tag TELJESEN törölve -->
           <h1>Weboldal & Webshop<br>
             <span style="background:linear-gradient(140deg,var(--brand1),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent">
               kisvállalkozásoknak
             </span>
           </h1>
-          <p class="lead">Gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció.</p>
+          <p class="lead">
+            Gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat.
+            Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció.
+            <b>Excel / Google Sheets feladatokat is vállalok</b> – táblázatrendezés, kimutatás,
+            pivot, automatizált riport, diagram, CSV konverzió.
+          </p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
             <a class="btn" href="#referenciak">Referenciák</a>
             <a class="btn outline" href="#kapcsolat">Kapcsolat</a>
@@ -191,7 +209,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
 
     <section id="referenciak" class="section container">
       <h2 class="reveal">Referenciák</h2>
-      <div class="grid reveal" style="grid-template-columns:repeat(3,1fr);gap:18px">
+      <div class="grid reveal" style="grid-template-columns:repeat(4,1fr);gap:18px">
         <div class="glass">
           <h3>Demo #1 – Szolgáltatás oldal</h3>
           <p class="muted">Bemutatkozó/portfólió oldal modern dizájnnal.</p>
@@ -206,6 +224,11 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
           <h3>Demo #3 – Webshop</h3>
           <p class="muted">Kereső, szűrők, élő kosár – demó.</p>
           <p><a class="btn" href="?demo=demoshop">Megnyitás</a></p>
+        </div>
+        <div class="glass">
+          <h3>Demo #4 – Excel</h3>
+          <p class="muted">Az <code>assets/excel-demo.xlsx</code> megjelenítése szűréssel + CSV letöltéssel.</p>
+          <p><a class="btn" href="?demo=demo4">Megnyitás</a></p>
         </div>
       </div>
     </section>
@@ -454,6 +477,32 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
   </aside>
 </div>
 
+<!-- Demo #4 – Excel -->
+<div id="view-demo4" class="hidden demo-wrap">
+  <header class="demo-header">
+    <div class="nav container">
+      <div class="brand">Demo #4 – Excel</div>
+      <button class="back" onclick="returnToMain()">← Vissza a főoldalra</button>
+    </div>
+  </header>
+  <div class="demo-body">
+    <section class="demo4-excel-panel">
+      <h2 class="demo4-excel-title">Excel táblázat megjelenítése</h2>
+      <p class="muted" style="margin:6px 0 10px">Forrás: <code>assets/excel-demo.xlsx</code></p>
+
+      <div class="demo4-excel-toolbar">
+        <input id="excel-filter" type="text" placeholder="Gyors szűrés…" oninput="filterExcelTable(this.value)">
+        <button type="button" onclick="downloadExcelAsCSV()">Letöltés CSV</button>
+      </div>
+
+      <div id="excel-status" class="demo4-excel-status">Betöltés…</div>
+      <div class="demo4-excel-tablewrap">
+        <table id="excel-table" class="demo4-excel-table"></table>
+      </div>
+    </section>
+  </div>
+</div>
+
 <!-- ===== Overlays: Lightbox / Booking / Product / Thanks ===== -->
 <div id="ov" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
   <div id="mod" class="modal" role="document">
@@ -486,12 +535,13 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
 }
 
 // --- Simple router (demók) ---
-function qsDemo(){ const m = location.search.match(/[?&]demo=(demo1|demo2|demoshop)\b/); return m?m[1]:null; }
+function qsDemo(){ const m = location.search.match(/[?&]demo=(demo1|demo2|demoshop|demo4)\b/); return m?m[1]:null; }
 function showDemo(which){
   document.getElementById('main-site').classList.toggle('hidden', !!which);
-  ['view-demo1','view-demo2','view-demoshop'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  ['view-demo1','view-demo2','view-demoshop','view-demo4'].forEach(id=>document.getElementById(id).classList.add('hidden'));
   if(which){ document.getElementById('view-'+which).classList.remove('hidden'); window.scrollTo({top:0, behavior:'instant'}); }
   if (which === 'demoshop') { renderProducts(); updateCartUI(); }
+  if (which === 'demo4') { loadExcel(); }
 }
 function returnToMain(){ history.pushState(null,'', location.pathname); showDemo(null); window.scrollTo({top:0, behavior:'smooth'}); }
 window.addEventListener('load', ()=> showDemo(qsDemo()));
@@ -641,8 +691,71 @@ function openThanks(){
   openModal('Köszönjük a rendelést!','<p>Rendelésed rögzítettük. E-mailben visszaigazolást küldünk.<br>Szállítás: 1–3 munkanap (demo).</p>');
 }
 
+// ===== Demo #4 (excel) =====
+const EXCEL_URL = '/assets/excel-demo.xlsx';
+async function loadExcel(){
+  const statusEl = document.getElementById('excel-status');
+  const tableEl  = document.getElementById('excel-table');
+  if(!statusEl||!tableEl) return;
+
+  statusEl.textContent = 'Betöltés: ' + EXCEL_URL;
+  try{
+    const res = await fetch(EXCEL_URL);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const buf = await res.arrayBuffer();
+    const wb = XLSX.read(buf, { type:'array' });
+    const sheetName = wb.SheetNames[0];
+    const ws = wb.Sheets[sheetName];
+    const data = XLSX.utils.sheet_to_json(ws, { header:1, defval:'' });
+    renderExcelTable(tableEl, data);
+    statusEl.textContent = `Kész • Munkalap: ${sheetName} • Sorok: ${data.length}`;
+    window.__excelData = data;
+  }catch(err){
+    statusEl.textContent = 'Hiba: ' + err.message;
+  }
+}
+function renderExcelTable(tableEl, data){
+  tableEl.innerHTML = '';
+  if(!data || !data.length){
+    tableEl.innerHTML = '<tr><td>Nincs adat.</td></tr>'; return;
+  }
+  const thead = document.createElement('thead');
+  const tbody = document.createElement('tbody');
+
+  const header = data[0];
+  const trh = document.createElement('tr');
+  header.forEach(h=>{ const th=document.createElement('th'); th.textContent=String(h); trh.appendChild(th); });
+  thead.appendChild(trh);
+
+  for(let r=1;r<data.length;r++){
+    const row=data[r]; const tr=document.createElement('tr');
+    row.forEach(cell=>{ const td=document.createElement('td'); td.textContent=String(cell); tr.appendChild(td); });
+    tbody.appendChild(tr);
+  }
+  tableEl.appendChild(thead); tableEl.appendChild(tbody);
+}
+function filterExcelTable(q){
+  const data = window.__excelData || []; if(!data.length) return;
+  const header = data[0];
+  const qn = (q||'').toLowerCase();
+  const rows = data.slice(1).filter(row => row.some(c => String(c).toLowerCase().includes(qn)));
+  renderExcelTable(document.getElementById('excel-table'), [header, ...rows]);
+}
+function downloadExcelAsCSV(){
+  const data = window.__excelData || []; if(!data.length) return;
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  const csv = XLSX.utils.sheet_to_csv(ws);
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'excel-demo.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
 // ===== start =====
 if(qsDemo()==='demoshop'){ renderProducts(); }
 </script>
+
+<!-- SheetJS a végére, hogy a fenti kód már működjön -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </body>
 </html>
