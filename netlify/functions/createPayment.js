@@ -1,36 +1,30 @@
 // netlify/functions/createPayment.js
-// Node 18+ alatt a fetch be van építve, nem kell node-fetch.
+// Node 18+ alatt a fetch beépített.
 
 export async function handler(event) {
-  // Csak POST
   if (event.httpMethod !== "POST") {
     return json(405, { error: "Method Not Allowed" });
   }
 
   try {
     const { amount } = JSON.parse(event.body || "{}");
-
-    // 1) Összeg validálás (HUF, egész Ft)
     const amt = Number.isFinite(amount) ? Math.round(amount) : 0;
-    if (!amt || amt < 1) {
-      return json(400, { error: "Érvénytelen összeg." });
-    }
+    if (!amt || amt < 1) return json(400, { error: "Érvénytelen összeg." });
 
-    // 2) ENV változók
-    const POSKEY = process.env.BARION_POSKEY;       // Sandbox POSKey
-    const PAYEE  = process.env.BARION_PAYEE || "";  // Sandbox payee (e-mail/azonosító)
-    const SITE   =
-      process.env.SITE_URL ||
-      `https://${process.env.URL || event.headers.host}`;
-
+    // --- KÖTELEZŐ ENV-ek (Netlify -> Site settings -> Environment variables)
+    const POSKEY = process.env.BARION_POSKEY;
+    const PAYEE  = process.env.BARION_PAYEE; // sandbox payee e-mail/azonosító
     if (!POSKEY) return json(500, { error: "Hiányzik a BARION_POSKEY." });
     if (!PAYEE)  return json(500, { error: "Hiányzik a BARION_PAYEE." });
 
-    // 3) Visszairányítások
+    // --- FIX DOMAIN (beégetve, hogy a Barion mindig ide térjen vissza)
+    const SITE = "https://horvath-tamas-web.netlify.app";
     const RedirectUrl = `${SITE}/thanks.html`;
     const CallbackUrl = `${SITE}/.netlify/functions/barionCallback`; // opcionális
 
-    // 4) Barion StartPayment kérés (SANDBOX)
+    console.info("RedirectUrl:", RedirectUrl);
+
+    // --- Barion StartPayment payload (SANDBOX)
     const payload = {
       POSKey: POSKEY,
       PaymentType: "Immediate",
@@ -67,19 +61,13 @@ export async function handler(event) {
     });
 
     const barion = await r.json().catch(() => ({}));
-
-    // Log a Netlify Functions logba – hibaelhárításhoz hasznos
     console.info("Barion status:", r.status, "PaymentId:", barion?.PaymentId);
     console.info("GatewayUrl:", barion?.GatewayUrl);
 
-    if (!r.ok) {
-      return json(r.status, { error: barion?.Message || "Barion hiba." });
-    }
-    if (!barion?.GatewayUrl) {
-      return json(502, { error: "A Barion nem adott GatewayUrl-t." });
-    }
+    if (!r.ok)        return json(r.status, { error: barion?.Message || "Barion hiba." });
+    if (!barion?.GatewayUrl) return json(502, { error: "A Barion nem adott GatewayUrl-t." });
 
-    // 5) VÁLASZ: csak a lényeg
+    // Csak a lényeg a kliensnek:
     return json(200, {
       GatewayUrl: barion.GatewayUrl,
       PaymentId: barion.PaymentId || null
@@ -93,10 +81,7 @@ export async function handler(event) {
 function json(status, obj) {
   return {
     statusCode: status,
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-store"
-    },
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
     body: JSON.stringify(obj)
   };
 }
