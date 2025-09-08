@@ -5,44 +5,38 @@ export async function handler(event) {
   console.log("=== createPayment start ===");
 
   try {
-    const BARION_POSKEY = process.env.BARION_POSKEY;
-    if (!BARION_POSKEY) {
-      throw new Error("Hiányzik a BARION_POSKEY környezeti változó!");
+    const POSKEY = process.env.BARION_POSKEY;
+    if (!POSKEY) {
+      console.error("Hiányzó BARION_POSKEY!");
+      return { statusCode: 500, body: "Barion POSKEY nincs beállítva." };
     }
 
-    const { amount } = JSON.parse(event.body || "{}");
-    console.log("Request body:", event.body);
+    const body = JSON.parse(event.body || "{}");
+    console.log("Request body:", body);
 
-    // Barion API payload
+    // Alap adatok a fizetéshez
     const payload = {
-      POSKey: BARION_POSKEY,
+      POSKey: POSKEY,
+      Payee: "tanulovagyokhatna@gmail.com", // <- a sandbox elfogadó email
       PaymentType: "Immediate",
-      GuestCheckOut: true,
+      GuestCheckout: true,
       FundingSources: ["All"],
-      PaymentRequestId: "demo-" + Date.now(),
+      Locale: "hu-HU",
+      Currency: "HUF",
       RedirectUrl: "https://horvath-tamas-web.netlify.app/thanks.html",
-      CallbackUrl: "https://horvath-tamas-web.netlify.app/.netlify/functions/createPayment-callback",
+      CallbackUrl: "https://horvath-tamas-web.netlify.app/api/barion-callback",
       Transactions: [
         {
-          POSTransactionId: "tr-" + Date.now(),
-          Payee: "tanulovagyokhatna@gmail.com",   // <- KÖTELEZŐ
-          Total: amount || 999,
-          Items: [
-            {
-              Name: "Demo termék",
-              Description: "Teszt vásárlás",
-              Quantity: 1,
-              Unit: "db",
-              UnitPrice: amount || 999,
-              ItemTotal: amount || 999
-            }
-          ]
+          POSTransactionId: "demo-" + Date.now(),
+          Payee: "tanulovagyokhatna@gmail.com", // kötelező ide is
+          Total: body.amount || 999
         }
       ]
     };
 
-    console.log("Barion payload:", JSON.stringify(payload, null, 2));
+    console.log("Barion payload:", payload);
 
+    // Sandbox API hívás
     const resp = await fetch("https://api.test.barion.com/v2/Payment/Start", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,24 +44,21 @@ export async function handler(event) {
     });
 
     const data = await resp.json();
-    console.log("Barion response:", JSON.stringify(data, null, 2));
+    console.log("Barion response:", data);
 
-    if (!resp.ok || data.Errors?.length) {
+    if (!resp.ok) {
       return {
-        statusCode: 400,
-        body: JSON.stringify({ error: data.Errors || data })
+        statusCode: resp.status,
+        body: JSON.stringify({ error: data })
       };
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ paymentUrl: data.GatewayUrl })
+      body: JSON.stringify({ url: data.GatewayUrl || null, data })
     };
   } catch (err) {
-    console.error("Hiba:", err);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message })
-    };
+    console.error("Hiba a createPayment-ben:", err);
+    return { statusCode: 500, body: "Szerverhiba: " + err.message };
   }
 }
