@@ -1,50 +1,39 @@
 // netlify/functions/createPayment.js
 export async function handler(event) {
   try {
-    const BARION_POSKEY = process.env.BARION_POSKEY;
-    if (!BARION_POSKEY) {
-      return { statusCode: 500, body: JSON.stringify({ error: "BARION_POSKEY hiányzik" }) };
+    console.log("=== createPayment start ===");
+
+    // nézzük, van-e beállítva a környezeti változó
+    if (!process.env.BARION_POSKEY) {
+      console.error("❌ BARION_POSKEY nincs beállítva!");
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ ok: false, error: "BARION_POSKEY missing" })
+      };
     }
+    console.log("BARION_POSKEY: OK (be van állítva)");
 
-    // (Opcionális) frontend is küldhet majd összeget; most 1000 Ft
-    const { amount = 1000 } = JSON.parse(event.body || "{}");
+    // kliensről jövő body kiíratás
+    const body = JSON.parse(event.body || "{}");
+    console.log("Request body:", body);
 
-    const orderId = "demo-" + Date.now();
+    // itt jönne a Barion API hívás
+    // egyelőre csak demo választ adunk vissza
+    console.log("Fizetési kérés feldolgozva (demo)");
 
-    const body = {
-      POSKey: BARION_POSKEY,
-      PaymentType: "Immediate",
-      GuestCheckOut: true,          
-      FundingSources: ["All"],
-      PaymentRequestId: orderId,
-      Locale: "hu-HU",
-      Currency: "HUF",
-      RedirectUrl: "https://horvath-tamas-web.netlify.app/thanks.html",
-      Transactions: [
-        {
-          POSTransactionId: orderId,
-          Payee: "tanulovagyokhatna@gmail.com",   // <- itt most a te sandbox címed
-          Total: amount,
-          Items: [
-            { Name: "Webshop rendelés (demo)", Quantity: 1, Unit: "db", UnitPrice: amount, ItemTotal: amount }
-          ]
-        }
-      ]
-    };
-
-    const res = await fetch("https://api.test.barion.com/v2/Payment/Start", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
-    });
-
-    const data = await res.json();
-
-    return { 
-      statusCode: 200, 
-      body: JSON.stringify({ gatewayUrl: data?.GatewayUrl || null, raw: data }) 
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        ok: true,
+        msg: "Payment created (demo)",
+        request: body
+      })
     };
   } catch (err) {
-    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+    console.error("Hiba történt:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ ok: false, error: err.message })
+    };
   }
 }
