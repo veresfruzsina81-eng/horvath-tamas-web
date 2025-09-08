@@ -125,3 +125,26 @@ function json(obj, status = 200) {
     body: JSON.stringify(obj),
   };
 }
+  // Ha sikeres a Barion válasz
+  console.log("Barion response body:", data);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      ok: true,
+      message: "Barion válasz érkezett",
+      response: data
+    })
+  };
+} catch (error) {
+  console.error("Hiba a Barion hívásban:", error);
+
+  return {
+    statusCode: 500,
+    body: JSON.stringify({
+      ok: false,
+      message: "Barion hívás sikertelen",
+      error: error.message
+    })
+  };
+}
