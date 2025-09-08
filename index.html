@@ -7,56 +7,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
 <meta name="description" content="Weboldalak és webshopok – AI és Excel / Google Sheets integrációval. Horváth Tamás fejlesztő.">
 <style>
-:root{
-  --bg:#0b0f14; --panel:#0f172a; --glass:rgba(16,24,38,.78);
-  --text:#e8eef6; --muted:#a2b2c6;
-  --brand1:#22d3ee; --brand2:#a78bfa; --ok:#34d399; --warn:#f59e0b; --danger:#ef4444;
-  --overlay:rgba(0,0,0,.5);
-}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
+:root{ --bg:#0b0f14; --panel:#0f172a; --glass:rgba(16,24,38,.78); --text:#e8eef6; --muted:#a2b2c6; --brand1:#22d3ee; --brand2:#a78bfa; --overlay:rgba(0,0,0,.5);}
+*{box-sizing:border-box} html,body{height:100%;margin:0}
 body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--bg);}
-a{color:inherit}
-img{max-width:100%;display:block;border-radius:12px}
-
+a{color:inherit} img{max-width:100%;display:block;border-radius:12px}
 .container{max-width:1140px;margin:0 auto;padding:0 18px}
 .section{padding:48px 0}
 h1{font-weight:900;font-size:clamp(28px,3.6vw,44px);line-height:1.1;margin:8px 0}
 h2{font-weight:900;margin:0 0 18px}
 .lead{color:var(--muted);font-size:clamp(14px,1.9vw,17px)}
-.grid{display:grid;gap:18px}
-.cols-2{grid-template-columns:1.15fr .85fr}
+.grid{display:grid;gap:18px} .cols-2{grid-template-columns:1.15fr .85fr}
 @media (max-width:900px){.cols-2{grid-template-columns:1fr}}
-.glass{background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:20px;
-  box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.glass{background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:20px; box-shadow:0 10px 28px rgba(0,0,0,.28)}
 .card{background:var(--panel);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:18px}
 .table{width:100%;border-collapse:separate;border-spacing:0 8px}
-.table td,.table th{padding:10px 14px}
-.table .row{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px}
+.table td,.table th{padding:10px 14px} .table .row{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px}
 .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--brand1);color:#0b0f14;font-weight:900;font-size:12px}
 .kiemelt{background:linear-gradient(140deg,rgba(34,211,238,.2),rgba(167,139,250,.2));}
-
-.btn{display:inline-flex;align-items:center;gap:10px;border:none;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer;
-  background:linear-gradient(140deg,var(--brand1),var(--brand2)); color:#0b0f14; box-shadow:0 10px 24px rgba(0,0,0,.25); transition:.15s transform}
-.btn:hover{transform:translateY(-1px)}
-.btn:active{transform:translateY(0)}
+.btn{display:inline-flex;align-items:center;gap:10px;border:none;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer; background:linear-gradient(140deg,var(--brand1),var(--brand2)); color:#0b0f14; box-shadow:0 10px 24px rgba(0,0,0,.25); transition:.15s transform}
+.btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)}
 .btn.outline{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.16)}
 .tag{display:inline-block;background:linear-gradient(140deg,var(--brand1),var(--brand2));color:#0b0f14;font-weight:900;padding:7px 12px;border-radius:999px;font-size:12px}
 .muted{color:var(--muted)}
 .header{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.55);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
 .brand{font-weight:900}
-.menu{display:flex;gap:16px;flex-wrap:wrap}
-.menu a{color:var(--muted);text-decoration:none;font-weight:800}
+.menu{display:flex;gap:16px;flex-wrap:wrap} .menu a{color:var(--muted);text-decoration:none;font-weight:800}
 .menu a:hover{color:var(--text)}
-
+.theme{display:none} /* <- témaváltót kivettük, csak dark van */
 .hero{padding:64px 0 32px}
-.pricing{grid-template-columns:repeat(3,1fr)}
-@media (max-width:900px){.pricing{grid-template-columns:1fr}}
-
+.pricing{grid-template-columns:repeat(3,1fr)} @media (max-width:900px){.pricing{grid-template-columns:1fr}}
 footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:center;color:var(--muted)}
-
-/* --- Scroll reveal --- */
+/* --- Reveal animáció --- */
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease, transform .5s ease}
 .reveal.show{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
@@ -66,14 +48,14 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
 .cta-stick .inner{display:flex;gap:10px;background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);padding:10px;border-radius:14px}
 @media (max-width:860px){.cta-stick{display:flex}}
 
-/* --- Modals / overlay --- */
+/* --- Overlays / Modal --- */
 .overlay{position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:90}
 .overlay.show{display:flex}
 .modal{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:16px;max-width:720px;width:min(92vw,720px);padding:16px}
 .modal header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .modal .close{background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--text);padding:6px 10px;border-radius:12px;font-weight:800;cursor:pointer}
 
-/* --- DEMÓ nézetek --- */
+/* --- Demó keretek --- */
 .hidden{display:none !important}
 .demo-header{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid rgba(255,255,255,.08)}
 .demo-wrap{min-height:100dvh;display:flex;flex-direction:column}
@@ -100,17 +82,15 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
 .stat b{font-size:26px}
 @media(max-width:850px){.stats{grid-template-columns:1fr}}
 
-/* --- Demo3 (shop) --- */
+/* --- Demo3 (webshop) --- */
 .shop-banner{background:#0d1320;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px;text-align:center;margin-bottom:12px}
 .shop-topbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:14px}
 .shop-logo{font-weight:900}
 .shop-search{flex:1;display:flex;gap:8px}
-.shop-search input, .shop-search select{width:100%;background:#0b1220;border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#e8eef6;padding:10px}
-[data-theme="light"] .shop-search input,[data-theme="light"] .shop-search select{background:#fff;color:#0b1220;border-color:rgba(0,0,0,.12)} /* már nem használjuk, de maradhat */
+.shop-search input,.shop-search select{width:100%;background:#0b1220;border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#e8eef6;padding:10px}
 .shop-search .row{display:flex;gap:8px}
 .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .prod{background:#0b1220;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s ease;position:relative}
-[data-theme="light"] .prod{background:#fff;border-color:rgba(0,0,0,.08)} /* nem aktív, de nem zavar */
 .prod:hover{transform:translateY(-2px)}
 .prod img{width:100%;height:170px;object-fit:cover}
 .p-body{padding:12px;display:flex;flex-direction:column;gap:8px}
@@ -127,7 +107,6 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
 .backdrop.show{display:block}
 .cart-list{display:flex;flex-direction:column;gap:10px;margin:12px 0;max-height:55vh;overflow:auto}
 .cart-item{display:flex;align-items:center;gap:10px;background:#111827;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px}
-[data-theme="light"] .cart-item{background:#fff;border-color:rgba(0,0,0,.08)}
 .cart-item img{width:56px;height:56px;object-fit:cover;border-radius:8px}
 .cart-total{display:flex;align-items:center;justify-content:space-between;font-weight:900;margin-top:8px}
 .checkout{width:100%;margin-top:12px}
@@ -135,7 +114,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
 .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:14px}
 .info-card{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px}
 
-/* --- Demo4 (image-only) --- */
+/* --- Demo4 (Excel kép) --- */
 .demo4-img{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px}
 .demo4-img figure{margin:0}
 .demo4-img img{width:100%;height:auto;border-radius:12px}
@@ -143,7 +122,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
 </head>
 <body>
 
-<!-- ===== STICKY CTA (mobil) ===== -->
+<!-- ===== Sticky CTA (mobil) ===== -->
 <div class="cta-stick" aria-hidden="true">
   <div class="inner">
     <a class="btn" href="#kapcsolat">Kérek ajánlatot</a>
@@ -160,6 +139,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
         <a href="#referenciak">Referenciák</a>
         <a href="#arak">Árak</a>
         <a href="#kapcsolat">Kapcsolat</a>
+        <!-- témaváltó kikapcsolva -->
         <a class="btn" href="#kapcsolat">Kérek ajánlatot</a>
       </nav>
     </div>
@@ -174,7 +154,11 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
               kisvállalkozásoknak
             </span>
           </h1>
-          <p class="lead">Gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat. Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció. <b>Excel / Google Sheets munkát is vállalok</b> – kimutatások, pivot, riportok, diagramok, CSV-konverzió.</p>
+          <p class="lead">
+            Gyorsan és elérhető áron készítek modern, mobilbarát weboldalakat és webshopokat.
+            Kérhető AI-chat, képfelismerés, hangos felolvasás és Google-kereső integráció.
+            <b>Excel / Google Sheets munkát is vállalok</b> – kimutatások, pivot, riportok, diagramok, CSV-konverzió.
+          </p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
             <a class="btn" href="#referenciak">Referenciák</a>
             <a class="btn outline" href="#kapcsolat">Kapcsolat</a>
@@ -211,13 +195,24 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
         </div>
       </div>
     </section>
-
     <section id="arak" class="section container">
       <h2 class="reveal">Árak (induló csomagok)</h2>
       <div class="grid pricing reveal">
-        <div class="glass"><h3>Alap oldal</h3><div style="font-size:28px;font-weight:900">30.000 Ft</div><p class="muted">Egyszerű bemutatkozó oldal modern dizájnnal.</p></div>
-        <div class="glass"><h3>Mini webshop</h3><div style="font-size:28px;font-weight:900">120.000 Ft</div><p class="muted">20–30 termék, kosár, egyszerű admin.</p></div>
-        <div class="glass"><h3>Prémium webshop</h3><div style="font-size:28px;font-weight:900">240.000 Ft+</div><p class="muted">100+ termék, SEO és analitika.</p></div>
+        <div class="glass">
+          <h3>Alap oldal</h3>
+          <div style="font-size:28px;font-weight:900">30.000 Ft</div>
+          <p class="muted">Egyszerű bemutatkozó oldal modern dizájnnal.</p>
+        </div>
+        <div class="glass">
+          <h3>Mini webshop</h3>
+          <div style="font-size:28px;font-weight:900">120.000 Ft</div>
+          <p class="muted">20–30 termék, kosár, egyszerű admin.</p>
+        </div>
+        <div class="glass">
+          <h3>Prémium webshop</h3>
+          <div style="font-size:28px;font-weight:900">240.000 Ft+</div>
+          <p class="muted">100+ termék, SEO és analitika.</p>
+        </div>
       </div>
     </section>
 
@@ -225,16 +220,33 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
       <h2 class="reveal">Kapcsolat</h2>
       <div class="glass reveal">
         <form action="https://formspree.io/f/myzdldqk" method="POST">
-          <label>Név<br><input type="text" name="name" required style="width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1220;color:#e8eef6"></label><br><br>
-          <label>Email<br><input type="email" name="_replyto" required style="width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1220;color:#e8eef6"></label><br><br>
-          <label>Üzenet<br><textarea name="message" rows="4" required style="width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1220;color:#e8eef6"></textarea></label><br><br>
+          <label>Név<br>
+            <input type="text" name="name" required
+              style="width:100%;padding:12px;border-radius:10px;
+              border:1px solid rgba(255,255,255,.15);
+              background:#0b1220;color:#e8eef6">
+          </label><br><br>
+          <label>Email<br>
+            <input type="email" name="_replyto" required
+              style="width:100%;padding:12px;border-radius:10px;
+              border:1px solid rgba(255,255,255,.15);
+              background:#0b1220;color:#e8eef6">
+          </label><br><br>
+          <label>Üzenet<br>
+            <textarea name="message" rows="4" required
+              style="width:100%;padding:12px;border-radius:10px;
+              border:1px solid rgba(255,255,255,.15);
+              background:#0b1220;color:#e8eef6"></textarea>
+          </label><br><br>
           <button type="submit" class="btn">Üzenet küldése</button>
         </form>
         <p style="margin-top:16px" class="muted">
           <strong>Email:</strong> <a href="mailto:htamas495@gmail.com">htamas495@gmail.com</a> •
           <strong>Telefon:</strong> <a href="tel:+36206240970">+36 20 624 0970</a> •
           <strong>Város:</strong> Szabolcsbáka •
-          <strong>Facebook:</strong> <a href="https://www.facebook.com/profile.php?id=100082492992098" target="_blank" rel="noopener">Profil</a>
+          <strong>Facebook:</strong>
+          <a href="https://www.facebook.com/profile.php?id=100082492992098"
+             target="_blank" rel="noopener">Profil</a>
         </p>
       </div>
     </section>
@@ -244,7 +256,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
 </div><!-- /main-site -->
 <!-- ===== DEMÓK ===== -->
 
-<!-- Demo #1 – Fodrász -->
+<!-- Demo #1 – Szolgáltatás oldal -->
 <div id="view-demo1" class="hidden demo-wrap">
   <header class="demo-header">
     <div class="nav container">
@@ -267,7 +279,6 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
         </div>
       </div>
     </div>
-
     <div class="card reveal"><h3>Árlista</h3>
       <div class="table">
         <div class="row" style="display:grid;grid-template-columns:1fr 140px;align-items:center">
@@ -283,7 +294,6 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
       </div>
       <p class="small">*Tájékoztató jellegű árak.</p>
     </div>
-
     <div class="card reveal"><h3>Galéria</h3>
       <div class="gallery">
         <img src="img/hair1.jpg" alt="Férfi hajvágás" onclick="openLightbox('img/hair1.jpg')">
@@ -292,7 +302,6 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
         <img src="img/hair4.jpg" alt="Frizurakészítés" onclick="openLightbox('img/hair4.jpg')">
       </div>
     </div>
-
     <div class="card reveal"><h3>Ügyfélvélemények</h3>
       <div id="revBox" class="muted" style="min-height:60px;font-size:15px"></div>
       <div class="small" id="revWho" style="margin-top:6px;opacity:.85"></div>
@@ -315,7 +324,6 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
       <a href="#lp-reviews">Vélemények</a>
       <a href="#lp-faq">GYIK</a>
     </nav>
-
     <div class="lp-hero reveal" style="display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center;overflow:hidden">
       <div>
         <span class="tag">Kampány landing</span>
@@ -328,10 +336,8 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
       </div>
       <img src="img/lp-hero.jpg" alt="Landing illusztráció" loading="lazy" decoding="async">
     </div>
-
     <div id="lp-features" class="grid reveal" style="grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
-      <div class="card">
-        <h3>Funkciók</h3>
+      <div class="card"><h3>Funkciók</h3>
         <ul>
           <li>⚡ 1–2 mp LCP (gyors)</li>
           <li>📱 100% mobilbarát</li>
@@ -347,15 +353,12 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
         <img src="img/lp-feature.jpg" alt="Landing részlet" loading="lazy" decoding="async">
       </div>
     </div>
-
     <div class="stats reveal" style="margin-top:14px">
       <div class="stat"><b id="st1">0</b><div class="muted">átadott projekt</div></div>
       <div class="stat"><b id="st2">0%</b><div class="muted">elégedettség</div></div>
       <div class="stat"><b id="st3">0 nap</b><div class="muted">átlagos átfutás</div></div>
     </div>
-
-    <div class="card reveal" style="margin-top:14px">
-      <h3>Megbízható partner</h3>
+    <div class="card reveal" style="margin-top:14px"><h3>Megbízható partner</h3>
       <div class="logos">
         <div class="logo">ALFA</div>
         <div class="logo">BETA</div>
@@ -364,9 +367,7 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
         <div class="logo">OMEGA</div>
       </div>
     </div>
-
-    <div id="lp-pricing" class="card reveal">
-      <h3>Árazás</h3>
+    <div id="lp-pricing" class="card reveal"><h3>Árazás</h3>
       <p class="muted">Fix díj, gyors átfutás, átlátható tartalom.</p>
       <ul>
         <li>Alap landing: 30.000 Ft</li>
@@ -374,21 +375,18 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
         <li>Komplex kampány: 240.000 Ft+</li>
       </ul>
     </div>
-
-    <div id="lp-reviews" class="card reveal">
-      <h3>Vélemények</h3>
+    <div id="lp-reviews" class="card reveal"><h3>Vélemények</h3>
       <p>„Két nap alatt készen lett az oldal, és az első héten 17 érdeklődés jött be.” — <span class="muted">Kovács M.</span></p>
       <p>„Tiszta üzenet, jó CTA-k, mérhető eredmény.” — <span class="muted">Nagy A.</span></p>
     </div>
-
-    <div id="lp-faq" class="card reveal">
-      <h3>GYIK</h3>
+    <div id="lp-faq" class="card reveal"><h3>GYIK</h3>
       <details open><summary>Mi a készülési idő?</summary><p>Egyszerű landing: 2–3 nap. Haladó: 5–7 nap.</p></details>
       <details><summary>Milyen mérések lesznek?</summary><p>GA4 események: gombkattintás, űrlap, scroll, stb.</p></details>
       <details><summary>Hogyan kapok ajánlatot?</summary><p>Írj a kapcsolati űrlapon, 24 órán belül válaszolok.</p></details>
     </div>
   </div>
 </div>
+
 <!-- Demo #3 – Webshop -->
 <div id="view-demoshop" class="hidden demo-wrap">
   <header class="demo-header">
@@ -419,23 +417,12 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
     </div>
 
     <div id="productGrid" class="products reveal" aria-live="polite"></div>
-
     <div class="info-grid reveal">
-      <div class="info-card">
-        <h4>Szállítás</h4>
-        <p class="small">1–3 munkanap • Csomagpont vagy házhoz • 30.000 Ft felett ingyenes</p>
-      </div>
-      <div class="info-card">
-        <h4>Fizetés</h4>
-        <p class="small">Utánvét, előreutalás, bankkártya (demo)</p>
-      </div>
-      <div class="info-card">
-        <h4>Kapcsolat</h4>
-        <p class="small">E-mail: info@demo.hu • Tel: +36 20 000 0000 (minta)</p>
-      </div>
+      <div class="info-card"><h4>Szállítás</h4><p class="small">1–3 munkanap • Csomagpont vagy házhoz • 30.000 Ft felett ingyenes</p></div>
+      <div class="info-card"><h4>Fizetés</h4><p class="small">Utánvét, előreutalás, bankkártya (demo)</p></div>
+      <div class="info-card"><h4>Kapcsolat</h4><p class="small">E-mail: info@demo.hu • Tel: +36 20 000 0000 (minta)</p></div>
     </div>
   </div>
-
   <div id="backdrop" class="backdrop" onclick="toggleCart()"></div>
   <aside id="cartDrawer" class="cart-drawer" aria-hidden="true">
     <div style="display:flex;align-items:center;justify-content:space-between">
@@ -443,16 +430,12 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
       <button class="shop-cartbtn" onclick="toggleCart()">Bezárás ✕</button>
     </div>
     <div id="cartList" class="cart-list"></div>
-    <div class="cart-total">
-      <span>Összesen</span><span id="cartTotal">0 Ft</span>
-    </div>
-    <!-- Javított checkout gomb -->
+    <div class="cart-total"><span>Összesen</span><span id="cartTotal">0 Ft</span></div>
     <button class="btn checkout" type="button" onclick="startPayment()">Tovább a fizetéshez</button>
     <p class="small">Demo – illusztratív kosár, nincs tényleges fizetés.</p>
   </aside>
 </div>
-
-<!-- Demo #4 – Excel (IMAGE-ONLY) -->
+<!-- Demo #4 – Excel (kép) -->
 <div id="view-demo4" class="hidden demo-wrap">
   <header class="demo-header">
     <div class="nav container">
@@ -463,14 +446,14 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
   <div class="demo-body">
     <div class="demo4-img reveal">
       <figure>
-        <img src="assets/excel-demo_table-clean.jpg" alt="Excel demo – összes bevétel és termék szerinti kimutatás">
+        <img src="assets/excel-demo_table-clean.jpg" alt="Excel demo – kimutatás előnézet">
         <figcaption class="muted" style="margin-top:8px">Mintakép (Excel kimutatás előnézet).</figcaption>
       </figure>
     </div>
   </div>
 </div>
 
-<!-- Overlays -->
+<!-- ===== Overlays ===== -->
 <div id="ov" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
   <div id="mod" class="modal" role="document">
     <header>
@@ -480,41 +463,46 @@ footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;text-align:cent
     <div id="modBody"></div>
   </div>
 </div>
-<!-- JS -->
+<!-- ===== JS ===== -->
 <script>
-// --- Smooth scroll ---
+// --- Smooth scroll + reveal ---
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
-    const id = a.getAttribute('href');
+    const id=a.getAttribute('href');
     if(id.length>1 && document.querySelector(id)){
-      e.preventDefault(); document.querySelector(id).scrollIntoView({behavior:'smooth', block:'start'});
+      e.preventDefault();
+      document.querySelector(id).scrollIntoView({behavior:'smooth', block:'start'});
     }
   });
 });
-
-// --- Scroll reveal ---
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-  const io = new IntersectionObserver(es=>{
-    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
   },{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 }
 
-// --- Simple router (demók) ---
+// --- Mini router (demók) ---
 function qsDemo(){ const m = location.search.match(/[?&]demo=(demo1|demo2|demoshop|demo4)\b/); return m?m[1]:null; }
 function showDemo(which){
   document.getElementById('main-site').classList.toggle('hidden', !!which);
-  ['view-demo1','view-demo2','view-demoshop','view-demo4'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-  if(which){ document.getElementById('view-'+which).classList.remove('hidden'); window.scrollTo({top:0, behavior:'instant'}); }
-  if (which === 'demoshop') { renderProducts(); updateCartUI(); }
+  ['view-demo1','view-demo2','view-demoshop','view-demo4'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.add('hidden');
+  });
+  if(which){
+    const v=document.getElementById('view-'+which);
+    if(v){ v.classList.remove('hidden'); window.scrollTo({top:0, behavior:'instant'}); }
+    if(which==='demoshop'){ renderProducts(); updateCartUI(); }
+  }
 }
 function returnToMain(){ history.pushState(null,'', location.pathname); showDemo(null); window.scrollTo({top:0, behavior:'smooth'}); }
 window.addEventListener('load', ()=> showDemo(qsDemo()));
 window.addEventListener('popstate', ()=> showDemo(qsDemo()));
 
-// ===== Demo #1 (fodrász): Lightbox + Booking + Reviews =====
-const ov = document.getElementById('ov'), mod = document.getElementById('mod'), modTitle = document.getElementById('modTitle'), modBody = document.getElementById('modBody');
-function openModal(title, html){ modTitle.textContent = title; modBody.innerHTML = html; ov.classList.add('show'); ov.setAttribute('aria-hidden','false'); }
+// --- Modal helpers (lightbox / booking / thanks) ---
+const ov=document.getElementById('ov'), mod=document.getElementById('mod'),
+      modTitle=document.getElementById('modTitle'), modBody=document.getElementById('modBody');
+function openModal(title, html){ modTitle.textContent=title; modBody.innerHTML=html; ov.classList.add('show'); ov.setAttribute('aria-hidden','false'); }
 function closeModal(){ ov.classList.remove('show'); ov.setAttribute('aria-hidden','true'); modBody.innerHTML=''; }
 function openLightbox(src){ openModal('Galéria', `<img src="${src}" alt="" style="width:100%;height:auto;border-radius:12px">`); }
 function openBooking(){
@@ -539,20 +527,12 @@ const REVIEWS = [
   setTimeout(()=>rotReviews((i+1)%REVIEWS.length), 3000);
 })();
 
-// ===== Demo #2 (landing): Rotating headline + counters =====
-const words = ['Gyors','Modern','Mobilbarát']; let wi=0;
-function rotateWord(){
-  const el = document.getElementById('rot'); if(!el) return;
-  el.textContent = words[wi]; wi=(wi+1)%words.length;
-}
+// --- Landing (#demo2) headline rotátor + stat számlálók ---
+const words=['Gyors','Modern','Mobilbarát']; let wi=0;
+function rotateWord(){ const el=document.getElementById('rot'); if(!el) return; el.textContent=words[wi]; wi=(wi+1)%words.length; }
 setInterval(rotateWord, 1500); rotateWord();
-
-function animateNumber(el, to, suffix=''){
-  const dur=900, start=performance.now();
-  function step(t){
-    const p=Math.min(1,(t-start)/dur); const n=Math.round(p*to);
-    el.textContent = n + suffix; if(p<1) requestAnimationFrame(step);
-  }
+function animateNumber(el,to,suffix=''){ const dur=900,start=performance.now();
+  function step(t){ const p=Math.min(1,(t-start)/dur); const n=Math.round(p*to); el.textContent = n + suffix; if(p<1) requestAnimationFrame(step); }
   requestAnimationFrame(step);
 }
 window.addEventListener('load', ()=>{
@@ -562,30 +542,30 @@ window.addEventListener('load', ()=>{
   if(s3) animateNumber(s3, 7, ' nap');
 });
 
-// ===== Demo #3 (shop): Products + Sale + Detail modal + Cart + Thanks =====
+// --- Webshop (#demoshop) adat + kosár ---
 const PRODUCTS = [
-  {id:'p1',  name:'Wireless Fejhallgató', price:5990,  cat:'Elektronika', img:'img/shop-headphones.jpg', desc:'BT 5.0, 20 óra', sale:0},
-  {id:'p2',  name:'Okos óra',             price:9990,  cat:'Elektronika', img:'img/shop-watch.jpg',       desc:'Pulzus, értesítések', sale:20},
-  {id:'p3',  name:'Bluetooth Hangszóró',  price:12990, cat:'Elektronika', img:'img/shop-speaker.jpg',     desc:'Vízálló, basszus', sale:0},
-  {id:'p4',  name:'Sport Fülhallgató',    price:7990,  cat:'Sport',       img:'img/shop-earbuds.jpg',     desc:'Edzéshez', sale:10},
-  {id:'p5',  name:'Futócipő',             price:18990, cat:'Sport',       img:'img/shop-shoes.jpg',       desc:'Könnyű, párnázott', sale:0},
-  {id:'p6',  name:'Edzőpóló',             price:4990,  cat:'Ruházat',     img:'img/shop-shirt.jpg',       desc:'Gyorsan száradó', sale:0},
-  {id:'p7',  name:'Kapucnis Pulóver',     price:12990, cat:'Ruházat',     img:'img/shop-hoodie.jpg',      desc:'Puha belső', sale:15},
-  {id:'p8',  name:'USB-C Töltő',          price:3490,  cat:'Elektronika', img:'img/shop-charger.jpg',     desc:'20W gyorstöltés', sale:0},
-  {id:'p9',  name:'Notebook Táska',       price:14990, cat:'Elektronika', img:'img/shop-bag.jpg',         desc:'15.6”, vízlepergető', sale:0}
+  {id:'p1',name:'Wireless Fejhallgató',price:5990,cat:'Elektronika',img:'img/shop-headphones.jpg',desc:'BT 5.0, 20 óra',sale:0},
+  {id:'p2',name:'Okos óra',price:9990,cat:'Elektronika',img:'img/shop-watch.jpg',desc:'Pulzus, értesítések',sale:20},
+  {id:'p3',name:'Bluetooth Hangszóró',price:12990,cat:'Elektronika',img:'img/shop-speaker.jpg',desc:'Vízálló, basszus',sale:0},
+  {id:'p4',name:'Sport Fülhallgató',price:7990,cat:'Sport',img:'img/shop-earbuds.jpg',desc:'Edzéshez',sale:10},
+  {id:'p5',name:'Futócipő',price:18990,cat:'Sport',img:'img/shop-shoes.jpg',desc:'Könnyű, párnázott',sale:0},
+  {id:'p6',name:'Edzőpóló',price:4990,cat:'Ruházat',img:'img/shop-shirt.jpg',desc:'Gyorsan száradó',sale:0},
+  {id:'p7',name:'Kapucnis Pulóver',price:12990,cat:'Ruházat',img:'img/shop-hoodie.jpg',desc:'Puha belső',sale:15},
+  {id:'p8',name:'USB-C Töltő',price:3490,cat:'Elektronika',img:'img/shop-charger.jpg',desc:'20W gyorstöltés',sale:0},
+  {id:'p9',name:'Notebook Táska',price:14990,cat:'Elektronika',img:'img/shop-bag.jpg',desc:'15.6”, vízlepergető',sale:0}
 ];
-const grid = document.getElementById('productGrid');
-const cartDrawer = document.getElementById('cartDrawer');
-const backdrop = document.getElementById('backdrop');
-const cartList = document.getElementById('cartList');
-const cartCountEl = document.getElementById('cartCount');
-const cartTotalEl = document.getElementById('cartTotal');
-const qEl = document.getElementById('q'); const catEl = document.getElementById('cat'); const minEl = document.getElementById('minp'); const maxEl = document.getElementById('maxp');
+const grid=document.getElementById('productGrid');
+const cartDrawer=document.getElementById('cartDrawer');
+const backdrop=document.getElementById('backdrop');
+const cartList=document.getElementById('cartList');
+const cartCountEl=document.getElementById('cartCount');
+const cartTotalEl=document.getElementById('cartTotal');
+const qEl=document.getElementById('q'); const catEl=document.getElementById('cat'); const minEl=document.getElementById('minp'); const maxEl=document.getElementById('maxp');
 let CART = [];
 
 function money(n){ return new Intl.NumberFormat('hu-HU').format(n)+' Ft'; }
 function productCard(p){
-  const hasSale = p.sale && p.sale>0; const old = hasSale ? Math.round(p.price/(1 - p.sale/100)) : null;
+  const hasSale=p.sale && p.sale>0; const old = hasSale ? Math.round(p.price/(1 - p.sale/100)) : null;
   return `<div class="prod">
     ${hasSale?`<div class="badge-sale">-${p.sale}%</div>`:''}
     <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async"
@@ -603,13 +583,13 @@ function productCard(p){
   </div>`;
 }
 function applyFilters(list){
-  const q = (qEl?.value||'').toLowerCase(), cat = catEl?.value||'';
-  const min = parseInt(minEl?.value||'0',10), max = parseInt(maxEl?.value||'0',10);
+  const q=(qEl?.value||'').toLowerCase(), cat=catEl?.value||'';
+  const min=parseInt(minEl?.value||'0',10), max=parseInt(maxEl?.value||'0',10);
   return list.filter(p=>{
-    const okQ = !q || p.name.toLowerCase().includes(q);
-    const okC = !cat || p.cat===cat;
-    const okMin = !min || p.price>=min;
-    const okMax = !max || p.price<=max;
+    const okQ=!q || p.name.toLowerCase().includes(q);
+    const okC=!cat || p.cat===cat;
+    const okMin=!min || p.price>=min;
+    const okMax=!max || p.price<=max;
     return okQ && okC && okMin && okMax;
   });
 }
@@ -640,50 +620,44 @@ function updateCartUI(){
   cartTotalEl.textContent = money(total);
   cartCountEl.textContent = CART.reduce((s,ci)=> s + ci.qty, 0);
 }
-function toggleCart(){
-  cartDrawer.classList.toggle('open');
-  backdrop.classList.toggle('show');
-}
+function toggleCart(){ cartDrawer.classList.toggle('open'); backdrop.classList.toggle('show'); }
 function openProduct(id){
   const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
   openModal(p.name, `
     <img src="${p.img}" alt="${p.name}" style="width:100%;height:auto;margin-bottom:10px">
     <p class="small">${p.cat} • ${p.desc}</p>
     <p><b>${money(p.price)}</b></p>
-    <button class="btn" onclick="addToCart('${id}'); closeModal(); toggleCart();">Hozzáadás a kosárhoz</button>
+    <button class="btn" onclick="addToCart('${p.id}'); closeModal(); toggleCart();">Hozzáadás a kosárhoz</button>
   `);
 }
 function openThanks(){
   openModal('Köszönjük a rendelést!','<p>Rendelésed rögzítettük. E-mailben visszaigazolást küldünk.<br>Szállítás: 1–3 munkanap (demo).</p>');
 }
 
-// ===== Fizetés indítása: Barion ha van, különben demo redirect a /thanks oldalra =====
-async function startPayment(){
-  const total = CART.reduce((s, ci) => {
-    const p = PRODUCTS.find(x => x.id === ci.id);
-    return s + ((p?.price || 0) * ci.qty);
-  }, 0);
-
-  if (!total) { openThanks(); return; }
-
+// --- Fizetés indítása (Barion sandbox, Netlify Function) ---
+async function startPayment() {
+  const total = CART.reduce((s, ci) => s + PRODUCTS.find(p => p.id === ci.id).price * ci.qty, 0);
   try {
-    const res = await fetch('/api/createPayment', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify({ amount: total, orderId: `ord-${Date.now()}` })
+    const res = await fetch("/.netlify/functions/createPayment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: total })
     });
     const data = await res.json();
-
-    if (data && data.paymentUrl) {
-      window.location.href = data.paymentUrl; // Barion vagy demo redirect
+    if (data.gatewayUrl) {
+      window.location.href = data.gatewayUrl; // átirányítás a Barion teszt fizetőoldalra
     } else {
-      openThanks(); // biztonsági fallback
+      openThanks(); // fallback demo
+      console.log("Barion válasz:", data);
     }
-  } catch (e){
-    openThanks(); // hiba esetén se álljon meg
+  } catch (err) {
+    openThanks(); // fallback demo
+    console.error("Fizetési hiba:", err);
   }
 }
 
-// ===== start =====
-if(qsDemo()==='demoshop'){ renderProducts(); updateCartUI(); }
+// --- Start ---
+if(qsDemo()==='demoshop'){ renderProducts(); }
 </script>
+</body>
+</html>
