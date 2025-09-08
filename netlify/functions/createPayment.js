@@ -1,90 +1,127 @@
-// netlify/functions/createPayment.js
-// Node 18+ (fetch beépített)
+// Netlify Function – Barion Sandbox fizetés indítása
+// FONTOS: a Netlifyban állítsd be ezeket az env változókat:
+//  BARION_POSKEY        -> a "Titkos azonosító (POSKey)"
+//  BARION_PAYEE_EMAIL   -> a sandbox tárca (elfogadóhely) e-mail címe
+//
+// Opcionális, de nem kötelező:
+//  BARION_POSGUID       -> Publikus azonosító (POSGuid) – csak logoljuk
 
-export default async function handler(req, res) {
-  try {
-    // csak POST-ot engedünk
-    if (req.method !== 'POST') {
-      return res.status(405).json({ ok: false, message: 'Only POST is allowed' });
-    }
-
-    const POSKEY = process.env.BARION_POSKEY;  // Titkos kulcs (POSKey)
-    if (!POSKEY) {
-      return res.status(500).json({ ok: false, message: 'Hiányzik a BARION_POSKEY env változó' });
-    }
-
-    // a kliens (index.html) ezt küldi: { amount, items }
-    const { amount, items } = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) || {};
-    if (!amount || amount < 1) {
-      return res.status(400).json({ ok: false, message: 'Hiányzó vagy hibás összeg' });
-    }
-
-    // --- Barion payload (Sandbox) ---
-    const payload = {
-      POSKey: POSKEY,                     // titkos kulcs (env)
-      PaymentType: 'Immediate',
-      GuestCheckOut: true,
-      FundingSources: ['All'],
-      Currency: 'HUF',
-      CallbackUrl: 'https://horvath-tamas-web.netlify.app/thanks.html', // demo
-      RedirectUrl: 'https://horvath-tamas-web.netlify.app/thanks.html', // demo
-      Locale: 'hu-HU',
-      Transactions: [
-        {
-          // !!! Payee = Barion fiókod e-mail címe, NEM a POSGuid !!!
-          Payee: 'tanulovagyokhatna@gmail.com',
-
-          Total: amount,
-          Items: Array.isArray(items) && items.length
-            ? items.map((it, i) => ({
-                Name: it.name || `Tétel ${i + 1}`,
-                Description: it.desc || '',
-                Quantity: Number(it.qty || 1),
-                Unit: 'db',
-                UnitPrice: Number(it.price || 0),
-                ItemTotal: Number((it.qty || 1) * (it.price || 0))
-              }))
-            : [
-                {
-                  Name: 'Webshop rendelés (demo)',
-                  Description: 'Kosár tartalma',
-                  Quantity: 1,
-                  Unit: 'db',
-                  UnitPrice: amount,
-                  ItemTotal: amount
-                }
-              ]
-        }
-      ]
+exports.handler = async (event) => {
+  // Egyszerű healthcheck GET-re
+  if (event.httpMethod === "GET") {
+    const ok = !!process.env.BARION_POSKEY;
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ ok, message: ok ? "POSKEY elérhető" : "Hiányzik a POSKEY" }),
     };
+  }
 
-    // Sandbox endpoint
-    const resp = await fetch('https://api.test.barion.com/v2/Payment/Start', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: JSON.stringify({ error: "Csak POST engedélyezett" }) };
+  }
+
+  // --- ENV ---
+  const POSKEY = process.env.BARION_POSKEY;
+  const PAYEE_EMAIL = process.env.BARION_PAYEE_EMAIL || "tanulovagyokhatna@gmail.com"; // sandbox e-mail
+  const POSGUID = process.env.BARION_POSGUID || "";
+
+  if (!POSKEY || !PAYEE_EMAIL) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Hiányzik a BARION_POSKEY vagy a BARION_PAYEE_EMAIL a Netlify környezetben." }),
+    };
+  }
+
+  // --- KLIENS KÉRÉS ---
+  let amount = 999;
+  let items = null;
+  try {
+    const body = event.body ? JSON.parse(event.body) : {};
+    if (body && Number.isFinite(body.amount)) amount = Math.max(1, Math.floor(body.amount));
+    if (Array.isArray(body.items)) items = body.items;
+  } catch (_) {}
+
+  // --- BARION PAYLOAD ---
+  const now = Date.now().toString();
+  const orderId = `demo-${now}`;
+  const trxId = `demo-${now}`;
+
+  const payload = {
+    POSKey: POSKEY,
+    PaymentType: "Immediate",
+    GuestCheckout: true,
+    FundingSources: ["All"],       // Sandboxban mindegy
+    Currency: "HUF",
+    Locale: "hu-HU",
+    PaymentRequestId: orderId,
+    PayerHint: PAYEE_EMAIL,        // sandboxban elfogadható
+    RedirectUrl: "https://horvath-tamas-web.netlify.app/thanks.html",
+    CallbackUrl: "https://horvath-tamas-web.netlify.app/.netlify/functions/createPayment", // minta
+    Transactions: [
+      {
+        POSTransactionId: trxId,
+        Payee: PAYEE_EMAIL,        // NEM a POSKey/Guid! -> a Barion (sandbox) tárca e-mail címe
+        Total: amount,
+        Items: items && items.length
+          ? items
+          : [
+              {
+                Name: "Demo termék",
+                Description: "Sandbox vásárlás – illusztráció",
+                Quantity: 1,
+                Unit: "db",
+                UnitPrice: amount,
+                ItemTotal: amount,
+              },
+            ],
+      },
+    ],
+  };
+
+  // --- KÜLDÉS A BARION SANDBOXBA ---
+  const url = "https://api.test.barion.com/v2/Payment/Start";
+  try {
+    console.log("== createPayment START ==");
+    console.log("POSGUID:", POSGUID ? POSGUID : "(nincs megadva)");
+    console.log("Payee (email):", PAYEE_EMAIL);
+    console.log("Küldött összeg:", amount);
+
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(payload),
     });
 
     const data = await resp.json().catch(() => ({}));
+    console.log("Barion status:", resp.status, "body:", data);
 
-    // Barion hibák kezelése
-    if (!resp.ok || (data?.Errors && data.Errors.length)) {
-      console.error('Barion hiba:', data);
-      return res.status(400).json({
-        ok: false,
-        message: data?.Errors?.[0]?.Description || 'Barion API hiba',
-        errors: data?.Errors || []
-      });
+    // Siker esetén Barion GatewayUrl-t ad vissza (erre kell átirányítani)
+    if (resp.ok && data && data.GatewayUrl) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          ok: true,
+          gatewayUrl: data.GatewayUrl,
+          paymentId: data.PaymentId || null,
+        }),
+      };
     }
 
-    // Siker: visszaadjuk az ugró linket
-    return res.status(200).json({
-      ok: true,
-      paymentId: data.PaymentId,
-      gatewayUrl: data.GatewayUrl
-    });
+    // Ha Barion hibát ad
+    const errors = data && data.Errors ? data.Errors : [];
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        ok: false,
+        message: "Barion API hiba",
+        errors,
+      }),
+    };
   } catch (err) {
-    console.error('createPayment exception:', err);
-    return res.status(500).json({ ok: false, message: 'Szerver hiba' });
+    console.error("Hiba a Barion hívásnál:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ ok: false, message: "Szerver hiba", error: String(err && err.message || err) }),
+    };
   }
-}
+};
