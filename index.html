@@ -10,6 +10,8 @@
     :root{
       --gold:#D4AF37;
       --gold-soft:#f5e6a2;
+      --gold-dark:#b88900;    /* sötétebb arany a kitöltéshez */
+      --gold-dark2:#e0b84f;   /* átmenet másik oldala */
       --header-top:#fffaf0;
       --header-bottom:#f9f4df;
       --text:#0b0b0c;
@@ -20,20 +22,15 @@
     html,body{margin:0;padding:0;scroll-behavior:smooth}
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
-      background:#fff;
-      overflow-x:hidden;
+      color:var(--text); background:#fff; overflow-x:hidden;
     }
 
-    /* háttér fénycsíkok */
-    .bg-stripes{
-      position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
-    }
+    /* háttér fénycsíkok (nagyon finoman) */
+    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
       background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
-      filter:blur(.3px);
-      animation:stripesMove 14s ease-in-out infinite alternate;
+      filter:blur(.3px); animation:stripesMove 14s ease-in-out infinite alternate;
     }
     .bg-stripes .stripe:nth-child(1){ top:8%; transform:rotate(-3deg); animation-delay:0s;}
     .bg-stripes .stripe:nth-child(2){ top:26%; transform:rotate(4deg);  animation-delay:.6s;}
@@ -49,89 +46,76 @@
     /* HEADER */
     .wrap{position:relative;z-index:1}
     header{
-      position:sticky;top:0;z-index:10;
+      position:sticky; top:0; z-index:10;
       background:linear-gradient(to bottom,var(--header-top),var(--header-bottom));
       backdrop-filter:saturate(150%) blur(6px);
       border-bottom:1px solid var(--border);
       box-shadow:0 4px 18px rgba(212,175,55,0.1);
     }
-    .container{max-width:1120px;margin:0 auto;padding:0 20px;}
-    .bar{height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+    .container{max-width:1120px; margin:0 auto; padding:0 20px;}
+    .bar{height:70px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
 
-    /* LOGO + NÉV */
-    .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit;cursor:pointer;}
+    /* LOGÓ + NÉV */
+    .brand{display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:inherit; cursor:pointer;}
     .logo-img{
-      height:44px;width:auto;object-fit:contain;
+      height:44px; width:auto; object-fit:contain;
       filter:drop-shadow(0 0 10px rgba(212,175,55,0.45));
-      opacity:0;transform:translateY(4px);
-      animation:logoFadeIn .8s ease-out forwards;
+      opacity:0; transform:translateY(4px); animation:logoFadeIn .8s ease-out forwards;
     }
     @keyframes logoFadeIn{to{opacity:1;transform:translateY(0)}}
     .brand-name{
-      position:relative;display:inline-block;font-weight:600;font-size:17px;letter-spacing:.2px;
-      opacity:0;transform:translateY(4px);
-      animation:nameEnter .6s ease-out .3s forwards;
+      position:relative; display:inline-block; font-weight:600; font-size:17px; letter-spacing:.2px;
+      opacity:0; transform:translateY(4px); animation:nameEnter .6s ease-out .3s forwards;
       background:linear-gradient(90deg,#c1a028,#f3e3a1,#d8b048);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
-    @keyframes nameEnter{to{opacity:1;transform:translateY(0)}}
+    @keyframes nameEnter{to{opacity:1; transform:translateY(0)}}
     .brand-name.sheen::after{
-      content:"";position:absolute;inset:0;border-radius:6px;pointer-events:none;
-      background:linear-gradient(120deg,rgba(255,255,255,0)0%,rgba(212,175,55,.28)40%,rgba(255,255,255,0)80%);
-      transform:translateX(-120%);animation:sheen 2.6s linear infinite 0.6s;
+      content:""; position:absolute; inset:0; border-radius:6px; pointer-events:none;
+      background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(212,175,55,.28) 40%, rgba(255,255,255,0) 80%);
+      transform:translateX(-120%); animation:sheen 2.6s linear infinite .6s;
     }
     @keyframes sheen{to{transform:translateX(120%)}}
 
-    /* NAVIGATION */
-    nav{display:none;gap:12px;align-items:center;}
-    nav a{
-      position:relative;
-      padding:8px 14px;
-      font-size:15px;
-      font-weight:500;
-      text-decoration:none;
-      background:linear-gradient(270deg, #b89624, #f6e6a1, #b89624);
-      background-size:400% 400%;
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      animation:goldFlow 5s ease infinite;
-      transition:transform .2s ease;
+    /* NAVIGATION – alap: fekete betűk */
+    nav{display:none; gap:12px; align-items:center;}
+    .nav-link, .nav-cta{
+      position:relative; padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none;
+      color:#0b0b0c; transition:transform .2s ease, color .2s ease;
     }
-    nav a:hover{transform:translateY(-2px)}
-    @keyframes goldFlow{
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-    }
+    .nav-link:hover{transform:translateY(-2px)}
 
-    .cta{
-      position:relative;
-      padding:9px 14px;
-      border-radius:14px;
-      font-size:14px;
-      font-weight:600;
-      color:#7a5b0e;
-      background:linear-gradient(90deg, #fdf7d4, #f3e1a1);
-      border:1px solid rgba(212,175,55,.4);
+    /* CTA gomb stílus (világos) */
+    .nav-cta{
+      border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1);
       box-shadow:0 10px 24px rgba(212,175,55,.18);
-      text-decoration:none;
-      transition:transform .2s ease, box-shadow .2s ease;
     }
-    .cta:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(212,175,55,.25);}
+    .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
+
+    /* --- SÖTÉTEBB ARANY “KITÖLTÉS” EFFEKT — teljes szöveg --- */
+    .gold-fill{
+      /* teljes arany kitöltés (sötétebb) a szövegen */
+      background:linear-gradient(90deg, var(--gold-dark), var(--gold-dark2));
+      -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent; color:transparent;
+      text-shadow:0 0 0 rgba(0,0,0,0); /* biztosan ne legyen maradék árnyék */
+    }
+    /* CTA-nál is a feliratot töltjük (a gomb háttere marad) */
+    .nav-cta.gold-fill{ /* csak a textet színezzük, a háttér megmarad */}
+    @media(min-width:768px){nav{display:flex} .toggle{display:none}}
 
     /* MOBIL MENU */
-    .toggle{height:40px;width:40px;border-radius:12px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;}
-    .menu{display:none;border-top:1px solid var(--border);background:rgba(255,255,255,.94);backdrop-filter:blur(8px);}
-    .menu a{padding:12px 20px;font-size:15px;color:#222;text-decoration:none;display:block;}
-    .menu .cta{margin:8px 20px 16px;display:block;text-align:center;}
-    @media(min-width:768px){nav{display:flex}.toggle{display:none}}
+    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center;}
+    .menu{display:none; border-top:1px solid var(--border); background:rgba(255,255,255,.94); backdrop-filter:blur(8px);}
+    .menu a{padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block;}
+    .menu .cta{margin:8px 20px 16px; display:block; text-align:center;}
 
-    main{max-width:1120px;margin:0 auto;padding:48px 20px;color:var(--muted);}
+    main{max-width:1120px; margin:0 auto; padding:48px 20px; color:var(--muted);}
   </style>
 </head>
 <body>
 
+  <!-- finom háttérfények -->
   <div class="bg-stripes" aria-hidden="true">
     <span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span>
   </div>
@@ -140,18 +124,21 @@
     <header>
       <div class="container">
         <div class="bar">
+          <!-- BRAND -->
           <a class="brand" href="#top" id="brandLink">
             <img src="logo.png" alt="TamasGem Studio logo" class="logo-img" />
             <span class="brand-name" id="brandName">TamasGem Studio</span>
           </a>
 
+          <!-- DESKTOP NAV -->
           <nav id="desktopNav">
-            <a href="#about">Rólam</a>
-            <a href="#work">Munkák</a>
-            <a href="#contact">Kapcsolat</a>
-            <a class="cta" href="#contact">Írj nekem</a>
+            <a href="#about"   class="nav-link nav-label">Rólam</a>
+            <a href="#work"    class="nav-link nav-label">Munkák</a>
+            <a href="#contact" class="nav-link nav-label">Kapcsolat</a>
+            <a href="#contact" class="nav-cta  nav-label">Írj nekem</a>
           </nav>
 
+          <!-- MOBILE TOGGLE -->
           <button class="toggle" id="menuBtn" aria-label="Menü">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round">
               <path d="M4 6h16M4 12h16M4 18h16"/>
@@ -160,36 +147,53 @@
         </div>
       </div>
 
+      <!-- MOBILE MENU -->
       <div class="menu" id="mobileMenu">
-        <a href="#about">Rólam</a>
-        <a href="#work">Munkák</a>
-        <a href="#contact">Kapcsolat</a>
-        <a class="cta" href="#contact">Írj nekem</a>
+        <a href="#about"   class="menu-link">Rólam</a>
+        <a href="#work"    class="menu-link">Munkák</a>
+        <a href="#contact" class="menu-link">Kapcsolat</a>
+        <a href="#contact" class="cta">Írj nekem</a>
       </div>
     </header>
 
     <main id="top">
-      <p>(Most a menüpontokon finoman végigfut az arany kitöltés – végtelenítve ✨)</p>
+      <p>(Most a feliratok **egymás után, ugrással** kapják meg a **teljes sötétebb arany** kitöltést, majd ismétlődik.)</p>
     </main>
   </div>
 
   <script>
+    // név csillanás indítása
     window.addEventListener('load', ()=>{
       document.getElementById('brandName').classList.add('sheen');
     });
-    const btn=document.getElementById('menuBtn');
-    const menu=document.getElementById('mobileMenu');
-    let open=false;
-    btn.addEventListener('click',()=>{
-      open=!open;menu.style.display=open?'block':'none';
+
+    // mobilmenü nyit/zár
+    const btn = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+    let open = false;
+    btn?.addEventListener('click',()=>{
+      open = !open; menu.style.display = open ? 'block' : 'none';
     });
-    menu.addEventListener('click',e=>{
+    menu?.addEventListener('click',e=>{
       if(e.target.tagName==='A'){open=false;menu.style.display='none';}
     });
-    document.getElementById('brandLink').addEventListener('click',e=>{
-      e.preventDefault();
-      window.scrollTo({top:0,behavior:'smooth'});
+
+    // LOGÓ -> scroll top
+    document.getElementById('brandLink')?.addEventListener('click',e=>{
+      e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});
     });
+
+    // ====== ARANY KITÖLTÉS UGRÁLÁS – sorban Rólam → Munkák → Kapcsolat → Írj nekem ======
+    const labels = Array.from(document.querySelectorAll('.nav-label')); // 4 elem
+    let idx = -1;
+    function step(){
+      labels.forEach(el => el.classList.remove('gold-fill'));
+      idx = (idx + 1) % labels.length;
+      labels[idx].classList.add('gold-fill');
+    }
+    // indítás és ismétlés
+    step();
+    setInterval(step, 1100); // 1.1s-enként ugrik a következő feliratra
   </script>
 </body>
 </html>
