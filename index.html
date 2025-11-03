@@ -218,7 +218,7 @@
     /* ===================================== */
     #about.tm-about{position:relative;padding:clamp(2rem,4vw,4rem) 0;background:radial-gradient(1200px 600px at 80% -10%, rgba(76,110,245,.15), transparent),
     radial-gradient(800px 400px at 10% 110%, rgba(120,213,255,.15), transparent)}
-    #about .tm-wrap{max-width:1120px;margin:auto;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(1.5rem,3vw,3rem);align-items:center;padding:0 20px}
+    #about .tm-wrap{max-width:1120px;margin:auto;display:grid;grid-template-columns:1.5fr .5fr;gap:clamp(1.5rem,3vw,3rem);align-items:center;padding:0 20px}
     #about .tm-left{min-width:0}
     #about .tm-title{font-size:clamp(2rem,3.2vw,3rem);margin:0 0 .25rem}
     #about .tm-sub{opacity:.8;margin:0 0 1rem}
@@ -229,18 +229,40 @@
     #about .tm-card p{margin:0;font-size:.95rem;line-height:1.4}
     #about .tm-card.show{transform:translateY(0);opacity:1}
 
-    #about .tm-phone{justify-self:center;position:relative;width:min(420px,90vw);aspect-ratio:9/19;border-radius:46px;background:linear-gradient(145deg,#d6d7dc,#f8f8fb);padding:14px;box-shadow:inset 0 0 0 1px #e4e5ea,0 20px 60px rgba(0,0,0,.15)}
-    #about .tm-bezel{position:relative;width:100%;height:100%;border-radius:36px;background:linear-gradient(180deg,#0e1015,#151823);overflow:hidden}
-    #about .tm-island{position:absolute;left:50%;transform:translateX(-50%);top:12px;width:42%;height:34px;background:#0a0b10;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 0 0 1px rgba(255,255,255,.04) inset}
+    #about .tm-phone{justify-self:center;position:relative;width:min(300px,68vw);aspect-ratio:9/19;border-radius:48px;background:linear-gradient(145deg,#cfd3db,#f6f7fa);padding:12px;box-shadow:0 18px 60px rgba(0,0,0,.18), inset 0 0 0 1px #e1e3ea, inset 0 0 0 2px rgba(255,255,255,.4)}
+@media(min-width:1120px){#about .tm-phone{width:300px}}
+@media(max-width:480px){#about .tm-phone{width:74vw}}
+@media(min-width:1120px){#about .tm-phone{width:340px}}
+@media(max-width:480px){#about .tm-phone{width:82vw}}
+    #about .tm-bezel{position:relative;width:100%;height:100%;border-radius:40px;background:linear-gradient(180deg,#0c0f15,#141926);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+    #about .tm-island{position:absolute;left:50%;transform:translateX(-50%);top:12px;width:42%;height:34px;background:#0a0d14;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 0 0 1px rgba(255,255,255,.05) inset, 0 6px 14px rgba(0,0,0,.4)}
     #about .tm-island .tm-signal{width:34px;height:6px;border-radius:3px;background:linear-gradient(90deg,#20222c,#0a0b10)}
     #about .tm-island .tm-camera{width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#1da1f2,transparent 40%),#0e1623}
     #about .tm-screen{position:absolute;inset:0;padding:clamp(14px,2vw,18px);display:flex;flex-direction:column}
 
-    #about .tm-status{display:flex;align-items:center;justify-content:space-between;color:#e9ecf5;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;opacity:.75;padding-top:8px}
+    #about .tm-status{display:flex;align-items:center;justify-content:space-between;color:#e9ecf5;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',ui-sans-serif,system-ui,Menlo,Consolas,monospace;font-size:.9rem;opacity:.95;padding-top:8px}
+#about .tm-sb{display:flex;align-items:center;gap:8px}
+#about .tm-batt,#about .tm-wifi,#about .tm-signal{display:inline-block}
+#about .tm-batt{width:26px;height:12px;border-radius:3px;border:1.6px solid #dfe6ff;position:relative}
+#about .tm-batt::after{content:"";position:absolute;right:-3.6px;top:3px;width:3px;height:6px;border-radius:1px;background:#dfe6ff;opacity:.9}
+#about .tm-batt i{position:absolute;left:2px;top:2px;right:5px;bottom:2px;background:#dfe6ff;border-radius:2px}
+#about .tm-wifi{width:18px;height:12px;position:relative}
+#about .tm-wifi::before{content:"";position:absolute;inset:0;border-top:2px solid #dfe6ff;border-radius:50%}
+#about .tm-wifi::after{content:"";position:absolute;inset:3px 3px auto 3px;border-top:2px solid #dfe6ff;border-radius:50%}
+#about .tm-signal{width:18px;height:12px;display:grid;grid-template-columns:repeat(4,1fr);align-items:end;gap:2px}
+#about .tm-signal span{display:block;height:100%;background:#dfe6ff;border-radius:1px;opacity:.9}
+#about .tm-signal span:nth-child(1){height:30%}
+#about .tm-signal span:nth-child(2){height:50%}
+#about .tm-signal span:nth-child(3){height:70%}
+#about .tm-signal span:nth-child(4){height:90%}
 
-    #about .tm-app{position:relative;margin-top:12px;flex:1;background:radial-gradient(120% 100% at 100% 0%, #212639, #0f1321);border-radius:22px;border:1px solid rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+    #about .tm-app{position:relative;margin-top:12px;flex:1;background:linear-gradient(180deg,#06070b,#0c101a);border-radius:22px;border:1px solid rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+#about .tm-wall{position:absolute;inset:0;background:radial-gradient(120% 60% at 20% 0%, #264bff55, transparent 60%),radial-gradient(90% 70% at 80% 20%, #ff3e8a44, transparent 60%),radial-gradient(100% 70% at 50% 90%, #10e3b944, transparent 60%);filter:saturate(1.15) brightness(1.05)}
+#about .tm-homebar{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);width:36%;height:4px;border-radius:3px;background:#eaeefc22;box-shadow:0 0 0 1px rgba(255,255,255,.06) inset}
 
-    #about .tm-view{position:absolute;inset:0;padding:18px 16px;display:grid;grid-template-rows:auto 1fr auto;opacity:0;transform:translateX(16px);pointer-events:none;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .45s}
+    #about .tm-view{position:absolute;inset:0;padding:18px 16px;display:grid;grid-template-rows:auto 1fr auto;opacity:0;transform:translateX(24px);pointer-events:none;transition:transform .5s cubic-bezier(.22,.8,.24,1),opacity .5s}
+#about .tm-view.active{opacity:1;transform:translateX(0);pointer-events:auto}
+#about .tm-view.out-left{opacity:0;transform:translateX(-18px)}
     #about .tm-view.active{opacity:1;transform:translateX(0);pointer-events:auto}
 
     #about .tm-hero{display:flex;align-items:center;gap:12px;margin-top:8px}
@@ -254,10 +276,19 @@
     #about .tm-item .tm-ico{font-size:1.3rem}
 
     #about .tm-detail-header{display:flex;align-items:center;gap:10px}
-    #about .tm-back{background:transparent;border:1px solid rgba(255,255,255,.16);color:#e4e9ff;border-radius:10px;padding:6px 10px;cursor:pointer}
+    #about .tm-back{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#e4e9ff;border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:600}
+#about .tm-back:active{transform:translateY(1px)}
     #about .tm-detail-header h4{margin:0;color:#fff;font-size:1rem}
     #about .tm-detail-body{margin-top:10px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 12px;overflow:auto;color:#dbe4ff}
     #about .tm-detail-body p{margin:.4rem 0;line-height:1.5}
+/* Media area inside phone */
+#about .tm-media{margin-top:10px;border-radius:14px;overflow:hidden;background:#0b0f19;border:1px solid rgba(255,255,255,.08)}
+#about .tm-media-wrap{position:relative;aspect-ratio:16/9;background:#000}
+#about .tm-embed,#about .tm-video{position:absolute;inset:0;width:100%;height:100%;display:none;border:0}
+#about .tm-video{object-fit:cover;background:#000}
+#about .tm-embed.show,#about .tm-video.show{display:block}
+#about .tm-launch{position:absolute;right:12px;bottom:12px;z-index:3;padding:10px 12px;border-radius:12px;text-decoration:none;font-weight:700;font-size:.9rem;color:#0c0f14;background:linear-gradient(90deg,#fff7d4,#f3e1a1);border:1px solid rgba(212,175,55,.35);box-shadow:0 10px 24px rgba(212,175,55,.18)}
+#about .tm-launch:hover{transform:translateY(-1px)}
     #about .tm-detail-list{display:grid;gap:6px;margin-top:8px}
     #about .tm-detail-tag{display:inline-block;padding:6px 10px;border:1px solid rgba(255,255,255,.16);border-radius:999px;font-size:.8rem}
     #about .tm-detail-footer{display:flex;justify-content:space-between;gap:8px;margin-top:12px}
@@ -440,11 +471,16 @@
               </div>
               <div class="tm-screen">
                 <div class="tm-status">
-                  <span id="tm-clock">09:41</span>
-                  <span class="tm-dots" aria-hidden>•••</span>
-                </div>
+  <span id="tm-clock">09:41</span>
+  <div class="tm-sb">
+    <span class="tm-signal"><span></span><span></span><span></span><span></span></span>
+    <span class="tm-wifi"></span>
+    <span class="tm-batt"><i></i></span>
+  </div>
+</div>
 
                 <div class="tm-app" data-view="home">
+  <div class="tm-wall" aria-hidden="true"></div>
                   <div class="tm-view tm-view-home active" role="group" aria-label="Főmenü">
                     <div class="tm-hero">
                       <img class="tm-avatar" src="https://api.dicebear.com/7.x/initials/svg?seed=Horv%C3%A1th%20Tam%C3%A1s" alt="Horváth Tamás avatar"/>
@@ -464,11 +500,19 @@
                   </div>
 
                   <div class="tm-view tm-view-detail" role="group" aria-live="polite">
+  <div class="tm-homebar" aria-hidden="true"></div>
                     <header class="tm-detail-header">
                       <button class="tm-back" type="button" aria-label="Vissza">←</button>
                       <h4 id="tm-detail-title">Cím</h4>
                     </header>
-                    <div class="tm-detail-body" id="tm-detail-body"></div>
+                    <div class="tm-media">
+  <div class="tm-media-wrap">
+    <iframe class="tm-embed" id="tm-embed" src="" allow="autoplay; fullscreen; gamepad; xr-spatial-tracking" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock" referrerpolicy="no-referrer"></iframe>
+    <video class="tm-video" id="tm-video" controls playsinline muted></video>
+    <a id="tm-roblox-launch" href="#" class="tm-launch" role="button" style="display:none">🎮 Megnyitás Robloxban</a>
+  </div>
+</div>
+<div class="tm-detail-body" id="tm-detail-body"></div>
                     <footer class="tm-detail-footer">
                       <button class="tm-prev" type="button">‹ Előző</button>
                       <button class="tm-next" type="button">Következő ›</button>
@@ -574,37 +618,52 @@
       document.querySelectorAll('#about [data-float]').forEach(el=>io.observe(el));
 
       const DATA = [
-        { id:'unity',   title:'Unity',   body:`<p>3D/2D játékfejlesztés, mobil optimalizálás, asset integráció, fizika és UI.</p>
-              <div class='tm-detail-list'>
-                <span class='tm-detail-tag'>C#</span>
-                <span class='tm-detail-tag'>URP/HDRP</span>
-                <span class='tm-detail-tag'>Google Play</span>
-              </div>` },
-        { id:'roblox',  title:'Roblox',  body:`<p>Tycoon, survival és mini‑gamek, monetizáció (Gamepass), anti‑exploit.</p>
-              <div class='tm-detail-list'>
-                <span class='tm-detail-tag'>Lua / Luau</span>
-                <span class='tm-detail-tag'>UI/UX</span>
-                <span class='tm-detail-tag'>Analytics</span>
-              </div>` },
-        { id:'webshop', title:'Webshop', body:`<p>3200+ termékes áruház, Barion, admin felület, CSV/ERP szinkron, képgaléria.</p>
-              <div class='tm-detail-list'>
-                <span class='tm-detail-tag'>PHP 8</span>
-                <span class='tm-detail-tag'>MySQL</span>
-                <span class='tm-detail-tag'>SEO</span>
-              </div>` },
-        { id:'weboldal',title:'Weboldal',body:`<p>Prémium landingek, teljes vállalati site‑ok, pixelpontos reszponzív fejlesztés.</p>
-              <div class='tm-detail-list'>
-                <span class='tm-detail-tag'>HTML/CSS/JS</span>
-                <span class='tm-detail-tag'>Netlify</span>
-                <span class='tm-detail-tag'>Performance</span>
-              </div>` },
-        { id:'ai',      title:'AI',      body:`<p>Asszisztens‑integráció, tartalomgenerálás, automatizálás – üzleti folyamatok gyorsítása.</p>
-              <div class='tm-detail-list'>
-                <span class='tm-detail-tag'>OpenAI</span>
-                <span class='tm-detail-tag'>RAG</span>
-                <span class='tm-detail-tag'>Automations</span>
-              </div>` }
-      ];
+  { id:'unity', title:'Unity',
+    body:`<p>3D/2D játékfejlesztés, mobil optimalizálás, asset integráció, fizika és UI.</p>
+          <div class='tm-detail-list'>
+            <span class='tm-detail-tag'>C#</span>
+            <span class='tm-detail-tag'>URP/HDRP</span>
+            <span class='tm-detail-tag'>Google Play</span>
+          </div>`,
+    media:{ type:'iframe', src:'unity-demo.html' }
+  },
+  { id:'roblox', title:'Roblox',
+    body:`<p>Tycoon, survival és mini‑gamek, monetizáció (Gamepass), anti‑exploit.</p>
+          <div class='tm-detail-list'>
+            <span class='tm-detail-tag'>Lua / Luau</span>
+            <span class='tm-detail-tag'>UI/UX</span>
+            <span class='tm-detail-tag'>Analytics</span>
+          </div>`,
+    media:{ type:'video', src:'roblox-preview.mp4', poster:'roblox-preview.jpg', robloxDeepLink:'roblox://experiences/start?placeId=YOUR_PLACE_ID' }
+  },
+  { id:'webshop', title:'Webshop',
+    body:`<p>3200+ termékes áruház, Barion, admin felület, CSV/ERP szinkron, képgaléria.</p>
+          <div class='tm-detail-list'>
+            <span class='tm-detail-tag'>PHP 8</span>
+            <span class='tm-detail-tag'>MySQL</span>
+            <span class='tm-detail-tag'>SEO</span>
+          </div>`,
+    media:{ type:'video', src:'ai.mp4', poster:'ai.jpg' }
+  },
+  { id:'weboldal', title:'Weboldal',
+    body:`<p>Prémium landingek, teljes vállalati site‑ok, pixelpontos reszponzív fejlesztés.</p>
+          <div class='tm-detail-list'>
+            <span class='tm-detail-tag'>HTML/CSS/JS</span>
+            <span class='tm-detail-tag'>Netlify</span>
+            <span class='tm-detail-tag'>Performance</span>
+          </div>`,
+    media:{ type:'video', src:'ai.mp4', poster:'ai.jpg' }
+  },
+  { id:'ai', title:'AI',
+    body:`<p>Asszisztens‑integráció, tartalomgenerálás, automatizálás – üzleti folyamatok gyorsítása.</p>
+          <div class='tm-detail-list'>
+            <span class='tm-detail-tag'>OpenAI</span>
+            <span class='tm-detail-tag'>RAG</span>
+            <span class='tm-detail-tag'>Automations</span>
+          </div>`,
+    media:{ type:'video', src:'ai.mp4', poster:'ai.jpg' }
+  }
+];
 
       const app = document.querySelector('#about .tm-app');
       const homeView = document.querySelector('#about .tm-view-home');
@@ -614,23 +673,46 @@
       const btnPrev = detailView.querySelector('.tm-prev');
       const btnNext = detailView.querySelector('.tm-next');
       const btnBack = detailView.querySelector('.tm-back');
+const embedEl = document.getElementById('tm-embed');
+const videoEl = document.getElementById('tm-video');
+const robloxBtn = document.getElementById('tm-roblox-launch');
 
       let currentIndex = 0;
       function openById(id){ const idx = DATA.findIndex(x=>x.id===id); if(idx>-1){ openIndex(idx); } }
       function openIndex(idx){
-        currentIndex = (idx+DATA.length)%DATA.length;
-        const item = DATA[currentIndex];
-        title.textContent = item.title;
-        body.innerHTML = item.body + `\n<p style='margin-top:10px;font-size:.85rem;opacity:.75'>Lapozz a gombokkal vagy húzd jobbra/balra.</p>`;
-        homeView.classList.remove('active');
-        detailView.classList.add('active');
-        app.dataset.view = 'detail';
-      }
+  currentIndex = (idx+DATA.length)%DATA.length;
+  const item = DATA[currentIndex];
+  title.textContent = item.title;
+  body.innerHTML = item.body + `
+<p style='margin-top:10px;font-size:.85rem;opacity:.75'>Lapozz a gombokkal vagy húzd jobbra/balra.</p>`;
+
+  // Reset media state
+  embedEl.classList.remove('show'); embedEl.src='';
+  videoEl.classList.remove('show'); videoEl.pause(); videoEl.removeAttribute('src'); videoEl.removeAttribute('poster'); videoEl.load();
+  robloxBtn.style.display='none'; robloxBtn.removeAttribute('href');
+
+  // Load media for item
+  if(item.media?.type==='iframe'){
+    embedEl.src = item.media.src || '';
+    embedEl.classList.add('show');
+  } else if(item.media?.type==='video'){
+    if(item.media.poster) videoEl.setAttribute('poster', item.media.poster);
+    if(item.media.src){ videoEl.src = item.media.src; videoEl.classList.add('show'); videoEl.load(); videoEl.play().catch(()=>{}); }
+    if(item.media.robloxDeepLink){ robloxBtn.href=item.media.robloxDeepLink; robloxBtn.style.display='inline-flex'; }
+  }
+
+  homeView.classList.remove('active');
+  detailView.classList.add('active');
+  app.dataset.view = 'detail';
+}
       function goHome(){
-        detailView.classList.remove('active');
-        homeView.classList.add('active');
-        app.dataset.view = 'home';
-      }
+  videoEl.pause(); videoEl.removeAttribute('src'); videoEl.load();
+  embedEl.src='';
+  robloxBtn.style.display='none'; robloxBtn.removeAttribute('href');
+  detailView.classList.remove('active');
+  homeView.classList.add('active');
+  app.dataset.view = 'home';
+}
 
       document.querySelectorAll('#about .tm-item').forEach(btn=>{
         btn.addEventListener('click', ()=> openById(btn.dataset.open));
@@ -639,9 +721,15 @@
       btnPrev.addEventListener('click', ()=> openIndex(currentIndex-1));
       btnNext.addEventListener('click', ()=> openIndex(currentIndex+1));
 
-      // Gesztusok: swipe balra/jobbra
-      let sx=0, dx=0; const SW=40;
-      app.addEventListener('touchstart', e=>{ sx = e.touches[0].clientX; dx = 0; }, {passive:true});
+      // Gesztusok: edge-swipe vissza + lapozás
+let sx=0, dx=0; const SW=40;
+app.addEventListener('touchstart', e=>{ sx = e.touches[0].clientX; dx = 0; }, {passive:true});
+app.addEventListener('touchmove',  e=>{ dx = e.touches[0].clientX - sx; }, {passive:true});
+app.addEventListener('touchend',   ()=>{
+  if(app.dataset.view!=="detail") return;
+  if(dx<-SW) btnNext.click();     // jobbra lapoz
+  if(sx<32 && dx>SW){ goHome(); } // bal széltől vissza
+}, {passive:true});
       app.addEventListener('touchmove',  e=>{ dx = e.touches[0].clientX - sx; }, {passive:true});
       app.addEventListener('touchend',   ()=>{
         if(app.dataset.view!=="detail") return;
@@ -649,15 +737,15 @@
         if(dx<-SW) btnNext.click();
       }, {passive:true});
 
-      // 3D tilt effekt egérre
-      const bezel = document.querySelector('#about .tm-bezel');
-      bezel.addEventListener('mousemove', (e)=>{
-        const r = bezel.getBoundingClientRect();
-        const x = (e.clientX - r.left)/r.width - .5;
-        const y = (e.clientY - r.top)/r.height - .5;
-        bezel.style.transform = `rotateX(${(-y*6).toFixed(2)}deg) rotateY(${(x*6).toFixed(2)}deg)`;
-      });
-      bezel.addEventListener('mouseleave', ()=>{ bezel.style.transform = 'rotateX(0) rotateY(0)'; });
+      // 3D tilt effekt egérre (iOS-szerű, finom)
+const bezel = document.querySelector('#about .tm-bezel');
+bezel.addEventListener('mousemove', (e)=>{
+  const r = bezel.getBoundingClientRect();
+  const x = (e.clientX - r.left)/r.width - .5;
+  const y = (e.clientY - r.top)/r.height - .5;
+  bezel.style.transform = `perspective(800px) rotateX(${(-y*4).toFixed(2)}deg) rotateY(${(x*4).toFixed(2)}deg)`;
+});
+bezel.addEventListener('mouseleave', ()=>{ bezel.style.transform = 'none'; });
     })();
   </script>
 </body>
