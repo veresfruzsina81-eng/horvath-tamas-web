@@ -9,9 +9,10 @@
   <style>
     :root{
       --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --gold-dark2:#e0b84f;
-      --text:#0b0b0c; --border:#e6e7eb;
+      --text:#0b0b0c; --muted:#656b73; --border:#e6e7eb;
+      --hero-top:#fffef9; --hero-bottom:#ffffff;
       --chip-bg:#fff; --chip-b:#ede9d1;
-      --phone-max: 280px; /* állítsd ízlésre: 260-320px */
+      --phone-max: 280px; /* állítsd szabadon: 260–320px */
     }
     @media (max-width:1100px){ :root{ --phone-max: 250px; } }
     @media (max-width:600px){ :root{ --phone-max: 230px; } }
@@ -21,20 +22,19 @@
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text); overflow-x:hidden;
-      /* Fallback aranyos fény – ha a canvas nem futna */
-      background-image:
-        radial-gradient(1200px 380px at 72% 8%, rgba(255,241,200,.22), rgba(255,255,255,0) 70%),
+      background:
+        radial-gradient(1200px 380px at 72% 8%, rgba(255,241,200,.18), rgba(255,255,255,0) 70%),
         linear-gradient(180deg,#fffef9,#ffffff);
       background-attachment: fixed, fixed;
     }
 
-    /* Globális 3D háttér-canvas (mindenhol látszik) */
+    /* Globális háttér-canvas – NEM blokkol klikket */
     #bgAll{
       position:fixed; inset:0; width:100vw; height:100vh;
-      z-index:0; pointer-events:none; opacity:.95; display:block;
+      z-index:0; pointer-events:none; opacity:.92; display:block;
     }
 
-    /* Dísz arany csíkok a háttéren (a canvas felett) */
+    /* Dísz csíkok a canvas felett */
     .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
@@ -46,19 +46,15 @@
     .bg-stripes .stripe:nth-child(3){ top:44%; transform:rotate(-3deg); animation-delay:1.2s;}
     .bg-stripes .stripe:nth-child(4){ top:62%; transform:rotate(4deg);  animation-delay:1.8s;}
     .bg-stripes .stripe:nth-child(5){ top:80%; transform:rotate(-3deg); animation-delay:2.4s;}
-    @keyframes stripesMove{
-      0%{transform:translateX(-30%) rotate(var(--rot,0deg));opacity:.25}
-      50%{opacity:.5}
-      100%{transform:translateX(30%) rotate(var(--rot,0deg));opacity:.25}
-    }
+    @keyframes stripesMove{0%{transform:translateX(-30%) rotate(0)}50%{opacity:.5}100%{transform:translateX(30%) rotate(0)}}
 
-    /* TARTALOM (mindig a háttér fölött) */
+    /* Tartalom mindig a háttér fölött */
     .wrap{position:relative; z-index:2}
 
     /* HEADER */
     header{
-      position:sticky; top:0; z-index:10;
-      background:rgba(255,255,255,.85);
+      position:sticky; top:0; z-index:20;
+      background:rgba(255,255,255,.88);
       backdrop-filter:saturate(150%) blur(8px);
       border-bottom:1px solid var(--border);
       box-shadow:0 4px 18px rgba(212,175,55,0.08);
@@ -86,14 +82,12 @@
 
     /* NAV */
     nav{display:none; gap:12px; align-items:center;}
-    .nav-link, .nav-cta{position:relative; padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none; color:#0b0b0c; transition:transform .2s ease, color .2s ease}
+    .nav-link, .nav-cta{padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none; color:#0b0b0c; transition:.2s}
     .nav-link:hover{transform:translateY(-2px)}
-    .nav-cta{
-      border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1);
-      box-shadow:0 10px 24px rgba(212,175,55,.18);
-    }
+    .nav-cta{border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1); box-shadow:0 10px 24px rgba(212,175,55,.18);}
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
     @media(min-width:768px){ nav{display:flex} .toggle{display:none} .right-controls{display:flex} }
+
     .right-controls{display:none; align-items:center; gap:10px}
     .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
     .lang-btn{width:36px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:#fff; border:1px solid transparent; transition:.2s}
@@ -104,8 +98,11 @@
     .ai-icon{width:16px; height:16}
 
     /* MOBIL MENU */
-    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center}
-    .menu{display:none; border-top:1px solid var(--border); background:rgba(255,255,255,.94); backdrop-filter:blur(8px)}
+    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; z-index:21}
+    .menu{
+      display:none; position:fixed; inset:70px 0 0 0; z-index:19;
+      border-top:1px solid var(--border); background:rgba(255,255,255,.96); backdrop-filter:blur(8px)
+    }
     .menu .row{display:flex; gap:10px; align-items:center; padding:12px 20px}
     .menu a{padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block}
     .menu .cta{margin:8px 20px 16px; display:block; text-align:center}
@@ -117,13 +114,13 @@
       -webkit-text-fill-color:transparent; color:transparent;
     }
 
-    /* ===== HERO – áttetsző hátterek, hogy látszódjon a globális canvas ===== */
-    .hero{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.85),rgba(255,255,255,.85)); overflow:hidden; isolation:isolate;}
+    /* ===== HERO (átlátszó háttér, hogy a globális canvas átüssön) */
+    .hero{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.88),rgba(255,255,255,.88));}
     .hero .container{max-width:1120px; margin:0 auto; padding:72px 20px 84px; display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;}
     @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:56px 20px 72px} }
     .hero-title{margin:0 0 14px; font-weight:800; letter-spacing:.2px; font-size:clamp(34px,6.2vw,58px); line-height:1.03;
       background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold) 60%,#3f351d 90%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-    .hero-sub{ color:#5f646b; font-size:clamp(15px,2.2vw,18px); line-height:1.6; margin:0 0 22px }
+    .hero-sub{ color:var(--muted); font-size:clamp(15px,2.2vw,18px); line-height:1.6; margin:0 0 22px }
     .hero-cta{ display:flex; gap:12px; flex-wrap:wrap }
     .btn-gold,.btn-ghost{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; transition:.2s; box-shadow:0 10px 24px rgba(212,175,55,.12);}
     .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
@@ -140,8 +137,8 @@
     .hero.ready .left .reveal.d2{ transition-delay:.28s }
     .hero.ready .left .reveal.d3{ transition-delay:.38s }
 
-    /* ===== ABOUT / RÓLAM – áttetsző, hogy a háttér átüssön ===== */
-    #about{position:relative; overflow:hidden; background:linear-gradient(180deg,rgba(255,254,249,.84),rgba(255,255,255,.84));}
+    /* ===== ABOUT ===== */
+    #about{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.86),rgba(255,255,255,.86));}
     #about .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:520px 1fr; gap:56px; align-items:center;}
     @media(max-width:1100px){ #about .inner{grid-template-columns:1fr; gap:36px} }
 
@@ -156,7 +153,7 @@
     .phone-chrome{
       position:absolute; top:0; left:0; right:0; height:46px; display:flex; align-items:center; gap:8px;
       background:linear-gradient(180deg,#121316,#0b0c10); border-bottom:1px solid rgba(255,255,255,.08);
-      padding:0 10px;
+      padding:0 10px; z-index:5;
     }
     .addr{
       flex:1; height:28px; display:flex; align-items:center; gap:8px; padding:0 10px;
@@ -165,41 +162,32 @@
     }
     .dot{width:8px;height:8px;border-radius:50%; background:#2ecc71;}
     .url{opacity:.9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .btn-ic{width:28px;height:28px;border-radius:8px; display:grid;place-items:center; border:1px solid rgba(255,255,255,.08); background:#0f1115; color:#c9c9cf; font-size:12px}
-    .prog{
-      position:absolute; top:46px; left:0; height:2px; width:0%;
-      background:linear-gradient(90deg,#fff7d4,#f3e1a1);
-      transition:width .25s ease;
-    }
+    .btn-ic{width:28px;height:28px;border-radius:8px; display:grid;place-items:center; border:1px solid rgba(255,255,255,.08); background:#0f1115; color:#c9c9cf; font-size:12px; cursor:pointer}
 
-    /* Képernyő tartalom */
+    .prog{position:absolute; top:46px; left:0; height:2px; width:0%; background:linear-gradient(90deg,#fff7d4,#f3e1a1); transition:width .25s ease; z-index:4;}
+
+    /* Ikonok / tartalom felületek */
     .app-grid{position:absolute; inset:46px 0 40px 0; display:grid; grid-template-columns:repeat(3, 64px); gap:18px; justify-content:center; align-content:start; padding-top:28px; background:
-      radial-gradient(800px 300px at 50% -10%, #ffffff15, #000000 70%);}
+      radial-gradient(800px 300px at 50% -10%, #ffffff15, #000000 70%); z-index:1;}
     .app-grid img{width:56px; height:56px; object-fit:contain; border-radius:14px; cursor:pointer; filter:drop-shadow(0 4px 10px rgba(0,0,0,.45)); transition:transform .15s ease;}
     .app-grid img:active{transform:scale(0.95)}
 
-    .phone-player{position:absolute; inset:46px 0 40px 0; display:none; background:#000;}
+    .phone-player{position:absolute; inset:46px 0 40px 0; display:none; background:#000; z-index:2;}
     .phone-player video,.phone-player iframe{width:100%; height:100%; object-fit:cover; border:0; display:none; background:#000;}
 
-    /* Alsó sáv: vissza + tipp */
-    .phone-bottom{position:absolute; left:0; right:0; bottom:6px; display:flex; justify-content:center; gap:10px; pointer-events:none;}
+    /* Alsó sáv */
+    .phone-bottom{position:absolute; left:0; right:0; bottom:6px; display:flex; justify-content:center; gap:10px; pointer-events:none; z-index:5;}
     .phone-back{
       pointer-events:auto;
       background:linear-gradient(90deg,#fff7d4,#f3e1a1); border:1px solid rgba(212,175,55,.55);
       color:#3d2d09; font-weight:700; font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer; backdrop-filter:blur(6px);
       box-shadow:0 8px 18px rgba(212,175,55,.25);
     }
-    .phone-hint{
-      pointer-events:none;
-      padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#e6d9b2;
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-    }
+    .phone-hint{pointer-events:none; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#e6d9b2; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);}
 
-    /* Szöveg + chip anim a telefon mellett */
+    /* Szöveg + chip anim */
     .about-col{position:relative; z-index:1;}
-    .about-col h2{font-size:42px; margin:0 0 14px; font-weight:800;
-      background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .about-col h2{font-size:42px; margin:0 0 14px; font-weight:800; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
     .about-col p{font-size:17px; line-height:1.7; color:#555; margin:0 0 18px;}
     .revealY{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
     .revealY.in{opacity:1; transform:none;}
@@ -208,32 +196,17 @@
     .revealY[data-delay="3"]{transition-delay:.24s}
     .revealY[data-delay="4"]{transition-delay:.32s}
     .revealY[data-delay="5"]{transition-delay:.40s}
+
     .chip-wrap{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
-    .chip{
-      position:relative; padding:10px 14px; border-radius:12px; font-weight:600; font-size:14px; color:#3b2f12;
-      background:var(--chip-bg); border:1px solid var(--chip-b); box-shadow:0 6px 16px rgba(212,175,55,.10);
-      overflow:hidden;
-    }
-    .chip::after{
-      content:""; position:absolute; inset:0; z-index:0;
-      background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.38) 35%, rgba(248,240,210,.0) 70%);
-      background-size:200% 100%;
-      animation:chipShine 2.2s linear infinite;
-    }
+    .chip{position:relative; padding:10px 14px; border-radius:12px; font-weight:600; font-size:14px; color:#3b2f12; background:var(--chip-bg); border:1px solid var(--chip-b); box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden;}
+    .chip::after{content:""; position:absolute; inset:0; z-index:0; background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.38) 35%, rgba(248,240,210,.0) 70%); background-size:200% 100%; animation:chipShine 2.2s linear infinite;}
     .chip > span{position:relative; z-index:1;}
     @keyframes chipShine{0%{background-position:0% 0} 100%{background-position:200% 0}}
     .sep{height:1px; background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.3), rgba(212,175,55,0)); margin:24px 0;}
 
-    /* Teljes nézet gomb a telefon alatt */
-    .fullview{
-      margin-top:10px; display:flex; justify-content:center;
-    }
-    .fullview a{
-      display:inline-flex; gap:8px; align-items:center;
-      font-weight:700; font-size:13px; text-decoration:none;
-      background:#fff; border:1px solid rgba(212,175,55,.5); padding:8px 12px; border-radius:12px;
-      box-shadow:0 8px 18px rgba(212,175,55,.15); color:#7a5b0e;
-    }
+    /* Teljes nézet gomb */
+    .fullview{margin-top:10px; display:flex; justify-content:center;}
+    .fullview a{display:inline-flex; gap:8px; align-items:center; font-weight:700; font-size:13px; text-decoration:none; background:#fff; border:1px solid rgba(212,175,55,.5); padding:8px 12px; border-radius:12px; box-shadow:0 8px 18px rgba(212,175,55,.15); color:#7a5b0e;}
   </style>
 </head>
 <body>
@@ -286,17 +259,13 @@
               </button>
             </div>
             <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
-              <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/>
-              </svg>
+              <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/></svg>
               AI
             </a>
           </div>
 
           <button class="toggle" id="menuBtn" aria-label="Menü">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round">
-              <path d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
         </div>
       </div>
@@ -329,9 +298,7 @@
             </button>
           </div>
           <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
-            <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/>
-            </svg>
+            <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/></svg>
             AI
           </a>
         </div>
@@ -341,8 +308,8 @@
     <!-- ===== HERO ===== -->
     <main id="top">
       <section class="hero" id="hero">
-        <div class="container">
-          <div class="left">
+        <div class="container left">
+          <div>
             <h1 class="hero-title reveal">TamasGem Studio</h1>
             <p class="hero-sub reveal d2">
               Apple-minőségű fejlesztés, prémium web és AI-vezérelt megoldások. A kódolás művészet — mi élménnyé tesszük.
@@ -367,29 +334,26 @@
         </div>
       </section>
 
-      <!-- ===== ABOUT / RÓLAM ===== -->
+      <!-- ===== ABOUT ===== -->
       <section id="about">
         <div class="inner">
-          <!-- iPhone blokk -->
+          <!-- Telefon blokk -->
           <div>
             <div class="iphone-frame">
               <div class="iphone-bezel">
                 <div class="iphone-notch"></div>
 
-                <!-- Kijelző (mini böngésző fej + progress) -->
                 <div class="iphone-screen" id="iphoneScreen">
+                  <!-- mini böngésző fej -->
                   <div class="phone-chrome">
                     <div class="btn-ic" id="btnBack" title="Vissza">⟵</div>
-                    <div class="addr">
-                      <span class="dot" id="lockDot"></span>
-                      <span class="url" id="addrText">Válassz egy appot…</span>
-                    </div>
+                    <div class="addr"><span class="dot" id="lockDot"></span><span class="url" id="addrText">Válassz egy appot…</span></div>
                     <div class="btn-ic" id="btnReload" title="Újratöltés">⟳</div>
                     <div class="btn-ic" title="Menü">⋮</div>
                   </div>
                   <div class="prog" id="loadBar"></div>
 
-                  <!-- Ikonok -->
+                  <!-- app ikonok -->
                   <div class="app-grid" id="aboutMenu">
                     <img src="roblox.png" alt="Roblox" class="app" data-app="roblox">
                     <img src="unity.png" alt="Unity" class="app" data-app="unity">
@@ -398,13 +362,13 @@
                     <img src="ai.png"    alt="AI"     class="app" data-app="ai">
                   </div>
 
-                  <!-- Lejátszó terület -->
+                  <!-- lejátszó -->
                   <div class="phone-player" id="aboutPlayer">
                     <video id="aboutVideo" autoplay muted playsinline></video>
                     <iframe id="aboutIframe" allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>
                   </div>
 
-                  <!-- Alsó sáv -->
+                  <!-- alsó sáv -->
                   <div class="phone-bottom">
                     <button class="phone-back" id="aboutBack">Vissza</button>
                     <div class="phone-hint" id="phoneHint">Kattints egy appra!</div>
@@ -413,13 +377,13 @@
               </div>
             </div>
 
-            <!-- Teljes nézet gomb -->
+            <!-- Teljes nézet link (mindig látszik) -->
             <div class="fullview">
               <a id="fullLink" href="#" target="_blank" rel="noopener">🔗 Megnyitás teljes nézetben</a>
             </div>
           </div>
 
-          <!-- Szöveg + arany chip anim -->
+          <!-- Szöveg oszlop -->
           <div class="about-col">
             <h2 class="revealY" data-delay="0">Rólam</h2>
             <p class="revealY" data-delay="1">
@@ -455,50 +419,60 @@
   </div>
 
   <script>
-    // név csillanás + hero belibbenés
-    window.addEventListener('load', ()=>{
-      document.getElementById('brandName').classList.add('sheen');
-      document.getElementById('hero')?.classList.add('ready');
+    /* Hero belibbenés – garantáltan lefut (DOMContentLoaded), nem áll meg hibán */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const bn = document.getElementById('brandName');
+      const hero = document.getElementById('hero');
+      if(bn) bn.classList.add('sheen');
+      if(hero) hero.classList.add('ready');
     });
 
-    // mobilmenü
+    /* Mobilmenü */
     const btn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
-    let open = false;
-    btn?.addEventListener('click',()=>{ open=!open; mobileMenu.style.display=open?'block':'none'; });
-    mobileMenu?.addEventListener('click',e=>{ if(e.target.tagName==='A'){open=false;mobileMenu.style.display='none';} });
+    let isOpen = false;
+    btn?.addEventListener('click',()=>{ isOpen=!isOpen; mobileMenu.style.display=isOpen?'block':'none'; });
+    mobileMenu?.addEventListener('click',e=>{ if(e.target.tagName==='A'){isOpen=false;mobileMenu.style.display='none';} });
 
-    // brand -> top
+    /* Brand -> top */
     document.getElementById('brandLink')?.addEventListener('click',e=>{
       e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});
     });
 
-    // Nav arany ciklus
-    const labels = Array.from(document.querySelectorAll('.nav-label'));
-    let idx = -1; function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx]?.classList.add('gold-fill'); }
-    step(); setInterval(step, 1100);
+    /* Nav arany ciklus – védetten fut */
+    (function(){
+      try{
+        const labels = Array.from(document.querySelectorAll('.nav-label'));
+        if(labels.length){
+          let idx = -1;
+          const step=()=>{ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); };
+          step(); setInterval(step, 1100);
+        }
+      }catch(e){}
+    })();
 
-    // i18n
+    /* i18n – kulcs hiánya nem dob hibát */
     const I18N = {
       hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem", seeWork:"Munkáim", quote:"Kérj ajánlatot" },
-      en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me", see my work:"See my work", quote:"Get a quote" }
+      en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me", seeWork:"See my work", quote:"Get a quote" }
     };
     function applyLang(lang){
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key = el.getAttribute('data-i18n');
-        const txt = I18N[lang]?.[key]; if(txt) el.textContent = txt;
+        const txt = (I18N[lang] && I18N[lang][key]) || el.textContent;
+        el.textContent = txt;
       });
       document.querySelectorAll('.lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
-      localStorage.setItem('lang', lang);
+      try{ localStorage.setItem('lang', lang); }catch(e){}
     }
     document.addEventListener('click', (e)=>{
       const lbtn = e.target.closest('.lang-btn'); if(!lbtn) return;
       applyLang(lbtn.dataset.lang || 'hu');
     });
-    applyLang(localStorage.getItem('lang') || 'hu');
+    applyLang((()=>{try{return localStorage.getItem('lang')||'hu'}catch(e){return 'hu'}})());
 
-    /* ===== Mini böngésző viselkedés a telefonon ===== */
+    /* ===== Telefon “mini-böngésző” logika ===== */
     (function(){
       const apps = document.querySelectorAll('#about .app');
       const player = document.getElementById('aboutPlayer');
@@ -522,159 +496,99 @@
         ai:     { url: 'https://tamas-ai.netlify.app', label: 'tamas-ai.netlify.app', type:'web' }
       };
 
-      function setAddr(text, secure=true){
-        addr.textContent = text;
-        lockDot.style.background = secure ? '#2ecc71' : '#e67e22';
-      }
+      const setAddr = (text, secure=true)=>{ addr.textContent=text; lockDot.style.background = secure ? '#2ecc71' : '#e67e22'; };
 
-      function simulateLoad(cb){
+      const simulateLoad = (cb)=>{
         loadBar.style.width = '0%';
         loadBar.offsetHeight; // reflow
         let w = 0;
         const id = setInterval(()=>{
-          w += Math.random()*22 + 8; // 8–30% lépések
-          if(w>=100){ w = 100; clearInterval(id); }
+          w += Math.random()*22 + 8;
+          if(w>=100){ w=100; clearInterval(id); }
           loadBar.style.width = w+'%';
           if(w===100){ setTimeout(cb, 120); }
         }, 160);
-      }
+      };
 
       function openApp(appName){
-        const conf = appMap[appName];
-        if(!conf) return;
-        // címsor frissítése
+        const conf = appMap[appName]; if(!conf) return;
         setAddr(conf.label, true);
-        // UI átállítás
         hint.style.display='none';
         menu.style.display='none';
         player.style.display='block';
         f.style.display='none'; v.style.display='none';
-        loadBar.style.width='0%';
-
         simulateLoad(()=>{
-          if(conf.type==='video'){
-            v.src = conf.url;
-            v.style.display='block';
-          }else{
-            f.src = conf.url;
-            f.style.display='block';
-          }
-          fullLink.href = conf.type==='web' ? conf.url : conf.url; // videónál is engedjük letölteni/megnyitni
+          if(conf.type==='video'){ v.src=conf.url; v.style.display='block'; fullLink.href=conf.url; }
+          else { f.src=conf.url; f.style.display='block'; fullLink.href=conf.url; }
         });
       }
 
-      apps.forEach(app=>{
-        app.addEventListener('click',()=> openApp(app.dataset.app));
-      });
+      apps.forEach(app=> app.addEventListener('click', ()=> openApp(app.dataset.app)));
 
       function goBack(){
         player.style.display='none';
         f.src=''; v.src='';
-        menu.style.display='grid'; hint.style.display='inline-block';
+        menu.style.display='grid';
+        hint.style.display='inline-block';
         setAddr('Válassz egy appot…', true);
         loadBar.style.width='0%';
-        fullLink.href = '#';
+        // a “Megnyitás teljes nézetben” link marad, ha előzőleg volt célja
       }
       backBtn.addEventListener('click', goBack);
       btnBackTop.addEventListener('click', goBack);
 
       btnReload.addEventListener('click', ()=>{
-        // ha iframe aktív, újratöltjük, ha video, újraindítjuk
         const isIframe = f.style.display==='block';
         simulateLoad(()=>{
-          if(isIframe){
-            const src = f.src; f.src=''; setTimeout(()=>f.src=src, 10);
-          }else if(v.style.display==='block'){
-            v.currentTime = 0; v.play();
-          }
+          if(isIframe){ const src=f.src; f.src=''; setTimeout(()=>f.src=src,10); }
+          else if(v.style.display==='block'){ v.currentTime=0; v.play(); }
         });
       });
     })();
 
-    /* ===== Scroll-on belibbenés ===== */
+    /* Scroll-on belibbenés */
     const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add('in');
-          observer.unobserve(entry.target);
-        }
-      });
+      entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('in'); observer.unobserve(entry.target);} });
     }, {threshold: 0.15});
     document.querySelectorAll('#about .revealY').forEach(el => observer.observe(el));
 
-    /* ===== Globális 3D arany por háttér (az egész oldalon) ===== */
+    /* Globális 3D arany por háttér */
     (function(){
-      const canvas = document.getElementById('bgAll');
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d', {alpha:true});
-      let w=0,h=0,particles=[];
-      const MAX = 130; // erősebb, de még gördülékeny
-      let mx = 0, my = 0;
+      const canvas = document.getElementById('bgAll'); if(!canvas) return;
+      const ctx = canvas.getContext('2d',{alpha:true});
+      let w=0,h=0,particles=[]; const MAX=130; let mx=0,my=0;
 
       function setSize(){
-        const r = Math.min(2, window.devicePixelRatio || 1);
-        const vw = Math.max(1, Math.floor(window.innerWidth  * r));
-        const vh = Math.max(1, Math.floor(window.innerHeight * r));
-        if (vw!==w || vh!==h){
-          w = canvas.width  = vw;
-          h = canvas.height = vh;
-          canvas.style.width = '100vw';
-          canvas.style.height= '100vh';
-        }
+        const r = Math.min(2, window.devicePixelRatio||1);
+        const vw = Math.max(1, (window.innerWidth*r)|0);
+        const vh = Math.max(1, (window.innerHeight*r)|0);
+        if(vw!==w || vh!==h){ w=canvas.width=vw; h=canvas.height=vh; canvas.style.width='100vw'; canvas.style.height='100vh'; }
       }
       setSize(); window.addEventListener('resize', setSize, {passive:true});
 
-      function rnd(a,b){ return a + Math.random()*(b-a); }
-      function reset(p){
-        p.x = rnd(-w*0.1, w*1.1);
-        p.y = rnd(-h*0.1, h*1.1);
-        p.z = rnd(0.4, 1.4);
-        p.r = rnd(1.0, 2.6)*p.z;
-        p.sx = rnd(0.02, 0.08)*p.z;
-        p.sy = rnd(-0.01, 0.01)*p.z;
-        p.a = rnd(0.5,0.85);
-        p.hue = rnd(45,52);
-      }
-      function init(){ particles.length=0; for(let i=0;i<MAX;i++){ const p={}; reset(p); particles.push(p);} }
-      init();
+      const rnd=(a,b)=>a+Math.random()*(b-a);
+      function reset(p){ p.x=rnd(-w*.1,w*1.1); p.y=rnd(-h*.1,h*1.1); p.z=rnd(.4,1.4); p.r=rnd(1,2.6)*p.z; p.sx=rnd(.02,.08)*p.z; p.sy=rnd(-.01,.01)*p.z; p.a=rnd(.5,.85); p.h=rnd(45,52); }
+      function init(){ particles.length=0; for(let i=0;i<MAX;i++){ const p={}; reset(p); particles.push(p);} } init();
 
-      canvas.addEventListener('pointermove', e=>{
-        mx = (e.clientX / window.innerWidth) - 0.5;
-        my = (e.clientY / window.innerHeight) - 0.5;
-      });
+      canvas.addEventListener('pointermove', e=>{ mx = (e.clientX/window.innerWidth)-.5; my=(e.clientY/window.innerHeight)-.5; });
 
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) { canvas.style.display='none'; return; }
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ canvas.style.display='none'; return; }
 
-      function draw(){
+      (function draw(){
         ctx.clearRect(0,0,w,h);
-        // fényfolt
-        const g = ctx.createRadialGradient(w*0.7,h*0.18,0, w*0.7,h*0.18, Math.max(w,h)*0.9);
-        g.addColorStop(0,'rgba(255,241,200,0.35)');
-        g.addColorStop(1,'rgba(255,255,255,0)');
-        ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+        const g = ctx.createRadialGradient(w*.7,h*.18,0, w*.7,h*.18, Math.max(w,h)*.9);
+        g.addColorStop(0,'rgba(255,241,200,0.35)'); g.addColorStop(1,'rgba(255,255,255,0)');
+        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
 
         particles.forEach(p=>{
-          const ox = mx * 40 * p.z;
-          const oy = my * 30 * p.z;
-          p.x += p.sx; p.y += p.sy;
-          if(p.x > w*1.12 || p.y < -h*0.12 || p.y > h*1.12){ reset(p); p.x = -w*0.05; }
-
-          ctx.beginPath();
-          ctx.arc(p.x + ox, p.y + oy, p.r, 0, Math.PI*2);
-          ctx.fillStyle = `hsla(${p.hue}, 75%, 55%, ${p.a})`;
-          ctx.fill();
-
-          // csillanás
-          ctx.beginPath();
-          ctx.arc(p.x + ox + p.r*0.55, p.y + oy - p.r*0.45, p.r*0.45, 0, Math.PI*2);
-          ctx.fillStyle = `hsla(${p.hue}, 90%, 75%, ${p.a*0.7})`;
-          ctx.fill();
+          const ox=mx*40*p.z, oy=my*30*p.z; p.x+=p.sx; p.y+=p.sy;
+          if(p.x>w*1.12 || p.y<-h*.12 || p.y>h*1.12){ reset(p); p.x=-w*.05; }
+          ctx.beginPath(); ctx.arc(p.x+ox,p.y+oy,p.r,0,Math.PI*2); ctx.fillStyle=`hsla(${p.h},75%,55%,${p.a})`; ctx.fill();
+          ctx.beginPath(); ctx.arc(p.x+ox+p.r*.55,p.y+oy-p.r*.45,p.r*.45,0,Math.PI*2); ctx.fillStyle=`hsla(${p.h},90%,75%,${p.a*.7})`; ctx.fill();
         });
 
         requestAnimationFrame(draw);
-      }
-      draw();
+      })();
     })();
   </script>
 </body>
