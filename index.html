@@ -9,7 +9,7 @@
   <style>
     :root{
       --gold:#D4AF37;
-      --gold-soft:#e6cc73;
+      --gold-soft:#f5e6a2;
       --header-top:#fffaf0;
       --header-bottom:#f9f4df;
       --text:#0b0b0c;
@@ -84,32 +84,41 @@
     @keyframes sheen{to{transform:translateX(120%)}}
 
     /* NAVIGATION */
-    nav{display:none;gap:8px;align-items:center;}
+    nav{display:none;gap:12px;align-items:center;}
     nav a{
-      position:relative;padding:8px 12px;font-size:15px;color:#4a4f55;text-decoration:none;
-      transition:color .2s ease;
+      position:relative;
+      padding:8px 14px;
+      font-size:15px;
+      font-weight:500;
+      text-decoration:none;
+      background:linear-gradient(270deg, #b89624, #f6e6a1, #b89624);
+      background-size:400% 400%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:goldFlow 5s ease infinite;
+      transition:transform .2s ease;
     }
-    nav a:hover{color:#0b0b0c}
-    nav a::after{
-      content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:6px;height:2px;width:0;
-      background:linear-gradient(90deg,var(--gold),var(--gold-soft),var(--gold));
-      border-radius:999px;transition:width .5s ease;
+    nav a:hover{transform:translateY(-2px)}
+    @keyframes goldFlow{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
     }
-    nav a:hover::after{width:75%}
+
     .cta{
-      position:relative;border:1px solid color-mix(in oklab,var(--gold)60%,#fff40%);
-      padding:9px 14px;border-radius:14px;font-size:14px;font-weight:600;color:#7a5b0e;
-      background:#fff;box-shadow:0 10px 24px rgba(212,175,55,.18);
-      transition:box-shadow .2s ease,transform .2s ease,background .2s ease;text-decoration:none;
+      position:relative;
+      padding:9px 14px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:600;
+      color:#7a5b0e;
+      background:linear-gradient(90deg, #fdf7d4, #f3e1a1);
+      border:1px solid rgba(212,175,55,.4);
+      box-shadow:0 10px 24px rgba(212,175,55,.18);
+      text-decoration:none;
+      transition:transform .2s ease, box-shadow .2s ease;
     }
-    .cta:hover{box-shadow:0 12px 28px rgba(212,175,55,.28);transform:translateY(-1px);background:rgba(255,255,255,.9);}
-    .cta::after{
-      content:"";position:absolute;inset:-1px;border-radius:14px;pointer-events:none;
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);
-      opacity:0;transition:opacity .2s ease;animation:btnSheen 3.2s linear infinite;
-    }
-    .cta:hover::after{opacity:1}
-    @keyframes btnSheen{0%{background-position:-100% 0/200% 100%}100%{background-position:100% 0/200% 100%}}
+    .cta:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(212,175,55,.25);}
 
     /* MOBIL MENU */
     .toggle{height:40px;width:40px;border-radius:12px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;}
@@ -160,7 +169,7 @@
     </header>
 
     <main id="top">
-      <p>(Következő lépés: a HERO rész fehér/arany parallax-szal. Most a fejléced már elegáns, halvány arany háttérrel fut.)</p>
+      <p>(Most a menüpontokon finoman végigfut az arany kitöltés – végtelenítve ✨)</p>
     </main>
   </div>
 
@@ -168,7 +177,6 @@
     window.addEventListener('load', ()=>{
       document.getElementById('brandName').classList.add('sheen');
     });
-
     const btn=document.getElementById('menuBtn');
     const menu=document.getElementById('mobileMenu');
     let open=false;
@@ -178,7 +186,6 @@
     menu.addEventListener('click',e=>{
       if(e.target.tagName==='A'){open=false;menu.style.display='none';}
     });
-
     document.getElementById('brandLink').addEventListener('click',e=>{
       e.preventDefault();
       window.scrollTo({top:0,behavior:'smooth'});
