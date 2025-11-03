@@ -16,6 +16,9 @@
     }
     @media (max-width:1100px){ :root{ --phone-max: 250px; } }
     @media (max-width:600px){ :root{ --phone-max: 230px; } }
+    @media (max-width:420px){
+      :root{ --phone-max: 210px; }
+    }
 
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;scroll-behavior:smooth}
@@ -32,6 +35,9 @@
     #bgAll{
       position:fixed; inset:0; width:100vw; height:100vh;
       z-index:0; pointer-events:none; opacity:.92; display:block;
+    }
+    @media (max-width:768px){
+      #bgAll{ opacity:.85; }
     }
 
     /* Dísz csíkok a canvas felett */
@@ -95,7 +101,7 @@
     .flag{width:24px; height:16px; border-radius:4px; display:block}
     .ai-btn{display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border-radius:14px; text-decoration:none; border:1px solid rgba(212,175,55,.35); background:#fff; color:#7a5b0e; font-weight:600; font-size:14px; box-shadow:0 10px 24px rgba(212,175,55,.18); transition:.2s}
     .ai-btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
-    .ai-icon{width:16px; height:16}
+    .ai-icon{width:16px; height:16px;} /* px fix */
 
     /* MOBIL MENU */
     .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; z-index:21}
@@ -171,6 +177,10 @@
       radial-gradient(800px 300px at 50% -10%, #ffffff15, #000000 70%); z-index:1;}
     .app-grid img{width:56px; height:56px; object-fit:contain; border-radius:14px; cursor:pointer; filter:drop-shadow(0 4px 10px rgba(0,0,0,.45)); transition:transform .15s ease;}
     .app-grid img:active{transform:scale(0.95)}
+    @media (max-width:420px){
+      .app-grid{ gap:16px; grid-template-columns:repeat(3, 60px); }
+      .app-grid img{ width:52px; height:52px; }
+    }
 
     .phone-player{position:absolute; inset:46px 0 40px 0; display:none; background:#000; z-index:2;}
     .phone-player video,.phone-player iframe{width:100%; height:100%; object-fit:cover; border:0; display:none; background:#000;}
@@ -179,9 +189,21 @@
     .phone-bottom{position:absolute; left:0; right:0; bottom:6px; display:flex; justify-content:center; gap:10px; pointer-events:none; z-index:5;}
     .phone-back{
       pointer-events:auto;
-      background:linear-gradient(90deg,#fff7d4,#f3e1a1); border:1px solid rgba(212,175,55,.55);
-      color:#3d2d09; font-weight:700; font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer; backdrop-filter:blur(6px);
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(212,175,55,.55);
+      color:#3d2d09; font-weight:800; font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer; backdrop-filter:blur(6px);
       box-shadow:0 8px 18px rgba(212,175,55,.25);
+      text-shadow:0 1px 0 rgba(255,255,255,.6);
+      transition:transform .18s ease;
+    }
+    .phone-back:hover{ transform:translateY(-1px); }
+    @media (prefers-color-scheme: dark){
+      .phone-back{
+        background:rgba(18,19,22,.72);
+        color:#f3e1a1; border-color:rgba(212,175,55,.55);
+        box-shadow:0 8px 18px rgba(0,0,0,.35);
+        text-shadow:none;
+      }
     }
     .phone-hint{pointer-events:none; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#e6d9b2; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);}
 
@@ -323,7 +345,7 @@
           <div class="right">
             <div class="stage">
               <div class="screen">
-                <video class="hero-video" autoplay loop muted playsinline preload="auto" poster="">
+                <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="hero-poster.jpg">
                   <source src="hero.mp4" type="video/mp4">
                   Böngésződ nem támogatja a videót.
                 </video>
@@ -433,6 +455,12 @@
     let isOpen = false;
     btn?.addEventListener('click',()=>{ isOpen=!isOpen; mobileMenu.style.display=isOpen?'block':'none'; });
     mobileMenu?.addEventListener('click',e=>{ if(e.target.tagName==='A'){isOpen=false;mobileMenu.style.display='none';} });
+    window.addEventListener('resize', ()=>{
+      if(window.innerWidth >= 768){
+        isOpen = false;
+        if(mobileMenu) mobileMenu.style.display = 'none';
+      }
+    });
 
     /* Brand -> top */
     document.getElementById('brandLink')?.addEventListener('click',e=>{
@@ -491,12 +519,18 @@
       const appMap = {
         roblox: { url: 'roblox.mp4',   label: 'roblox-preview.mp4',   type:'video' },
         unity:  { url: 'unity.mp4',    label: 'unity-preview.mp4',    type:'video' },
-        shop:   { url: 'https://serlegkiraly.hu', label: 'serlegkiraly.hu', type:'web' },
-        web:    { url: 'https://malfiruha.hu',    label: 'malfiruha.hu',    type:'web' },
-        ai:     { url: 'https://tamas-ai.netlify.app', label: 'tamas-ai.netlify.app', type:'web' }
+        shop:   { url: 'https://serlegkiraly.hu', label: 'serlegkiraly.hu', type:'web', embed:false },
+        web:    { url: 'https://malfiruha.hu',    label: 'malfiruha.hu',    type:'web', embed:false },
+        ai:     { url: 'https://tamas-ai.netlify.app', label: 'tamas-ai.netlify.app', type:'web', embed:true }
       };
 
-      const setAddr = (text, secure=true)=>{ addr.textContent=text; lockDot.style.background = secure ? '#2ecc71' : '#e67e22'; };
+      function isSecure(url){
+        try{ return new URL(url).protocol === 'https:'; }catch(e){ return true; }
+      }
+      const setAddr = (text, secure=true)=>{
+        addr.textContent=text;
+        lockDot.style.background = secure ? '#2ecc71' : '#e67e22';
+      };
 
       const simulateLoad = (cb)=>{
         loadBar.style.width = '0%';
@@ -512,14 +546,27 @@
 
       function openApp(appName){
         const conf = appMap[appName]; if(!conf) return;
-        setAddr(conf.label, true);
+
+        // Ha web és tiltott az embed, nyissuk külön új lapon
+        if(conf.type==='web' && conf.embed===false){
+          setAddr(conf.label + ' — új lapon', isSecure(conf.url));
+          fullLink.href = conf.url;
+          try{ window.open(conf.url, '_blank', 'noopener'); }catch(e){}
+          // Maradjon a menü, hogy ne tűnjön el a tartalom
+          return;
+        }
+
+        setAddr(conf.label, conf.type==='web' ? isSecure(conf.url) : true);
         hint.style.display='none';
         menu.style.display='none';
         player.style.display='block';
         f.style.display='none'; v.style.display='none';
         simulateLoad(()=>{
-          if(conf.type==='video'){ v.src=conf.url; v.style.display='block'; fullLink.href=conf.url; }
-          else { f.src=conf.url; f.style.display='block'; fullLink.href=conf.url; }
+          if(conf.type==='video'){
+            v.src=conf.url; v.style.display='block'; fullLink.href=conf.url;
+          }else{
+            f.src=conf.url; f.style.display='block'; fullLink.href=conf.url;
+          }
         });
       }
 
@@ -532,16 +579,18 @@
         hint.style.display='inline-block';
         setAddr('Válassz egy appot…', true);
         loadBar.style.width='0%';
-        // a “Megnyitás teljes nézetben” link marad, ha előzőleg volt célja
       }
       backBtn.addEventListener('click', goBack);
       btnBackTop.addEventListener('click', goBack);
 
       btnReload.addEventListener('click', ()=>{
-        const isIframe = f.style.display==='block';
+        const isIframe = (f.style.display==='block');
         simulateLoad(()=>{
-          if(isIframe){ const src=f.src; f.src=''; setTimeout(()=>f.src=src,10); }
-          else if(v.style.display==='block'){ v.currentTime=0; v.play(); }
+          if(isIframe){
+            const src=f.src; f.src=''; setTimeout(()=>f.src=src,10);
+          }else if(v.style.display==='block'){
+            v.currentTime=0; v.play();
+          }
         });
       });
     })();
