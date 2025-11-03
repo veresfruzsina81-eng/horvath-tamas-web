@@ -22,14 +22,14 @@
     html,body{margin:0;padding:0;scroll-behavior:smooth}
     body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
 
-    /* háttér fénycsíkok */
+    /* finom háttérfények */
     .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
       background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
       filter:blur(.3px); animation:stripesMove 14s ease-in-out infinite alternate;
     }
-    .bg-stripes .stripe:nth-child(1){ top:8%;  transform:rotate(-3deg); animation-delay:0s;}
+    .bg-stripes .stripe:nth-child(1){ top:8%; transform:rotate(-3deg); animation-delay:0s;}
     .bg-stripes .stripe:nth-child(2){ top:26%; transform:rotate(4deg);  animation-delay:.6s;}
     .bg-stripes .stripe:nth-child(3){ top:44%; transform:rotate(-3deg); animation-delay:1.2s;}
     .bg-stripes .stripe:nth-child(4){ top:62%; transform:rotate(4deg);  animation-delay:1.8s;}
@@ -70,7 +70,7 @@
     }
     @keyframes sheen{to{transform:translateX(120%)}}
 
-    /* NAV LEFT (középen) */
+    /* NAV */
     nav{display:none; gap:12px; align-items:center;}
     .nav-link, .nav-cta{position:relative; padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none; color:#0b0b0c; transition:transform .2s ease, color .2s ease}
     .nav-link:hover{transform:translateY(-2px)}
@@ -80,7 +80,7 @@
     }
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
 
-    /* jobb oldali vezérlők: nyelvváltó + AI */
+    /* jobb oldali vezérlők: zászlók + AI */
     .right-controls{display:none; align-items:center; gap:10px}
     .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
     .lang-btn{
@@ -96,6 +96,7 @@
     }
     .ai-btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
     .ai-icon{width:16px; height:16px}
+
     @media(min-width:768px){
       nav{display:flex}
       .toggle{display:none}
@@ -121,7 +122,6 @@
 </head>
 <body>
 
-  <!-- finom háttérfények -->
   <div class="bg-stripes" aria-hidden="true">
     <span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span>
   </div>
@@ -138,20 +138,19 @@
 
           <!-- NAV -->
           <nav id="desktopNav">
-            <a href="#about"   class="nav-link nav-label">Rólam</a>
-            <a href="#work"    class="nav-link nav-label">Munkák</a>
-            <a href="#contact" class="nav-link nav-label">Kapcsolat</a>
-            <a href="#contact" class="nav-cta  nav-label">Írj nekem</a>
+            <a href="#about"   class="nav-link nav-label" data-i18n="about">Rólam</a>
+            <a href="#work"    class="nav-link nav-label" data-i18n="work">Munkák</a>
+            <a href="#contact" class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
+            <a href="#contact" class="nav-cta  nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
-          <!-- RIGHT CONTROLS: language + AI -->
+          <!-- RIGHT: flags + AI -->
           <div class="right-controls">
             <div class="lang-switch" id="langSwitch" aria-label="Language switcher">
               <button class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
               <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
             </div>
             <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
-              <!-- kis csillogó AI ikon -->
               <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/>
               </svg>
@@ -170,10 +169,10 @@
 
       <!-- MOBILE MENU -->
       <div class="menu" id="mobileMenu">
-        <a href="#about"   class="menu-link nav-label">Rólam</a>
-        <a href="#work"    class="menu-link nav-label">Munkák</a>
-        <a href="#contact" class="menu-link nav-label">Kapcsolat</a>
-        <a href="#contact" class="cta       nav-label">Írj nekem</a>
+        <a href="#about"   class="menu-link nav-label" data-i18n="about">Rólam</a>
+        <a href="#work"    class="menu-link nav-label" data-i18n="work">Munkák</a>
+        <a href="#contact" class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
+        <a href="#contact" class="cta       nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
           <div class="lang-switch" id="langSwitchMobile">
             <button class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
@@ -190,65 +189,64 @@
     </header>
 
     <main id="top">
-      <p>(A nyelvválasztó és az AI gomb a fejléchez került. Az AI külön lapon nyitja a <code>ai.html</code>-t.)</p>
+      <p>(A zászlókkal tényleg vált a nyelv; az AI gomb az <code>ai.html</code>-t nyitja új lapon.)</p>
     </main>
   </div>
 
   <script>
-    // név csillanás indítása
+    // név csillanás
     window.addEventListener('load', ()=>{
       document.getElementById('brandName').classList.add('sheen');
-      initLangSwitcher();
+      initLang();
     });
 
-    // mobilmenü nyit/zár
+    // mobilmenü
     const btn = document.getElementById('menuBtn');
     const menu = document.getElementById('mobileMenu');
     let open = false;
-    btn?.addEventListener('click',()=>{
-      open = !open; menu.style.display = open ? 'block' : 'none';
-    });
-    menu?.addEventListener('click',e=>{
-      if(e.target.tagName==='A'){open=false;menu.style.display='none';}
-    });
+    btn?.addEventListener('click',()=>{ open=!open; menu.style.display=open?'block':'none'; });
+    menu?.addEventListener('click',e=>{ if(e.target.tagName==='A'){open=false;menu.style.display='none';} });
 
-    // LOGÓ -> scroll top
+    // brand -> top
     document.getElementById('brandLink')?.addEventListener('click',e=>{
       e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});
     });
 
-    // ARANY KITÖLTÉS ugrálva a nav címkéken (Rólam → Munkák → Kapcsolat → Írj nekem)
+    // ARANY KITÖLTÉS ugrálva
     const labels = Array.from(document.querySelectorAll('.nav-label'));
-    let idx = -1;
-    function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx = (idx + 1) % labels.length; labels[idx].classList.add('gold-fill'); }
+    let idx = -1; function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); }
     step(); setInterval(step, 1100);
 
-    // ===== Nyelvválasztó (vizuális, localStorage-ben jegyzi meg) =====
-    function initLangSwitcher(){
+    // ====== i18n ======
+    const I18N = {
+      hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem" },
+      en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me" }
+    };
+    function initLang(){
+      const flagSets = [document.getElementById('langSwitch'), document.getElementById('langSwitchMobile')].filter(Boolean);
       const current = localStorage.getItem('lang') || 'hu';
-      const sets = [
-        document.getElementById('langSwitch'),
-        document.getElementById('langSwitchMobile')
-      ].filter(Boolean);
-
-      function applyActive(lang){
-        sets.forEach(set=>{
-          set.querySelectorAll('.lang-btn').forEach(btn=>{
-            btn.classList.toggle('active', btn.dataset.lang===lang);
-          });
+      applyLang(current);
+      flagSets.forEach(set=>{
+        set.addEventListener('click', e=>{
+          const btn = e.target.closest('.lang-btn'); if(!btn) return;
+          const lang = btn.dataset.lang || 'hu';
+          localStorage.setItem('lang', lang);
+          applyLang(lang);
         });
-      }
-      applyActive(current);
-
-      function handleClick(e){
-        const btn = e.target.closest('.lang-btn'); if(!btn) return;
-        const lang = btn.dataset.lang || 'hu';
-        localStorage.setItem('lang', lang);
-        applyActive(lang);
-        // ide később jöhet az i18n váltás – most csak megjegyezzük
-      }
-
-      sets.forEach(set=> set.addEventListener('click', handleClick));
+      });
+    }
+    function applyLang(lang){
+      document.documentElement.lang = lang;
+      // aktív jelölés
+      [document.getElementById('langSwitch'), document.getElementById('langSwitchMobile')]
+        .filter(Boolean).forEach(set=>{
+          set.querySelectorAll('.lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
+        });
+      // feliratok cseréje
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        el.textContent = (I18N[lang] && I18N[lang][key]) ? I18N[lang][key] : el.textContent;
+      });
     }
   </script>
 </body>
