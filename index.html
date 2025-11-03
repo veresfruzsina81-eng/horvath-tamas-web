@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TamasGem Studio</title>
-  <meta name="description" content="TamasGem Studio – prémium fejlesztői referencia (fehér/arany, elegáns animációk, AI-ready)" />
+  <meta name="description" content="TamasGem Studio – egyedi fejlesztés kérésre: prémium weboldal, teljes webshop, Admin PRO, Unity/Roblox, AI-integráció. Apple-szint, magyar kivitel." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -12,7 +12,7 @@
       --text:#0b0b0c; --muted:#656b73; --border:#e6e7eb;
       --hero-top:#fffef9; --hero-bottom:#ffffff;
       --chip-bg:#fff; --chip-b:#ede9d1;
-      --phone-max: 280px; /* állítsd szabadon: 260–320px */
+      --phone-max: 280px;
     }
     @media (max-width:1100px){ :root{ --phone-max: 250px; } }
     @media (max-width:600px){ :root{ --phone-max: 230px; } }
@@ -28,11 +28,8 @@
       background-attachment: fixed, fixed;
     }
 
-    /* Globális háttér-canvas – NEM blokkol klikket */
-    #bgAll{
-      position:fixed; inset:0; width:100vw; height:100vh;
-      z-index:0; pointer-events:none; opacity:.92; display:block;
-    }
+    /* Globális háttér-canvas – klikket nem blokkol */
+    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; opacity:.92; display:block;}
 
     /* Dísz csíkok a canvas felett */
     .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
@@ -48,10 +45,10 @@
     .bg-stripes .stripe:nth-child(5){ top:80%; transform:rotate(-3deg); animation-delay:2.4s;}
     @keyframes stripesMove{0%{transform:translateX(-30%) rotate(0)}50%{opacity:.5}100%{transform:translateX(30%) rotate(0)}}
 
-    /* Tartalom mindig a háttér fölött */
+    /* Tartalom a háttér fölött */
     .wrap{position:relative; z-index:2}
 
-    /* HEADER */
+    /* ===== HEADER ===== */
     header{
       position:sticky; top:0; z-index:20;
       background:rgba(255,255,255,.88);
@@ -80,14 +77,12 @@
     }
     @keyframes sheen{to{transform:translateX(120%)}}
 
-    /* NAV */
+    /* NAV + RIGHT (desktop) */
     nav{display:none; gap:12px; align-items:center;}
     .nav-link, .nav-cta{padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none; color:#0b0b0c; transition:.2s}
     .nav-link:hover{transform:translateY(-2px)}
     .nav-cta{border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1); box-shadow:0 10px 24px rgba(212,175,55,.18);}
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
-    @media(min-width:768px){ nav{display:flex} .toggle{display:none} .right-controls{display:flex} }
-
     .right-controls{display:none; align-items:center; gap:10px}
     .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
     .lang-btn{width:36px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:#fff; border:1px solid transparent; transition:.2s}
@@ -97,24 +92,27 @@
     .ai-btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
     .ai-icon{width:16px; height:16}
 
-    /* MOBIL MENU */
-    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; z-index:21}
-    .menu{
-      display:none; position:fixed; inset:70px 0 0 0; z-index:19;
-      border-top:1px solid var(--border); background:rgba(255,255,255,.96); backdrop-filter:blur(8px)
+    /* BREAKPOINT: csak 992px fölött desktop header elemek, hamburger el */
+    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:block; align-items:center; justify-content:center; z-index:21}
+    @media (min-width: 992px){
+      nav{display:flex}
+      .right-controls{display:flex}
+      .toggle{display:none}
     }
+
+    /* MOBIL MENÜ (csak ≤991px) */
+    .menu{display:none; position:fixed; inset:70px 0 0 0; z-index:19; border-top:1px solid var(--border); background:rgba(255,255,255,.96); backdrop-filter:blur(8px)}
     .menu .row{display:flex; gap:10px; align-items:center; padding:12px 20px}
     .menu a{padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block}
     .menu .cta{margin:8px 20px 16px; display:block; text-align:center}
 
-    /* ARANY NAV-anim */
     .gold-fill{
       background:linear-gradient(90deg, var(--gold-dark), var(--gold-dark2));
       -webkit-background-clip:text; background-clip:text;
       -webkit-text-fill-color:transparent; color:transparent;
     }
 
-    /* ===== HERO (átlátszó háttér, hogy a globális canvas átüssön) */
+    /* ===== HERO ===== */
     .hero{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.88),rgba(255,255,255,.88));}
     .hero .container{max-width:1120px; margin:0 auto; padding:72px 20px 84px; display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;}
     @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:56px 20px 72px} }
@@ -155,23 +153,18 @@
       background:linear-gradient(180deg,#121316,#0b0c10); border-bottom:1px solid rgba(255,255,255,.08);
       padding:0 10px; z-index:5;
     }
-    .addr{
-      flex:1; height:28px; display:flex; align-items:center; gap:8px; padding:0 10px;
-      border-radius:12px; background:#0f1115; border:1px solid rgba(255,255,255,.08);
-      font-size:12px; color:#e7e7ea; overflow:hidden;
-    }
+    .addr{flex:1; height:28px; display:flex; align-items:center; gap:8px; padding:0 10px; border-radius:12px; background:#0f1115; border:1px solid rgba(255,255,255,.08); font-size:12px; color:#e7e7ea; overflow:hidden;}
     .dot{width:8px;height:8px;border-radius:50%; background:#2ecc71;}
     .url{opacity:.9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
     .btn-ic{width:28px;height:28px;border-radius:8px; display:grid;place-items:center; border:1px solid rgba(255,255,255,.08); background:#0f1115; color:#c9c9cf; font-size:12px; cursor:pointer}
 
     .prog{position:absolute; top:46px; left:0; height:2px; width:0%; background:linear-gradient(90deg,#fff7d4,#f3e1a1); transition:width .25s ease; z-index:4;}
 
-    /* Ikonok / tartalom felületek */
+    /* Ikonrács / player */
     .app-grid{position:absolute; inset:46px 0 40px 0; display:grid; grid-template-columns:repeat(3, 64px); gap:18px; justify-content:center; align-content:start; padding-top:28px; background:
       radial-gradient(800px 300px at 50% -10%, #ffffff15, #000000 70%); z-index:1;}
     .app-grid img{width:56px; height:56px; object-fit:contain; border-radius:14px; cursor:pointer; filter:drop-shadow(0 4px 10px rgba(0,0,0,.45)); transition:transform .15s ease;}
     .app-grid img:active{transform:scale(0.95)}
-
     .phone-player{position:absolute; inset:46px 0 40px 0; display:none; background:#000; z-index:2;}
     .phone-player video,.phone-player iframe{width:100%; height:100%; object-fit:cover; border:0; display:none; background:#000;}
 
@@ -185,108 +178,61 @@
     }
     .phone-hint{pointer-events:none; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#e6d9b2; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);}
 
-    /* Szöveg + chip anim */
-    .about-col{position:relative; z-index:1;}
+    /* Szöveg oszlop */
     .about-col h2{font-size:42px; margin:0 0 14px; font-weight:800; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
     .about-col p{font-size:17px; line-height:1.7; color:#555; margin:0 0 18px;}
     .revealY{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
     .revealY.in{opacity:1; transform:none;}
-    .revealY[data-delay="1"]{transition-delay:.08s}
-    .revealY[data-delay="2"]{transition-delay:.16s}
-    .revealY[data-delay="3"]{transition-delay:.24s}
-    .revealY[data-delay="4"]{transition-delay:.32s}
-    .revealY[data-delay="5"]{transition-delay:.40s}
-
+    .sep{height:1px; background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.3), rgba(212,175,55,0)); margin:24px 0;}
     .chip-wrap{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
     .chip{position:relative; padding:10px 14px; border-radius:12px; font-weight:600; font-size:14px; color:#3b2f12; background:var(--chip-bg); border:1px solid var(--chip-b); box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden;}
     .chip::after{content:""; position:absolute; inset:0; z-index:0; background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.38) 35%, rgba(248,240,210,.0) 70%); background-size:200% 100%; animation:chipShine 2.2s linear infinite;}
     .chip > span{position:relative; z-index:1;}
     @keyframes chipShine{0%{background-position:0% 0} 100%{background-position:200% 0}}
-    .sep{height:1px; background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.3), rgba(212,175,55,0)); margin:24px 0;}
-
-    /* Teljes nézet gomb */
     .fullview{margin-top:10px; display:flex; justify-content:center;}
     .fullview a{display:inline-flex; gap:8px; align-items:center; font-weight:700; font-size:13px; text-decoration:none; background:#fff; border:1px solid rgba(212,175,55,.5); padding:8px 12px; border-radius:12px; box-shadow:0 8px 18px rgba(212,175,55,.15); color:#7a5b0e;}
 
-    /* ===== SHOWREEL (nagy szekció a Rólam alatt) ===== */
-    .showreel{
-      position:relative;
-      background:linear-gradient(180deg, rgba(255,254,249,.86), rgba(255,255,255,.86));
-      isolation:isolate;
-    }
-    .showreel .inner{
-      max-width:1200px; margin:0 auto; padding:96px 20px;
-      display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:start;
-    }
+    /* ===== SHOWREEL (nagy) ===== */
+    .showreel{position:relative; background:linear-gradient(180deg, rgba(255,254,249,.86), rgba(255,255,255,.86));}
+    .showreel .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:start;}
     @media (max-width:1100px){ .showreel .inner{grid-template-columns:1fr; gap:36px} }
 
-    .sr-title{
-      margin:0 0 10px; font-weight:800; font-size:42px; letter-spacing:.2px;
-      background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .sr-typed{
-      margin:6px 0 10px; font-size:20px; font-weight:700; color:#3b2f12;
-    }
+    .sr-title{margin:0 0 10px; font-weight:800; font-size:42px; letter-spacing:.2px; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .sr-typed{margin:6px 0 10px; font-size:20px; font-weight:800; color:#1a1a1d;}
     .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
     @keyframes blink{ 50% { opacity:0 } }
+    .sr-lead{ color:#3a3f46; line-height:1.7; margin:6px 0 16px; font-weight:600 }
 
-    .sr-lead{ color:#5f646b; line-height:1.7; margin:6px 0 16px }
     .sr-cta{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px }
     .sr-cta .btn-gold,.sr-cta .btn-ghost{ padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; box-shadow:0 10px 24px rgba(212,175,55,.12); }
     .sr-cta .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
     .sr-cta .btn-ghost{ background:rgba(255,255,255,.7); backdrop-filter:blur(6px) }
     .sr-cta .btn-gold:hover,.sr-cta .btn-ghost:hover{ transform:translateY(-1px) }
 
-    .sr-skills{ display:grid; gap:12px; margin-top:12px }
+    .sr-stats{display:flex; flex-wrap:wrap; gap:12px; margin:6px 0 18px}
+    .stat{background:#fff; border:1px solid var(--chip-b); border-radius:14px; padding:10px 14px; font-weight:800; display:flex; gap:10px; align-items:baseline; box-shadow:0 8px 20px rgba(0,0,0,.06)}
+    .stat .n{font-size:20px; background:linear-gradient(90deg,#1a1a1d,#c7a23a); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+    .stat .t{font-size:12px; color:#6a6f77}
+
+    .sr-skills{ display:grid; gap:12px; margin-top:6px }
     .skill .label{ font-size:14px; color:#6a6f77; margin:0 0 6px; font-weight:700 }
-    .meter{
-      --p: 80%;
-      position:relative; height:12px; border-radius:999px; overflow:hidden;
-      background:linear-gradient(180deg,#f2f2f4,#ececf0);
-      border:1px solid #e6e7eb;
-    }
-    .meter > span{
-      position:absolute; inset:0; display:block;
-      background:linear-gradient(90deg,#fff7d4,#f3e1a1);
-      width:var(--p);
-      animation:fillPulse 3.6s ease-in-out infinite;
-      transform-origin:left center;
-    }
-    @keyframes fillPulse{
-      0%{ width:0% }
-      40%{ width:var(--p) }
-      60%{ width:calc(var(--p) - 8%) }
-      100%{ width:var(--p) }
-    }
+    .meter{--p: 80%; position:relative; height:12px; border-radius:999px; overflow:hidden; background:linear-gradient(180deg,#f2f2f4,#ececf0); border:1px solid #e6e7eb;}
+    .meter > span{position:absolute; inset:0; display:block; background:linear-gradient(90deg,#fff7d4,#f3e1a1); width:var(--p); animation:fillPulse 3.6s ease-in-out infinite; transform-origin:left center;}
+    @keyframes fillPulse{0%{width:0%}40%{width:var(--p)}60%{width:calc(var(--p) - 8%)}100%{width:var(--p)}}
 
     .sr-cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px }
     @media (max-width:820px){ .sr-cards{ grid-template-columns:1fr 1fr } }
     @media (max-width:560px){ .sr-cards{ grid-template-columns:1fr } }
-
-    .sr-card{
-      background:linear-gradient(180deg,#14171d,#0d1016);
-      border:1px solid #232834; border-radius:14px;
-      padding:12px; display:flex; flex-direction:column; gap:10px;
-      box-shadow:0 10px 28px rgba(0,0,0,.08);
-    }
-    .sr-card .thumb{
-      height:130px; border-radius:10px; background:#0a0c10;
-      display:grid; place-items:center; overflow:hidden; border:1px solid #1f2430;
-    }
+    .sr-card{background:linear-gradient(180deg,#14171d,#0d1016); border:1px solid #232834; border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:10px; box-shadow:0 10px 28px rgba(0,0,0,.08); transform:translateY(6px); transition:transform .35s ease, box-shadow .35s ease}
+    .sr-card:hover{transform:translateY(-4px); box-shadow:0 16px 36px rgba(0,0,0,.12)}
+    .sr-card .thumb{height:130px; border-radius:10px; background:#0a0c10; display:grid; place-items:center; overflow:hidden; border:1px solid #1f2430;}
     .sr-card .thumb img{ max-width:100%; max-height:100%; object-fit:contain }
     .sr-card h3{ margin:0; font-size:16px; color:#f4f5f7 }
     .sr-card p{ margin:0; font-size:13px; color:#bac0c9; line-height:1.55 }
 
     .sr-info{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px }
-    .sr-info .chip{
-      position:relative; padding:8px 12px; border-radius:12px; font-weight:700; font-size:12px; color:#3b2f12;
-      background:#fff; border:1px solid #ede9d1; box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden;
-    }
-    .sr-info .chip::after{
-      content:""; position:absolute; inset:0; background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.45) 40%, rgba(248,240,210,.0) 80%);
-      background-size:200% 100%; animation:chipShine 2.2s linear infinite;
-    }
+    .sr-info .chip{position:relative; padding:8px 12px; border-radius:12px; font-weight:700; font-size:12px; color:#3b2f12; background:#fff; border:1px solid #ede9d1; box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden;}
+    .sr-info .chip::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.45) 40%, rgba(248,240,210,.0) 80%); background-size:200% 100%; animation:chipShine 2.2s linear infinite;}
     @keyframes chipShine{ to{ background-position:200% 0 } }
   </style>
 </head>
@@ -317,6 +263,7 @@
             <a href="#contact" class="nav-cta  nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
+          <!-- DESKTOP RIGHT (mindig látszik ≥992px) -->
           <div class="right-controls">
             <div class="lang-switch" aria-label="Language switcher">
               <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
@@ -339,25 +286,27 @@
                 </svg>
               </button>
             </div>
-            <!-- AI gomb VISSZARAKVA -->
             <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
               <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/></svg>
               AI
             </a>
           </div>
 
+          <!-- HAMBURGER (csak mobilon) -->
           <button class="toggle" id="menuBtn" aria-label="Menü">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
         </div>
       </div>
 
+      <!-- MOBIL MENÜ -->
       <div class="menu" id="mobileMenu">
         <a href="#about"   class="menu-link nav-label" data-i18n="about">Rólam</a>
         <a href="#work"    class="menu-link nav-label" data-i18n="work">Munkák</a>
         <a href="#contact" class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
         <a href="#contact" class="cta       nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
+          <!-- Mobilon itt külön is elérhető a nyelv + AI -->
           <div class="lang-switch">
             <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
               <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
@@ -379,7 +328,6 @@
               </svg>
             </button>
           </div>
-          <!-- AI gomb a mobil menüben is -->
           <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
             <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/></svg>
             AI
@@ -395,7 +343,7 @@
           <div>
             <h1 class="hero-title reveal">TamasGem Studio</h1>
             <p class="hero-sub reveal d2">
-              Apple-minőségű fejlesztés, prémium web és AI-vezérelt megoldások. A kódolás művészet — mi élménnyé tesszük.
+              Egyedi fejlesztés **kérésre**: nem sablon, nem “egy kaptafa” — hanem az üzletedhez tervezett rendszer, Apple-szintű kivitelben.
             </p>
             <div class="hero-cta reveal d3">
               <a class="btn-gold" href="#work" data-i18n="seeWork">Munkáim</a>
@@ -460,7 +408,7 @@
               </div>
             </div>
 
-            <!-- Teljes nézet link (mindig látszik) -->
+            <!-- Teljes nézet link -->
             <div class="fullview">
               <a id="fullLink" href="#" target="_blank" rel="noopener">🔗 Megnyitás teljes nézetben</a>
             </div>
@@ -470,8 +418,9 @@
           <div class="about-col">
             <h2 class="revealY" data-delay="0">Rólam</h2>
             <p class="revealY" data-delay="1">
-              Horváth Tamás vagyok, fejlesztő és kreatív tervező. Célom, hogy az Apple-szintű eleganciát és technikai
-              minőséget hozzam el webre, játékokra és AI-integrációkra.
+              Horváth Tamás vagyok. <b>Teljesen egyedi rendszereket</b> építek vállalkozásoknak:
+              prémium weboldal, <b>teljes webshop</b> (termékkezelés, fizetés, admin), <b>Admin PRO</b>,
+              <b>Unity/Roblox</b> játékok és <b>AI-integrációk</b>. Nem “skin-csere” — <i>megoldást</i> fejlesztek a céljaidhoz.
             </p>
 
             <div class="sep revealY" data-delay="2"></div>
@@ -488,11 +437,11 @@
 
             <p class="revealY" data-delay="3" style="margin:18px 0 6px; font-weight:700;">Szolgáltatások</p>
             <div class="chip-wrap revealY" data-delay="4">
-              <div class="chip"><span>Prémium weboldalak</span></div>
-              <div class="chip"><span>Teljes webshop rendszerek</span></div>
-              <div class="chip"><span>Admin felületek</span></div>
-              <div class="chip"><span>Játékfejlesztés</span></div>
-              <div class="chip"><span>AI-vezérelt megoldások</span></div>
+              <div class="chip"><span>Weboldal – személyre szabott UX</span></div>
+              <div class="chip"><span>Webshop – katalógus, fizetés, logisztika</span></div>
+              <div class="chip"><span>Admin PRO – jogosultság, riport, státuszok</span></div>
+              <div class="chip"><span>Játékfejlesztés – mobil/PC optimalizálás</span></div>
+              <div class="chip"><span>AI – ajánlórendszer, űrlap-automata</span></div>
             </div>
           </div>
         </div>
@@ -511,8 +460,16 @@
             </p>
 
             <p class="sr-lead">
-              Apple-szintű minőség weben, webshopon, adminon és játékfejlesztésben. Tiszta kód, gyors iteráció, élmény-fókusz.
+              Minden projekt <b>egyedi tervezés</b> és <b>egyedi fejlesztés</b>. Nem sablont adok el,
+              hanem <b>üzleti célra optimalizált</b> rendszert — <i>pont úgy</i>, ahogy kéred.
+              Gyors iteráció, tiszta kommunikáció, mérhető eredmény.
             </p>
+
+            <div class="sr-stats">
+              <div class="stat"><span class="n" data-count="3200">0</span><span class="t">+ termék kezelt</span></div>
+              <div class="stat"><span class="n" data-count="7">0</span><span class="t">nap / MVP</span></div>
+              <div class="stat"><span class="n" data-count="99.9">0</span><span class="t">% uptime céllal</span></div>
+            </div>
 
             <div class="sr-cta">
               <a class="btn-gold" href="#contact">Kapcsolat</a>
@@ -520,60 +477,45 @@
             </div>
 
             <div class="sr-skills">
-              <div class="skill">
-                <div class="label">JavaScript / TypeScript</div>
-                <div class="meter" style="--p:92%"><span></span></div>
-              </div>
-              <div class="skill">
-                <div class="label">PHP / MySQL</div>
-                <div class="meter" style="--p:90%"><span></span></div>
-              </div>
-              <div class="skill">
-                <div class="label">Unity / C#</div>
-                <div class="meter" style="--p:80%"><span></span></div>
-              </div>
-              <div class="skill">
-                <div class="label">Roblox / Lua</div>
-                <div class="meter" style="--p:85%"><span></span></div>
-              </div>
-              <div class="skill">
-                <div class="label">AI / LLM integráció</div>
-                <div class="meter" style="--p:88%"><span></span></div>
-              </div>
+              <div class="skill"><div class="label">JavaScript / TypeScript</div><div class="meter" style="--p:92%"><span></span></div></div>
+              <div class="skill"><div class="label">PHP / MySQL</div><div class="meter" style="--p:90%"><span></span></div></div>
+              <div class="skill"><div class="label">Unity / C#</div><div class="meter" style="--p:80%"><span></span></div></div>
+              <div class="skill"><div class="label">Roblox / Lua</div><div class="meter" style="--p:85%"><span></span></div></div>
+              <div class="skill"><div class="label">AI / LLM integráció</div><div class="meter" style="--p:88%"><span></span></div></div>
             </div>
           </div>
 
           <div class="sr-right">
             <div class="sr-cards">
-              <article class="sr-card">
+              <article class="sr-card" data-parallax="1.8">
                 <div class="thumb"><img src="shop.png" alt=""></div>
                 <h3>Teljes Webshop</h3>
-                <p>3200+ termék, Barion, saját Admin PRO. Stabil, bővíthető.</p>
+                <p>Termékadatbázis, Barion, rendelések, státuszok, riportok — skálázható architektúra.</p>
               </article>
-              <article class="sr-card">
+              <article class="sr-card" data-parallax="1.4">
                 <div class="thumb"><img src="web.png" alt=""></div>
                 <h3>Prémium Weboldalak</h3>
-                <p>Arany-fehér téma, gyors betöltés, SEO-barát felépítés.</p>
+                <p>Villámgyors betöltés, SEO, accessibility — a márkád arculatára szabva.</p>
               </article>
-              <article class="sr-card">
+              <article class="sr-card" data-parallax="1.6">
                 <div class="thumb"><img src="roblox.png" alt=""></div>
                 <h3>Roblox / Unity</h3>
-                <p>Interakciók, monetizáció, optimalizált UX mobilra.</p>
+                <p>UX-optimalizált mechanikák, monetizáció, mobil-PC kompatibilitás.</p>
               </article>
             </div>
 
             <div class="sr-info">
-              <div class="chip">~1 hét / MVP</div>
               <div class="chip">UI/UX fókusz</div>
               <div class="chip">Tiszta kód</div>
               <div class="chip">Gyors support</div>
+              <div class="chip">Dokumentált átadás</div>
             </div>
           </div>
         </div>
       </section>
       <!-- /SHOWREEL END -->
 
-      <!-- (Itt jöhet a Work / Contact, ha lesz) -->
+      <!-- (Később: Work / Contact) -->
 
     </main>
   </div>
@@ -581,13 +523,11 @@
   <script>
     /* Hero belibbenés */
     document.addEventListener('DOMContentLoaded', ()=>{
-      const bn = document.getElementById('brandName');
-      const hero = document.getElementById('hero');
-      if(bn) bn.classList.add('sheen');
-      if(hero) hero.classList.add('ready');
+      document.getElementById('brandName')?.classList.add('sheen');
+      document.getElementById('hero')?.classList.add('ready');
     });
 
-    /* Mobilmenü */
+    /* Mobilmenü (≤991px) */
     const btn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     let isOpen = false;
@@ -599,16 +539,13 @@
       e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});
     });
 
-    /* Nav arany ciklus – védetten fut */
+    /* Nav arany ciklus */
     (function(){
-      try{
-        const labels = Array.from(document.querySelectorAll('.nav-label'));
-        if(labels.length){
-          let idx = -1;
-          const step=()=>{ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); };
-          step(); setInterval(step, 1100);
-        }
-      }catch(e){}
+      const labels = Array.from(document.querySelectorAll('.nav-label'));
+      if(!labels.length) return;
+      let idx = -1;
+      const step=()=>{ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); };
+      step(); setInterval(step, 1100);
     })();
 
     /* i18n */
@@ -632,7 +569,7 @@
     });
     applyLang((()=>{try{return localStorage.getItem('lang')||'hu'}catch(e){return 'hu'}})());
 
-    /* ===== Telefon “mini-böngésző” logika ===== */
+    /* ===== Telefon “mini-böngésző” ===== */
     (function(){
       const apps = document.querySelectorAll('#about .app');
       const player = document.getElementById('aboutPlayer');
@@ -660,7 +597,7 @@
 
       const simulateLoad = (cb)=>{
         loadBar.style.width = '0%';
-        loadBar.offsetHeight; // reflow
+        loadBar.offsetHeight;
         let w = 0;
         const id = setInterval(()=>{
           w += Math.random()*22 + 8;
@@ -711,17 +648,18 @@
     }, {threshold: 0.15});
     document.querySelectorAll('#about .revealY').forEach(el => observer.observe(el));
 
-    /* ===== SHOWREEL: gépelt szöveg + belibbenés ===== */
+    /* ===== SHOWREEL: gépelés + stat számláló + parallax lebegés ===== */
     (function(){
-      // Gépelős headline (végtelen ciklus)
+      // Gépelős headline (végtelen)
       const target = document.getElementById('typedText');
       if (target){
         const phrases = [
           'full-stack fejlesztő.',
-          'webshop-építő.',
+          'egyedi webshop-építő.',
           'UI/UX-mániás.',
           'Unity & Roblox fejlesztő.',
-          'AI-integrátor.'
+          'AI-integrátor.',
+          'Admin PRO alkotó.'
         ];
         let i=0, j=0, del=false;
 
@@ -731,34 +669,63 @@
             j++;
             target.textContent = word.slice(0,j);
             if(j===word.length){ del=true; setTimeout(tick, 1100); return; }
-            setTimeout(tick, 32);
+            setTimeout(tick, 28);
           }else{
             j--;
             target.textContent = word.slice(0,j);
             if(j===0){ del=false; i=(i+1)%phrases.length; setTimeout(tick, 220); return; }
-            setTimeout(tick, 18);
+            setTimeout(tick, 16);
           }
         }
         tick();
       }
 
+      // Stat számláló
+      const counters = document.querySelectorAll('.stat .n');
+      const io1 = new IntersectionObserver((ents)=>{
+        ents.forEach(e=>{
+          if(!e.isIntersecting) return;
+          const el = e.target; io1.unobserve(el);
+          const target = parseFloat(el.dataset.count); let cur = 0;
+          const isPercent = String(target).includes('.');
+          const step = ()=> {
+            const inc = Math.max(0.8, target/48);
+            cur = Math.min(target, cur+inc);
+            el.textContent = isPercent ? cur.toFixed(1) : Math.round(cur);
+            if(cur<target) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }, {threshold:.3});
+      counters.forEach(el=> io1.observe(el));
+
+      // Parallax lebegés a kártyákra
+      const cards = document.querySelectorAll('.sr-card');
+      window.addEventListener('mousemove', (e)=>{
+        const cx = window.innerWidth/2, cy = window.innerHeight/2;
+        const dx = (e.clientX - cx)/cx, dy = (e.clientY - cy)/cy;
+        cards.forEach(card=>{
+          const k = parseFloat(card.dataset.parallax||1.2);
+          card.style.transform = `translateY(${(-4 + dy*2)*k}px)`;
+        });
+      }, {passive:true});
+
       // Belibbenés
-      const io = new IntersectionObserver((entries)=>{
+      const io2 = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
           if(e.isIntersecting){
             e.target.style.opacity='1';
             e.target.style.transform='none';
-            io.unobserve(e.target);
+            io2.unobserve(e.target);
           }
         });
       }, {threshold:.12});
-
-      document.querySelectorAll('#showreel .sr-card, #showreel .skill, #showreel .sr-title, #showreel .sr-lead, #showreel .sr-cta')
+      document.querySelectorAll('#showreel .sr-card, #showreel .skill, #showreel .sr-title, #showreel .sr-lead, #showreel .sr-cta, #showreel .sr-stats .stat')
         .forEach(el=>{
           el.style.opacity = '0';
           el.style.transform = 'translateY(14px)';
           el.style.transition = 'opacity .6s ease, transform .6s ease';
-          io.observe(el);
+          io2.observe(el);
         });
     })();
 
