@@ -13,8 +13,6 @@
       --muted:#5f646b;
       --border:#ececec;
       --gold:#D4AF37;
-      --gold-soft:#f5e6a2;
-      --gold-dark:#b88900;
       --shadow: 0 10px 28px rgba(212,175,55,.08), 0 6px 16px rgba(0,0,0,.04);
     }
     .dark{
@@ -29,6 +27,7 @@
     html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
     a{text-decoration:none;color:inherit}
 
+    /* Fejléc */
     header{
       position:sticky;top:0;z-index:10;
       background:linear-gradient(#fffef6,var(--bg));
@@ -51,26 +50,37 @@
       border-color:rgba(212,175,55,.35);
       background:linear-gradient(90deg,#fff7d4,#f3e1a1);color:#7a5b0e;
     }
+    #importFile{display:none}
 
-    /* a chat NEM fix magasságú: az oldal nő és görgethető */
+    /* FIX magasságú chat doboz a főrészben */
     main{max-width:980px;margin:18px auto;padding:0 16px}
-    .panel{
+    .chat{
       background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);
-      padding:14px;
+      display:flex;flex-direction:column;overflow:hidden;
+      /* Fix magasság: az egész panel ~80vh, NEM nyúlik lejjebb */
+      height: min(80vh, 900px);
     }
 
-    /* felső eszköztár */
-    .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
-    .group{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--border);border-radius:12px;background:var(--bg)}
+    /* Felső eszköztár (a chat dobozon belül) */
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px;border-bottom:1px solid var(--border);background:var(--bg)}
+    .group{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--border);border-radius:12px;background:var(--card)}
     label{font-size:12px;color:var(--muted)}
     select, input[type="range"]{
-      appearance:none;border:1px solid var(--border);background:var(--card);color:var(--text);
+      appearance:none;border:1px solid var(--border);background:var(--bg);color:var(--text);
       padding:6px 8px;border-radius:8px;outline:none;font-size:13px;
     }
     input[type="range"]{width:140px}
 
-    /* üzenetek – nincs belső scroll! */
-    .messages{display:flex;flex-direction:column;gap:12px}
+    /* Üzenetek – SAJÁT SCROLL a fix dobozon belül */
+    .messages{
+      flex:1; /* kitölti a fix panel középső részét */
+      overflow:auto;
+      padding:16px;
+      display:flex;flex-direction:column;gap:12px;
+      background:
+        radial-gradient(80rem 30rem at 10% -10%, rgba(212,175,55,.08), transparent),
+        radial-gradient(80rem 30rem at 90% -10%, rgba(212,175,55,.06), transparent);
+    }
     .msg{
       max-width:78%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;line-height:1.5;background:var(--bg);
       position:relative;
@@ -88,20 +98,14 @@
       display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;
     }
 
-    /* input sáv – automatikus magasság, Enter=send */
-    .composer{margin-top:12px;display:flex;gap:10px;align-items:flex-end}
+    /* Komponáló sor (alul) */
+    .composer{display:flex;gap:10px;align-items:flex-end;padding:12px;border-top:1px solid var(--border);background:var(--bg)}
     .field{
-      flex:1;display:flex;align-items:flex-end;gap:8px;border:1px solid var(--border);border-radius:14px;background:var(--bg);padding:10px 12px;
+      flex:1;display:flex;align-items:flex-end;gap:8px;border:1px solid var(--border);border-radius:14px;background:var(--card);padding:10px 12px;
     }
     textarea{
       flex:1;border:0;outline:0;background:transparent;color:var(--text);resize:none;min-height:44px;max-height:240px;font-size:15px;line-height:1.5;
     }
-
-    .hint{margin-top:6px;font-size:12px;color:var(--muted)}
-    .spacer{height:24px}
-
-    /* hidden file input */
-    #importFile{display:none}
   </style>
 </head>
 <body>
@@ -122,8 +126,8 @@
   </header>
 
   <main>
-    <section class="panel">
-      <!-- felső eszköztár (UI, később kötjük API-hoz) -->
+    <section class="chat" id="chat">
+      <!-- Eszköztár (csak UI – API-t később kötjük) -->
       <div class="toolbar">
         <div class="group">
           <label for="model">Model</label>
@@ -140,161 +144,179 @@
         </div>
       </div>
 
-      <!-- üzenetek – oldal nő lefelé -->
+      <!-- Üzenetlista – FIX panelben saját scroll -->
       <div class="messages" id="messages"></div>
 
-      <!-- komponáló sor -->
+      <!-- Komponáló -->
       <div class="composer">
         <div class="field">
           <textarea id="prompt" placeholder="Írj üzenetet…" rows="1"></textarea>
         </div>
         <button class="btn gold" id="sendBtn">Küldés</button>
       </div>
-      <div class="hint">Enter = küldés · Shift+Enter = új sor · Szerkesztés / Törlés / Másolás az üzenet jobb felső sarkában</div>
     </section>
-
-    <div class="spacer"></div>
   </main>
 
   <script>
-    // ===== ÁLLAPOT =====
-    const STORE_KEY = 'tg_ai_chat_v2';
-    const THEME_KEY = 'tg_ai_theme';
-    let state = loadState();
+    /* ===== Állapot ===== */
+    var STORE_KEY = 'tg_ai_chat_v2';
+    var THEME_KEY = 'tg_ai_theme';
+    var state = loadState();
 
-    const $msgs = document.getElementById('messages');
-    const $prompt = document.getElementById('prompt');
-    const $send = document.getElementById('sendBtn');
-    const $export = document.getElementById('exportBtn');
-    const $import = document.getElementById('importFile');
-    const $clear = document.getElementById('clearBtn');
-    const $theme = document.getElementById('themeBtn');
-    const $model = document.getElementById('model');
-    const $temp = document.getElementById('temp');
-    const $tempVal = document.getElementById('tempVal');
+    var msgs = document.getElementById('messages');
+    var promptEl = document.getElementById('prompt');
+    var sendBtn = document.getElementById('sendBtn');
+    var exportBtn = document.getElementById('exportBtn');
+    var importFile = document.getElementById('importFile');
+    var clearBtn = document.getElementById('clearBtn');
+    var themeBtn = document.getElementById('themeBtn');
+    var modelEl = document.getElementById('model');
+    var tempEl = document.getElementById('temp');
+    var tempVal = document.getElementById('tempVal');
 
-    // ===== THEME =====
+    /* ===== Téma ===== */
     (function initTheme(){
-      const saved = localStorage.getItem(THEME_KEY) || 'light';
-      if(saved==='dark') document.documentElement.classList.add('dark');
-      $theme.textContent = document.documentElement.classList.contains('dark') ? '🌞' : '🌙';
+      var saved = localStorage.getItem(THEME_KEY) || 'light';
+      if(saved==='dark'){ document.documentElement.classList.add('dark'); themeBtn.textContent='🌞'; }
+      else { themeBtn.textContent='🌙'; }
     })();
-    $theme.addEventListener('click', ()=>{
-      document.documentElement.classList.toggle('dark');
-      const dark = document.documentElement.classList.contains('dark');
-      localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
-      $theme.textContent = dark ? '🌞' : '🌙';
+    themeBtn.addEventListener('click', function(){
+      var isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+      themeBtn.textContent = isDark ? '🌞' : '🌙';
     });
 
-    // ===== TEMP UI =====
-    $temp.addEventListener('input', ()=>{ $tempVal.textContent = $temp.value; });
+    /* ===== Temp UI ===== */
+    tempEl.addEventListener('input', function(){ tempVal.textContent = tempEl.value; });
 
-    // ===== AUTORESIZE =====
-    function autoresize(){ $prompt.style.height = 'auto'; $prompt.style.height = Math.min($prompt.scrollHeight, 240) + 'px'; }
-    $prompt.addEventListener('input', autoresize);
+    /* ===== Autoresize textarea ===== */
+    function autoresize(){
+      promptEl.style.height = 'auto';
+      var h = promptEl.scrollHeight;
+      if(h > 240) h = 240;
+      promptEl.style.height = h + 'px';
+    }
+    promptEl.addEventListener('input', autoresize);
     autoresize();
 
-    // ===== STORAGE =====
+    /* ===== Storage ===== */
     function loadState(){
       try{
-        const raw = localStorage.getItem(STORE_KEY);
+        var raw = localStorage.getItem(STORE_KEY);
         return raw ? JSON.parse(raw) : { messages: [] };
-      }catch{ return { messages: [] } }
+      }catch(e){ return { messages: [] }; }
     }
     function saveState(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
 
-    // ===== RENDER =====
-    function fmtTime(d){
-      const t = new Date(d);
+    /* ===== Render ===== */
+    function fmtTime(ts){
+      var t = new Date(ts);
       return t.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     }
+    function escapeHtml(s){ return s.replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); }); }
     function render(){
-      $msgs.innerHTML = '';
-      state.messages.forEach((m, i)=>{
-        const el = document.createElement('div');
+      msgs.innerHTML = '';
+      for(var i=0;i<state.messages.length;i++){
+        var m = state.messages[i];
+        var el = document.createElement('div');
         el.className = 'msg ' + (m.role === 'user' ? 'user' : 'assistant');
-        el.innerHTML = `
-          <div class="content" contenteditable="false">${escapeHtml(m.content).replace(/\n/g,'<br>')}</div>
-          <div class="meta">${m.role === 'assistant' ? 'AI' : 'Te'} • ${fmtTime(m.time)}</div>
-          <div class="actions">
-            <button class="icon-btn" data-act="copy" title="Másolás" data-idx="${i}">📋</button>
-            <button class="icon-btn" data-act="edit" title="Szerkesztés" data-idx="${i}">✏️</button>
-            <button class="icon-btn" data-act="del"  title="Törlés" data-idx="${i}">🗑️</button>
-          </div>
-        `;
-        $msgs.appendChild(el);
-      });
+        el.innerHTML =
+          '<div class="content" contenteditable="false">' + escapeHtml(m.content).replace(/\n/g,'<br>') + '</div>' +
+          '<div class="meta">' + (m.role==='assistant'?'AI':'Te') + ' • ' + fmtTime(m.time) + '</div>' +
+          '<div class="actions">' +
+            '<button class="icon-btn" data-act="copy" title="Másolás" data-idx="'+i+'">📋</button>' +
+            '<button class="icon-btn" data-act="edit" title="Szerkesztés" data-idx="'+i+'">✏️</button>' +
+            '<button class="icon-btn" data-act="del"  title="Törlés" data-idx="'+i+'">🗑️</button>' +
+          '</div>';
+        msgs.appendChild(el);
+      }
+      msgs.scrollTop = msgs.scrollHeight;
     }
-    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 
-    // ===== ACTIONS ON MESSAGES =====
-    $msgs.addEventListener('click', (e)=>{
-      const btn = e.target.closest('.icon-btn'); if(!btn) return;
-      const i = +btn.dataset.idx;
-      const act = btn.dataset.act;
-      if(Number.isNaN(i) || !state.messages[i]) return;
+    /* ===== Üzenet akciók ===== */
+    msgs.addEventListener('click', function(e){
+      var btn = e.target.closest ? e.target.closest('.icon-btn') : null;
+      if(!btn) return;
+      var i = +btn.getAttribute('data-idx');
+      var act = btn.getAttribute('data-act');
+      if(isNaN(i) || !state.messages[i]) return;
 
       if(act==='copy'){
-        navigator.clipboard.writeText(state.messages[i].content);
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(state.messages[i].content);
+        }
       }else if(act==='del'){
         state.messages.splice(i,1); saveState(); render();
       }else if(act==='edit'){
-        const node = $msgs.children[i].querySelector('.content');
-        const editing = node.getAttribute('contenteditable') === 'true';
+        var node = msgs.children[i].querySelector('.content');
+        var editing = node.getAttribute('contenteditable') === 'true';
         if(!editing){
           node.setAttribute('contenteditable','true'); node.focus();
         }else{
           node.setAttribute('contenteditable','false');
-          state.messages[i].content = node.innerText; state.messages[i].time = Date.now(); saveState(); render();
+          state.messages[i].content = node.innerText;
+          state.messages[i].time = Date.now();
+          saveState(); render();
         }
       }
     });
 
-    // ===== SEND (csak felveszi az üzenetet; API-t később kötjük) =====
+    /* ===== Küldés (később itt hívjuk az API-t) ===== */
     function send(){
-      const text = $prompt.value.trim();
+      var text = promptEl.value.trim();
       if(!text) return;
       state.messages.push({ role:'user', content:text, time: Date.now() });
-      $prompt.value=''; autoresize();
+      promptEl.value=''; autoresize();
       saveState(); render();
 
-      // IDE jön majd az API hívás:
-      // sendToAPI({ model: $model.value, temperature: +$temp.value, messages: state.messages })
-      //   .then(aiText => { state.messages.push({ role:'assistant', content: aiText, time: Date.now() }); saveState(); render(); });
+      // Itt lesz az API:
+      // sendToAPI({ model: modelEl.value, temperature: +tempEl.value, messages: state.messages })
+      //   .then(function(aiText){
+      //     state.messages.push({ role:'assistant', content: aiText, time: Date.now() });
+      //     saveState(); render();
+      //   });
     }
-    $send.addEventListener('click', send);
-    $prompt.addEventListener('keydown', (e)=>{
+    sendBtn.addEventListener('click', send);
+    promptEl.addEventListener('keydown', function(e){
       if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); }
     });
 
-    // ===== EXPORT .txt =====
+    /* ===== Export / Import / Clear ===== */
     function exportTxt(){
-      const lines = state.messages.map(m => `${m.role.toUpperCase()} [${new Date(m.time).toISOString()}]\n${m.content}\n`);
-      const blob = new Blob([lines.join('\n')], {type:'text/plain'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      var lines = state.messages.map(function(m){
+        return (m.role.toUpperCase() + ' [' + new Date(m.time).toISOString() + ']\n' + m.content + '\n');
+      });
+      var blob = new Blob([lines.join('\n')], {type:'text/plain'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
       a.href = url; a.download = 'tg-ai-chat.txt'; a.click();
       URL.revokeObjectURL(url);
     }
-    $export.addEventListener('click', exportTxt);
+    exportBtn.addEventListener('click', exportTxt);
 
-    // ===== IMPORT .json =====
-    $import.addEventListener('change', async (e)=>{
-      const file = e.target.files?.[0]; if(!file) return;
-      const text = await file.text();
-      try{
-        const data = JSON.parse(text);
-        if(Array.isArray(data.messages)) { state.messages = data.messages; saveState(); render(); }
-      }catch{}
-      e.target.value = '';
+    importFile.addEventListener('change', function(e){
+      var file = e.target.files && e.target.files[0]; if(!file) return;
+      var reader = new FileReader();
+      reader.onload = function(){
+        try{
+          var data = JSON.parse(reader.result);
+          if(data && Array.isArray(data.messages)){
+            state.messages = data.messages;
+            saveState(); render();
+          }
+        }catch(err){}
+        importFile.value='';
+      };
+      reader.readAsText(file);
     });
 
-    // ===== CLEAR =====
-    $clear.addEventListener('click', ()=>{
-      if(confirm('Biztos törlöd az egész beszélgetést?')){ state.messages = []; saveState(); render(); }
+    clearBtn.addEventListener('click', function(){
+      if(confirm('Biztos törlöd az egész beszélgetést?')){
+        state.messages = []; saveState(); render();
+      }
     });
 
-    // első render
+    /* ===== Init render ===== */
     render();
   </script>
 </body>
