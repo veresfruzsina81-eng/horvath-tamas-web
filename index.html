@@ -8,15 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --gold:#D4AF37;
-      --gold-soft:#f5e6a2;
-      --gold-dark:#b88900;
-      --gold-dark2:#e0b84f;
-      --header-top:#fffaf0;
-      --header-bottom:#f9f4df;
-      --text:#0b0b0c;
-      --muted:#656b73;
-      --border:#e6e7eb;
+      --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --gold-dark2:#e0b84f;
+      --header-top:#fffaf0; --header-bottom:#f9f4df; --text:#0b0b0c; --muted:#656b73; --border:#e6e7eb;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;scroll-behavior:smooth}
@@ -146,7 +139,7 @@
 
           <!-- RIGHT: flags + AI -->
           <div class="right-controls">
-            <div class="lang-switch" id="langSwitch" aria-label="Language switcher">
+            <div class="lang-switch" aria-label="Language switcher">
               <button class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
               <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
             </div>
@@ -174,7 +167,7 @@
         <a href="#contact" class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
         <a href="#contact" class="cta       nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
-          <div class="lang-switch" id="langSwitchMobile">
+          <div class="lang-switch">
             <button class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
             <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
           </div>
@@ -189,7 +182,7 @@
     </header>
 
     <main id="top">
-      <p>(A zászlókkal tényleg vált a nyelv; az AI gomb az <code>ai.html</code>-t nyitja új lapon.)</p>
+      <p>(A zászlókkal most már biztosan vált a nyelv; az AI gomb az <code>ai.html</code>-t nyitja új lapon.)</p>
     </main>
   </div>
 
@@ -197,7 +190,6 @@
     // név csillanás
     window.addEventListener('load', ()=>{
       document.getElementById('brandName').classList.add('sheen');
-      initLang();
     });
 
     // mobilmenü
@@ -217,37 +209,45 @@
     let idx = -1; function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); }
     step(); setInterval(step, 1100);
 
-    // ====== i18n ======
+    // ===== i18n – egyszerűsített, masszívan stabil változat =====
     const I18N = {
       hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem" },
       en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me" }
     };
-    function initLang(){
-      const flagSets = [document.getElementById('langSwitch'), document.getElementById('langSwitchMobile')].filter(Boolean);
-      const current = localStorage.getItem('lang') || 'hu';
-      applyLang(current);
-      flagSets.forEach(set=>{
-        set.addEventListener('click', e=>{
-          const btn = e.target.closest('.lang-btn'); if(!btn) return;
-          const lang = btn.dataset.lang || 'hu';
-          localStorage.setItem('lang', lang);
-          applyLang(lang);
-        });
+
+    const allFlagButtons = () => Array.from(document.querySelectorAll('.lang-btn'));
+
+    function setActiveFlag(lang){
+      allFlagButtons().forEach(btn=>{
+        btn.classList.toggle('active', btn.dataset.lang===lang);
       });
     }
+
     function applyLang(lang){
+      // 1) html lang
       document.documentElement.lang = lang;
-      // aktív jelölés
-      [document.getElementById('langSwitch'), document.getElementById('langSwitchMobile')]
-        .filter(Boolean).forEach(set=>{
-          set.querySelectorAll('.lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
-        });
-      // feliratok cseréje
+      // 2) feliratok
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key = el.getAttribute('data-i18n');
-        el.textContent = (I18N[lang] && I18N[lang][key]) ? I18N[lang][key] : el.textContent;
+        const txt = I18N[lang]?.[key];
+        if(txt) el.textContent = txt;
       });
+      // 3) zászló állapot
+      setActiveFlag(lang);
+      // 4) mentés
+      localStorage.setItem('lang', lang);
     }
+
+    // globális event a zászlókra (mindkét helyen működik)
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.lang-btn');
+      if(!btn) return;
+      const lang = btn.dataset.lang || 'hu';
+      applyLang(lang);
+    });
+
+    // init: korábbi választás vagy HU
+    applyLang(localStorage.getItem('lang') || 'hu');
   </script>
 </body>
 </html>
