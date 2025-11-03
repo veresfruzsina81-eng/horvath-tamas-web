@@ -83,6 +83,13 @@
     .nav-link:hover{transform:translateY(-2px)}
     .nav-cta{border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1); box-shadow:0 10px 24px rgba(212,175,55,.18);}
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
+
+    /* ÚJ: második kiemelt CTA */
+    .nav-cta.secondary{
+      border-color:rgba(212,175,55,.45);
+      background:linear-gradient(90deg,#fff7e1,#f7dfa3);
+    }
+
     .right-controls{display:none; align-items:center; gap:10px}
     .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
     .lang-btn{width:36px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:#fff; border:1px solid transparent; transition:.2s}
@@ -283,6 +290,55 @@
       width:48px; height:48px; object-fit:contain; margin:12px auto 0; opacity:.95;
       filter:drop-shadow(0 6px 18px rgba(212,175,55,.35));
     }
+
+    /* ===== WHY (Miért válassz minket) – HŰHA BLOKK ===== */
+    #why{
+      position:relative;
+      background:
+        radial-gradient(1200px 400px at 70% -10%, rgba(255,241,200,.25), rgba(255,255,255,0) 60%),
+        linear-gradient(180deg,#fffdfa,#ffffff);
+    }
+    #why .inner{max-width:1200px; margin:0 auto; padding:96px 20px;}
+    #why h2{
+      margin:0 0 10px; font-weight:800; font-size:42px;
+      background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    #why .lead{margin:0 0 28px; color:#3a3f46; font-weight:600}
+
+    .why-grid{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+    }
+    @media (max-width:980px){ .why-grid{grid-template-columns:1fr 1fr} }
+    @media (max-width:620px){ .why-grid{grid-template-columns:1fr} }
+
+    .why-card{
+      position:relative; border-radius:16px; padding:18px;
+      background:linear-gradient(180deg,#0f1218,#0a0d14);
+      border:1px solid #222735; color:#e9eef7;
+      box-shadow:0 18px 40px rgba(0,0,0,.10), inset 0 0 0 1px rgba(255,255,255,.03);
+      transform:translateY(10px); opacity:0;
+      transition:transform .6s ease, box-shadow .35s ease, opacity .6s ease;
+      overflow:hidden;
+    }
+    .why-card.in{ transform:none; opacity:1; }
+    .why-card:hover{ box-shadow:0 22px 60px rgba(0,0,0,.16) }
+
+    .why-card .halo{
+      position:absolute; inset:-30% -10% auto -10%; height:60%;
+      background:radial-gradient(600px 220px at 20% 40%, rgba(212,175,55,.18), transparent 60%);
+      pointer-events:none; filter:blur(6px);
+    }
+    .why-card h3{margin:6px 0 8px; font-size:18px}
+    .why-card p{margin:0; font-size:14px; color:#c8d0dc}
+    .why-badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; margin-top:12px;
+      border:1px solid rgba(212,175,55,.45);
+      background:linear-gradient(90deg,#fff7d4,#f3e1a1);
+      color:#3b2f12; font-weight:800; font-size:12px;
+      box-shadow:0 10px 24px rgba(212,175,55,.18);
+    }
+
   </style>
 </head>
 <body>
@@ -306,10 +362,12 @@
           </a>
 
           <nav id="desktopNav">
-            <a href="#about"   class="nav-link nav-label" data-i18n="about">Rólam</a>
+            <a href="#about"    class="nav-link nav-label" data-i18n="about">Rólam</a>
             <a href="#showreel" class="nav-link nav-label" data-i18n="work">Munkáim</a>
-            <a href="#contact" class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
-            <a href="#contact" class="nav-cta  nav-label" data-i18n="hire">Írj nekem</a>
+            <a href="#why"      class="nav-link nav-label">Miért válassz minket</a>
+            <a href="#contact"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
+            <a href="#why"      class="nav-cta  secondary">Miért válassz minket</a>
+            <a href="#contact"  class="nav-cta  nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
           <div class="right-controls">
@@ -355,10 +413,12 @@
 
       <!-- MOBIL MENÜ -->
       <div class="menu" id="mobileMenu">
-        <a href="#about"   class="menu-link nav-label" data-i18n="about">Rólam</a>
+        <a href="#about"    class="menu-link nav-label" data-i18n="about">Rólam</a>
         <a href="#showreel" class="menu-link nav-label" data-i18n="work">Munkáim</a>
-        <a href="#contact" class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
-        <a href="#contact" class="cta       nav-label" data-i18n="hire">Írj nekem</a>
+        <a href="#why"      class="menu-link">Miért válassz minket</a>
+        <a href="#contact"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
+        <a href="#why"      class="cta">Miért válassz minket</a>
+        <a href="#contact"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
           <div class="lang-switch">
             <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
@@ -407,7 +467,7 @@
             </p>
             <div class="hero-cta reveal d3">
               <a class="btn-gold" href="#showreel" data-i18n="seeWork">Munkáim</a>
-              <a class="btn-ghost" href="#contact" data-i18n="quote">Kérj ajánlatot</a>
+              <a class="btn-ghost" href="#why">Miért mi?</a>
             </div>
           </div>
 
@@ -523,7 +583,7 @@
               <div class="stat"><span class="n" data-count="99.9">0</span><span class="t">% uptime céllal</span></div>
             </div>
 
-            <!-- Technológiák itt (ahogy kérted: showreelben) -->
+            <!-- Technológiák itt -->
             <div class="sr-skills">
               <div class="skill"><div class="label">JavaScript / TypeScript</div><div class="meter" style="--p:92%"><span></span></div></div>
               <div class="skill"><div class="label">PHP / MySQL</div><div class="meter" style="--p:90%"><span></span></div></div>
@@ -572,11 +632,40 @@
         </div>
       </section>
 
+      <!-- ===== WHY / HŰHA BLOKK ===== -->
+      <section id="why">
+        <div class="inner">
+          <h2>Miért válassz minket</h2>
+          <p class="lead">Nem sablont kapsz, hanem üzleti célra hangolt, mérhetően jobb megoldást — prémium kivitelben.</p>
+
+          <div class="why-grid">
+            <div class="why-card">
+              <div class="halo"></div>
+              <h3>Apple-szintű kivitel</h3>
+              <p>Letisztult UI, sima animációk, 60 FPS mikro-interakciók, valós eszközökön tesztelve.</p>
+              <span class="why-badge">Pixel-pontosság</span>
+            </div>
+            <div class="why-card">
+              <div class="halo"></div>
+              <h3>Teljes rendszer, nem csak UI</h3>
+              <p>Webshop + Admin PRO + fizetés + jogosultság + riportok — egy kézben, egy kódbázisban.</p>
+              <span class="why-badge">End-to-end</span>
+            </div>
+            <div class="why-card">
+              <div class="halo"></div>
+              <h3>Gyors iteráció</h3>
+              <p>Naponta látható előrehaladás, demók, mérföldkövek. 7 napos MVP, ha kell.</p>
+              <span class="why-badge">MVP 7 nap alatt</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ===== KÓDOLÁS – külön szekció ===== -->
       <section id="kodolas">
         <div class="inner">
           <h2 class="kod-title">Valós idejű kódírás — prémium kivitelben</h2>
-          <p class="kod-sub">Egyedi tervezés és egyedi fejlesztés. </p>
+          <p class="kod-sub">Egyedi tervezés és egyedi fejlesztés.</p>
 
           <div class="tg-typing" id="typing1">
             <div class="tty-bar">
@@ -804,6 +893,15 @@
           el.style.transition = 'opacity .6s ease, transform .6s ease';
           io2.observe(el);
         });
+    })();
+
+    /* WHY kártyák belibbenés */
+    (function(){
+      const els = document.querySelectorAll('#why .why-card');
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+      }, {threshold:.2});
+      els.forEach(el=> io.observe(el));
     })();
 
     /* Globális 3D arany por háttér */
