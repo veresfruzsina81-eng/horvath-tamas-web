@@ -1,30 +1,171 @@
 <!doctype html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TamasGem Studio — AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff}
-    .wrap{min-height:100dvh;display:grid;place-items:center;padding:40px}
-    .card{
-      max-width:720px;width:100%;border:1px solid #ececec;border-radius:16px;
-      padding:32px;box-shadow:0 10px 28px rgba(0,0,0,.06)
+    :root{
+      --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --border:#ececec; --text:#0b0b0c; --muted:#5f646b;
     }
-    h1{margin:0 0 10px;font-size:22px}
-    p{margin:0 0 6px;color:#555}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#fff4cc;border:1px solid #e8d186;color:#7a5b0e;font-weight:600;font-size:12px;margin-bottom:10px}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#fffaf7}
+    .app{min-height:100dvh;display:flex;flex-direction:column}
+    header{
+      position:sticky;top:0;background:linear-gradient(#fffef6,#fff);border-bottom:1px solid var(--border);
+      backdrop-filter:saturate(140%) blur(6px);z-index:10;
+    }
+    .container{max-width:960px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+    .brand img{height:28px;width:auto;filter:drop-shadow(0 0 6px rgba(212,175,55,.35))}
+    .brand span{font-weight:600}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#fff4cc;border:1px solid #e8d186;color:#7a5b0e;font-weight:600;font-size:12px
+    }
+
+    .main{flex:1;display:flex;justify-content:center;padding:16px}
+    .chat{
+      width:100%;max-width:960px;background:#fff;border:1px solid var(--border);border-radius:16px;
+      box-shadow:0 10px 28px rgba(212,175,55,.08), 0 6px 16px rgba(0,0,0,.04);
+      display:flex;flex-direction:column;overflow:hidden
+    }
+    .chat-header{
+      padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;justify-content:space-between;background:linear-gradient(180deg,#fffdf2,#fff)
+    }
+    .chat-title{display:flex;align-items:center;gap:10px}
+    .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#ffd978,#d4af37);box-shadow:0 0 10px rgba(212,175,55,.6)}
+    .status{font-size:12px;color:var(--muted)}
+    .messages{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background:
+      radial-gradient(80rem 30rem at 10% -10%, rgba(212,175,55,.08), transparent),
+      radial-gradient(80rem 30rem at 90% -10%, rgba(212,175,55,.06), transparent)
+    }
+    .msg{max-width:78%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;line-height:1.4;background:#fff}
+    .msg.assistant{align-self:flex-start;background:linear-gradient(180deg,#fffef8,#fff);border-color:#f1e6bf}
+    .msg.user{align-self:flex-end;background:#ffffff;border-color:#eaeaea}
+    .meta{margin-top:6px;font-size:12px;color:#8a8f96}
+    .typing{display:flex;align-items:center;gap:4px}
+    .dot3{width:6px;height:6px;border-radius:50%;background:#d4af37;opacity:.6;animation:b 1.4s infinite}
+    .dot3:nth-child(2){animation-delay:.2s}.dot3:nth-child(3){animation-delay:.4s}
+    @keyframes b{0%,100%{opacity:.3}50%{opacity:1}}
+
+    .input{display:flex;gap:10px;padding:12px;border-top:1px solid var(--border);background:#fff;align-items:center}
+    .field{flex:1;display:flex;align-items:center;gap:10px;border:1px solid #e8e8e8;border-radius:14px;padding:10px 12px;background:#fff}
+    .field input{flex:1;border:none;outline:none;font-size:15px;background:transparent}
+    .send{
+      border:1px solid rgba(212,175,55,.35);background:linear-gradient(90deg,#fff7d4,#f3e1a1);
+      border-radius:12px;padding:10px 14px;font-weight:600;color:#7a5b0e;cursor:pointer;
+      box-shadow:0 8px 18px rgba(212,175,55,.18);transition:.2s ease;
+    }
+    .send:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(212,175,55,.25)}
+    .quick{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;border-top:1px dashed #eee;background:#fff}
+    .chip{padding:6px 10px;border-radius:999px;border:1px solid #eee;background:#fff;color:#555;font-size:12px;cursor:pointer}
+    .chip:hover{border-color:#e3c96b;color:#7a5b0e}
+
+    .banner{padding:8px 12px;text-align:center;font-size:12px;color:#7a5b0e;background:#fff7d9;border-bottom:1px solid #f1e6bf}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <span class="badge">AI — coming soon</span>
-      <h1>TamasGem Studio — AI Lab</h1>
-      <p>Ez az oldal később egy interaktív AI funkció lesz (chat / generátor / asszisztens).</p>
-      <p>Most placeholderként szolgál, hogy a fejlécből megnyíljon egy külön oldal.</p>
-    </div>
+  <div class="app">
+    <header>
+      <div class="container">
+        <a class="brand" href="index.html">
+          <img src="logo.png" alt="TamasGem Studio" />
+          <span>TamasGem Studio</span>
+        </a>
+        <span class="badge">AI — preview</span>
+      </div>
+    </header>
+
+    <div class="banner">Offline mód – az üzenetek csak a böngésződben tárolódnak. API-kulcs később lesz bekötve.</div>
+
+    <main class="main">
+      <section class="chat" id="chat">
+        <div class="chat-header">
+          <div class="chat-title">
+            <span class="dot"></span>
+            <strong>TamasGem AI Assistant</strong>
+          </div>
+          <span class="status" id="statusText">Készen állok (offline)</span>
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+        <div class="quick" id="quickBar">
+          <button class="chip">Mutasd a portfólió szekciót</button>
+          <button class="chip">Adj árazási javaslatot</button>
+          <button class="chip">Készíts bevezető szöveget</button>
+          <button class="chip">UX tippek a főoldalhoz</button>
+        </div>
+
+        <div class="input">
+          <div class="field">
+            <input id="prompt" placeholder="Írj üzenetet… (Offline: demó mód)" />
+          </div>
+          <button class="send" id="sendBtn">Küldés</button>
+        </div>
+      </section>
+    </main>
   </div>
+
+  <script>
+    const MKEY = 'tg_chat_history_v1';
+    const $msgs = document.getElementById('messages');
+    const $prompt = document.getElementById('prompt');
+    const $send = document.getElementById('sendBtn');
+    const $quick = document.getElementById('quickBar');
+
+    function now(){ const d=new Date(); return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+    function save(){ localStorage.setItem(MKEY, $msgs.innerHTML); }
+    function load(){ const h = localStorage.getItem(MKEY); if(h) $msgs.innerHTML = h; $msgs.scrollTop = $msgs.scrollHeight; }
+
+    function bubble(text, who='assistant'){
+      const wrap = document.createElement('div');
+      wrap.className = `msg ${who}`;
+      wrap.innerHTML = `<div>${text}</div><div class="meta">${who==='assistant'?'AI':'Te'} • ${now()}</div>`;
+      $msgs.appendChild(wrap);
+      $msgs.scrollTop = $msgs.scrollHeight;
+      save();
+    }
+    function typing(on=true){
+      let el = document.getElementById('typing');
+      if(on){
+        if(el) return;
+        el = document.createElement('div');
+        el.id='typing';
+        el.className='msg assistant';
+        el.innerHTML = `<div class="typing"><span class="dot3"></span><span class="dot3"></span><span class="dot3"></span></div>`;
+        $msgs.appendChild(el);
+        $msgs.scrollTop = $msgs.scrollHeight;
+      } else if(el){ el.remove(); }
+    }
+
+    function send(){
+      const txt = $prompt.value.trim();
+      if(!txt) return;
+      bubble(txt, 'user');
+      $prompt.value='';
+      typing(true);
+      // OFFLINE válasz (helykitöltő)
+      setTimeout(()=>{
+        typing(false);
+        bubble('🔒 Offline előnézet: itt majd az AI válaszol. Később bekötjük az API-t, addig a beszélgetést elmentem a böngésződbe.');
+      }, 900);
+    }
+
+    $send.addEventListener('click', send);
+    $prompt.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); send(); }});
+    $quick.addEventListener('click', e=>{
+      const chip = e.target.closest('.chip'); if(!chip) return;
+      $prompt.value = chip.textContent.trim();
+      send();
+    });
+
+    // első betöltés
+    load();
+    if(!$msgs.innerHTML){
+      bubble('Szia! Ez a TamasGem Studio prémium AI chat felülete (előnézet). Írj egy üzenetet, és amint kész, bekötjük a valódi választ. ✨');
+    }
+  </script>
 </body>
 </html>
