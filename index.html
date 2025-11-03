@@ -77,11 +77,13 @@
     .right-controls{display:none; align-items:center; gap:10px}
     .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
     .lang-btn{
-      width:34px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center;
-      font-size:16px; cursor:pointer; background:#fff; border:1px solid transparent; transition:.2s ease;
+      width:36px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+      cursor:pointer; background:#fff; border:1px solid transparent; transition:.2s ease; overflow:hidden;
     }
     .lang-btn:hover{transform:translateY(-1px)}
     .lang-btn.active{border-color:rgba(212,175,55,.6); box-shadow:0 0 0 3px rgba(212,175,55,.12)}
+    .flag{width:24px; height:16px; border-radius:4px; display:block}
+
     .ai-btn{
       display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border-radius:14px; text-decoration:none;
       border:1px solid rgba(212,175,55,.35); background:#fff; color:#7a5b0e; font-weight:600; font-size:14px;
@@ -140,8 +142,27 @@
           <!-- RIGHT: flags + AI -->
           <div class="right-controls">
             <div class="lang-switch" aria-label="Language switcher">
-              <button class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
-              <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
+              <!-- 🇭🇺 HUNGARY (inline SVG) -->
+              <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
+                <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="24" height="16" fill="#fff"/>
+                  <rect width="24" height="5.333" y="0" fill="#CE2939"/>
+                  <rect width="24" height="5.333" y="10.667" fill="#477050"/>
+                </svg>
+              </button>
+              <!-- 🇬🇧 UNITED KINGDOM (inline SVG, stilizált) -->
+              <button class="lang-btn" data-lang="en" title="English" aria-label="English">
+                <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+                  <clipPath id="u"><rect width="24" height="16" rx="2" ry="2"/></clipPath>
+                  <g clip-path="url(#u)">
+                    <rect width="24" height="16" fill="#012169"/>
+                    <path d="M0,0 L24,16 M24,0 L0,16" stroke="#FFF" stroke-width="3.2"/>
+                    <path d="M0,0 L24,16 M24,0 L0,16" stroke="#C8102E" stroke-width="1.6"/>
+                    <path d="M12,0 V16 M0,8 H24" stroke="#FFF" stroke-width="5.2"/>
+                    <path d="M12,0 V16 M0,8 H24" stroke="#C8102E" stroke-width="3.2"/>
+                  </g>
+                </svg>
+              </button>
             </div>
             <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
               <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -168,8 +189,26 @@
         <a href="#contact" class="cta       nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
           <div class="lang-switch">
-            <button class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
-            <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
+            <!-- mobilon is ugyanazok az inline zászlók -->
+            <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
+              <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="16" fill="#fff"/>
+                <rect width="24" height="5.333" y="0" fill="#CE2939"/>
+                <rect width="24" height="5.333" y="10.667" fill="#477050"/>
+              </svg>
+            </button>
+            <button class="lang-btn" data-lang="en" title="English" aria-label="English">
+              <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+                <clipPath id="u2"><rect width="24" height="16" rx="2" ry="2"/></clipPath>
+                <g clip-path="url(#u2)">
+                  <rect width="24" height="16" fill="#012169"/>
+                  <path d="M0,0 L24,16 M24,0 L0,16" stroke="#FFF" stroke-width="3.2"/>
+                  <path d="M0,0 L24,16 M24,0 L0,16" stroke="#C8102E" stroke-width="1.6"/>
+                  <path d="M12,0 V16 M0,8 H24" stroke="#FFF" stroke-width="5.2"/>
+                  <path d="M12,0 V16 M0,8 H24" stroke="#C8102E" stroke-width="3.2"/>
+                </g>
+              </svg>
+            </button>
           </div>
           <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
             <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -182,7 +221,7 @@
     </header>
 
     <main id="top">
-      <p>(A zászlókkal most már biztosan vált a nyelv; az AI gomb az <code>ai.html</code>-t nyitja új lapon.)</p>
+      <p>(A zászlók most **beépített SVG-k**, így minden böngészőn megjelennek. A váltás továbbra is működik és mentődik.)</p>
     </main>
   </div>
 
@@ -209,44 +248,26 @@
     let idx = -1; function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); }
     step(); setInterval(step, 1100);
 
-    // ===== i18n – egyszerűsített, masszívan stabil változat =====
+    // i18n
     const I18N = {
       hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem" },
       en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me" }
     };
-
-    const allFlagButtons = () => Array.from(document.querySelectorAll('.lang-btn'));
-
-    function setActiveFlag(lang){
-      allFlagButtons().forEach(btn=>{
-        btn.classList.toggle('active', btn.dataset.lang===lang);
-      });
-    }
-
     function applyLang(lang){
-      // 1) html lang
       document.documentElement.lang = lang;
-      // 2) feliratok
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key = el.getAttribute('data-i18n');
         const txt = I18N[lang]?.[key];
         if(txt) el.textContent = txt;
       });
-      // 3) zászló állapot
-      setActiveFlag(lang);
-      // 4) mentés
+      document.querySelectorAll('.lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
       localStorage.setItem('lang', lang);
     }
-
-    // globális event a zászlókra (mindkét helyen működik)
     document.addEventListener('click', (e)=>{
       const btn = e.target.closest('.lang-btn');
       if(!btn) return;
-      const lang = btn.dataset.lang || 'hu';
-      applyLang(lang);
+      applyLang(btn.dataset.lang || 'hu');
     });
-
-    // init: korábbi választás vagy HU
     applyLang(localStorage.getItem('lang') || 'hu');
   </script>
 </body>
