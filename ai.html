@@ -7,165 +7,295 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --border:#ececec; --text:#0b0b0c; --muted:#5f646b;
+      --bg:#fff;
+      --card:#fff;
+      --text:#0b0b0c;
+      --muted:#5f646b;
+      --border:#ececec;
+      --gold:#D4AF37;
+      --gold-soft:#f5e6a2;
+      --gold-dark:#b88900;
+      --shadow: 0 10px 28px rgba(212,175,55,.08), 0 6px 16px rgba(0,0,0,.04);
+    }
+    .dark{
+      --bg:#0b0c0f;
+      --card:#111319;
+      --text:#eaeef6;
+      --muted:#9aa3ad;
+      --border:#1e232b;
+      --shadow: 0 10px 28px rgba(0,0,0,.6), 0 6px 16px rgba(0,0,0,.4);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#fffaf7}
-    .app{min-height:100dvh;display:flex;flex-direction:column}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    a{text-decoration:none;color:inherit}
+
     header{
-      position:sticky;top:0;background:linear-gradient(#fffef6,#fff);border-bottom:1px solid var(--border);
-      backdrop-filter:saturate(140%) blur(6px);z-index:10;
+      position:sticky;top:0;z-index:10;
+      background:linear-gradient(#fffef6,var(--bg));
+      border-bottom:1px solid var(--border);
+      backdrop-filter:saturate(140%) blur(6px);
     }
-    .container{max-width:960px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+    .dark header{background:linear-gradient(#0c0d12,var(--bg))}
+    .container{max-width:980px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px}
     .brand img{height:28px;width:auto;filter:drop-shadow(0 0 6px rgba(212,175,55,.35))}
-    .brand span{font-weight:600}
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#fff4cc;border:1px solid #e8d186;color:#7a5b0e;font-weight:600;font-size:12px
+    .top-actions{display:flex;align-items:center;gap:10px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:12px;border:1px solid var(--border);
+      background:var(--card);color:var(--text);font-weight:600;font-size:13px;
+      box-shadow:var(--shadow);cursor:pointer;transition:.2s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.gold{
+      border-color:rgba(212,175,55,.35);
+      background:linear-gradient(90deg,#fff7d4,#f3e1a1);color:#7a5b0e;
     }
 
-    .main{flex:1;display:flex;justify-content:center;padding:16px}
-    .chat{
-      width:100%;max-width:960px;background:#fff;border:1px solid var(--border);border-radius:16px;
-      box-shadow:0 10px 28px rgba(212,175,55,.08), 0 6px 16px rgba(0,0,0,.04);
-      display:flex;flex-direction:column;overflow:hidden
+    /* a chat NEM fix magasságú: az oldal nő és görgethető */
+    main{max-width:980px;margin:18px auto;padding:0 16px}
+    .panel{
+      background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);
+      padding:14px;
     }
-    .chat-header{
-      padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;justify-content:space-between;background:linear-gradient(180deg,#fffdf2,#fff)
-    }
-    .chat-title{display:flex;align-items:center;gap:10px}
-    .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#ffd978,#d4af37);box-shadow:0 0 10px rgba(212,175,55,.6)}
-    .status{font-size:12px;color:var(--muted)}
-    .messages{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background:
-      radial-gradient(80rem 30rem at 10% -10%, rgba(212,175,55,.08), transparent),
-      radial-gradient(80rem 30rem at 90% -10%, rgba(212,175,55,.06), transparent)
-    }
-    .msg{max-width:78%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;line-height:1.4;background:#fff}
-    .msg.assistant{align-self:flex-start;background:linear-gradient(180deg,#fffef8,#fff);border-color:#f1e6bf}
-    .msg.user{align-self:flex-end;background:#ffffff;border-color:#eaeaea}
-    .meta{margin-top:6px;font-size:12px;color:#8a8f96}
-    .typing{display:flex;align-items:center;gap:4px}
-    .dot3{width:6px;height:6px;border-radius:50%;background:#d4af37;opacity:.6;animation:b 1.4s infinite}
-    .dot3:nth-child(2){animation-delay:.2s}.dot3:nth-child(3){animation-delay:.4s}
-    @keyframes b{0%,100%{opacity:.3}50%{opacity:1}}
 
-    .input{display:flex;gap:10px;padding:12px;border-top:1px solid var(--border);background:#fff;align-items:center}
-    .field{flex:1;display:flex;align-items:center;gap:10px;border:1px solid #e8e8e8;border-radius:14px;padding:10px 12px;background:#fff}
-    .field input{flex:1;border:none;outline:none;font-size:15px;background:transparent}
-    .send{
-      border:1px solid rgba(212,175,55,.35);background:linear-gradient(90deg,#fff7d4,#f3e1a1);
-      border-radius:12px;padding:10px 14px;font-weight:600;color:#7a5b0e;cursor:pointer;
-      box-shadow:0 8px 18px rgba(212,175,55,.18);transition:.2s ease;
+    /* felső eszköztár */
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+    .group{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--border);border-radius:12px;background:var(--bg)}
+    label{font-size:12px;color:var(--muted)}
+    select, input[type="range"]{
+      appearance:none;border:1px solid var(--border);background:var(--card);color:var(--text);
+      padding:6px 8px;border-radius:8px;outline:none;font-size:13px;
     }
-    .send:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(212,175,55,.25)}
-    .quick{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;border-top:1px dashed #eee;background:#fff}
-    .chip{padding:6px 10px;border-radius:999px;border:1px solid #eee;background:#fff;color:#555;font-size:12px;cursor:pointer}
-    .chip:hover{border-color:#e3c96b;color:#7a5b0e}
+    input[type="range"]{width:140px}
 
-    .banner{padding:8px 12px;text-align:center;font-size:12px;color:#7a5b0e;background:#fff7d9;border-bottom:1px solid #f1e6bf}
+    /* üzenetek – nincs belső scroll! */
+    .messages{display:flex;flex-direction:column;gap:12px}
+    .msg{
+      max-width:78%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;line-height:1.5;background:var(--bg);
+      position:relative;
+    }
+    .msg.assistant{align-self:flex-start;background:linear-gradient(180deg,#fffef8,var(--bg));border-color:#f1e6bf}
+    .dark .msg.assistant{background:linear-gradient(180deg,#14161c,var(--bg));border-color:#2a2f39}
+    .msg.user{align-self:flex-end}
+    .meta{margin-top:6px;font-size:11px;color:var(--muted)}
+    .actions{
+      position:absolute;top:8px;right:8px;display:flex;gap:6px;opacity:.0;transition:.2s;pointer-events:none;
+    }
+    .msg:hover .actions{opacity:1;pointer-events:auto}
+    .icon-btn{
+      width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--card);
+      display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;
+    }
+
+    /* input sáv – automatikus magasság, Enter=send */
+    .composer{margin-top:12px;display:flex;gap:10px;align-items:flex-end}
+    .field{
+      flex:1;display:flex;align-items:flex-end;gap:8px;border:1px solid var(--border);border-radius:14px;background:var(--bg);padding:10px 12px;
+    }
+    textarea{
+      flex:1;border:0;outline:0;background:transparent;color:var(--text);resize:none;min-height:44px;max-height:240px;font-size:15px;line-height:1.5;
+    }
+
+    .hint{margin-top:6px;font-size:12px;color:var(--muted)}
+    .spacer{height:24px}
+
+    /* hidden file input */
+    #importFile{display:none}
   </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <div class="container">
-        <a class="brand" href="index.html">
-          <img src="logo.png" alt="TamasGem Studio" />
-          <span>TamasGem Studio</span>
-        </a>
-        <span class="badge">AI — preview</span>
+  <header>
+    <div class="container">
+      <a class="brand" href="index.html" title="Vissza">
+        <img src="logo.png" alt="TamasGem Studio" />
+        <strong>TamasGem Studio — AI</strong>
+      </a>
+      <div class="top-actions">
+        <button class="btn" id="themeBtn" title="Dark / Light mód váltás">🌙</button>
+        <button class="btn" id="exportBtn" title="Export .txt">⬇️ Export</button>
+        <label class="btn" for="importFile" title="Import .json">⬆️ Import</label>
+        <input id="importFile" type="file" accept="application/json" />
+        <button class="btn" id="clearBtn" title="Törlés (chat ürítése)">🗑️ Clear</button>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <div class="banner">Offline mód – az üzenetek csak a böngésződben tárolódnak. API-kulcs később lesz bekötve.</div>
-
-    <main class="main">
-      <section class="chat" id="chat">
-        <div class="chat-header">
-          <div class="chat-title">
-            <span class="dot"></span>
-            <strong>TamasGem AI Assistant</strong>
-          </div>
-          <span class="status" id="statusText">Készen állok (offline)</span>
+  <main>
+    <section class="panel">
+      <!-- felső eszköztár (UI, később kötjük API-hoz) -->
+      <div class="toolbar">
+        <div class="group">
+          <label for="model">Model</label>
+          <select id="model">
+            <option value="gpt-5">GPT-5</option>
+            <option value="gpt-4.1">GPT-4.1</option>
+            <option value="claude">Claude</option>
+          </select>
         </div>
-
-        <div class="messages" id="messages"></div>
-
-        <div class="quick" id="quickBar">
-          <button class="chip">Mutasd a portfólió szekciót</button>
-          <button class="chip">Adj árazási javaslatot</button>
-          <button class="chip">Készíts bevezető szöveget</button>
-          <button class="chip">UX tippek a főoldalhoz</button>
+        <div class="group">
+          <label for="temp">Temperature</label>
+          <input id="temp" type="range" min="0" max="2" step="0.1" value="1.0" />
+          <span id="tempVal" aria-hidden="true">1.0</span>
         </div>
+      </div>
 
-        <div class="input">
-          <div class="field">
-            <input id="prompt" placeholder="Írj üzenetet… (Offline: demó mód)" />
-          </div>
-          <button class="send" id="sendBtn">Küldés</button>
+      <!-- üzenetek – oldal nő lefelé -->
+      <div class="messages" id="messages"></div>
+
+      <!-- komponáló sor -->
+      <div class="composer">
+        <div class="field">
+          <textarea id="prompt" placeholder="Írj üzenetet…" rows="1"></textarea>
         </div>
-      </section>
-    </main>
-  </div>
+        <button class="btn gold" id="sendBtn">Küldés</button>
+      </div>
+      <div class="hint">Enter = küldés · Shift+Enter = új sor · Szerkesztés / Törlés / Másolás az üzenet jobb felső sarkában</div>
+    </section>
+
+    <div class="spacer"></div>
+  </main>
 
   <script>
-    const MKEY = 'tg_chat_history_v1';
+    // ===== ÁLLAPOT =====
+    const STORE_KEY = 'tg_ai_chat_v2';
+    const THEME_KEY = 'tg_ai_theme';
+    let state = loadState();
+
     const $msgs = document.getElementById('messages');
     const $prompt = document.getElementById('prompt');
     const $send = document.getElementById('sendBtn');
-    const $quick = document.getElementById('quickBar');
+    const $export = document.getElementById('exportBtn');
+    const $import = document.getElementById('importFile');
+    const $clear = document.getElementById('clearBtn');
+    const $theme = document.getElementById('themeBtn');
+    const $model = document.getElementById('model');
+    const $temp = document.getElementById('temp');
+    const $tempVal = document.getElementById('tempVal');
 
-    function now(){ const d=new Date(); return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
-    function save(){ localStorage.setItem(MKEY, $msgs.innerHTML); }
-    function load(){ const h = localStorage.getItem(MKEY); if(h) $msgs.innerHTML = h; $msgs.scrollTop = $msgs.scrollHeight; }
-
-    function bubble(text, who='assistant'){
-      const wrap = document.createElement('div');
-      wrap.className = `msg ${who}`;
-      wrap.innerHTML = `<div>${text}</div><div class="meta">${who==='assistant'?'AI':'Te'} • ${now()}</div>`;
-      $msgs.appendChild(wrap);
-      $msgs.scrollTop = $msgs.scrollHeight;
-      save();
-    }
-    function typing(on=true){
-      let el = document.getElementById('typing');
-      if(on){
-        if(el) return;
-        el = document.createElement('div');
-        el.id='typing';
-        el.className='msg assistant';
-        el.innerHTML = `<div class="typing"><span class="dot3"></span><span class="dot3"></span><span class="dot3"></span></div>`;
-        $msgs.appendChild(el);
-        $msgs.scrollTop = $msgs.scrollHeight;
-      } else if(el){ el.remove(); }
-    }
-
-    function send(){
-      const txt = $prompt.value.trim();
-      if(!txt) return;
-      bubble(txt, 'user');
-      $prompt.value='';
-      typing(true);
-      // OFFLINE válasz (helykitöltő)
-      setTimeout(()=>{
-        typing(false);
-        bubble('🔒 Offline előnézet: itt majd az AI válaszol. Később bekötjük az API-t, addig a beszélgetést elmentem a böngésződbe.');
-      }, 900);
-    }
-
-    $send.addEventListener('click', send);
-    $prompt.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); send(); }});
-    $quick.addEventListener('click', e=>{
-      const chip = e.target.closest('.chip'); if(!chip) return;
-      $prompt.value = chip.textContent.trim();
-      send();
+    // ===== THEME =====
+    (function initTheme(){
+      const saved = localStorage.getItem(THEME_KEY) || 'light';
+      if(saved==='dark') document.documentElement.classList.add('dark');
+      $theme.textContent = document.documentElement.classList.contains('dark') ? '🌞' : '🌙';
+    })();
+    $theme.addEventListener('click', ()=>{
+      document.documentElement.classList.toggle('dark');
+      const dark = document.documentElement.classList.contains('dark');
+      localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+      $theme.textContent = dark ? '🌞' : '🌙';
     });
 
-    // első betöltés
-    load();
-    if(!$msgs.innerHTML){
-      bubble('Szia! Ez a TamasGem Studio prémium AI chat felülete (előnézet). Írj egy üzenetet, és amint kész, bekötjük a valódi választ. ✨');
+    // ===== TEMP UI =====
+    $temp.addEventListener('input', ()=>{ $tempVal.textContent = $temp.value; });
+
+    // ===== AUTORESIZE =====
+    function autoresize(){ $prompt.style.height = 'auto'; $prompt.style.height = Math.min($prompt.scrollHeight, 240) + 'px'; }
+    $prompt.addEventListener('input', autoresize);
+    autoresize();
+
+    // ===== STORAGE =====
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(STORE_KEY);
+        return raw ? JSON.parse(raw) : { messages: [] };
+      }catch{ return { messages: [] } }
     }
+    function saveState(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+    // ===== RENDER =====
+    function fmtTime(d){
+      const t = new Date(d);
+      return t.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    }
+    function render(){
+      $msgs.innerHTML = '';
+      state.messages.forEach((m, i)=>{
+        const el = document.createElement('div');
+        el.className = 'msg ' + (m.role === 'user' ? 'user' : 'assistant');
+        el.innerHTML = `
+          <div class="content" contenteditable="false">${escapeHtml(m.content).replace(/\n/g,'<br>')}</div>
+          <div class="meta">${m.role === 'assistant' ? 'AI' : 'Te'} • ${fmtTime(m.time)}</div>
+          <div class="actions">
+            <button class="icon-btn" data-act="copy" title="Másolás" data-idx="${i}">📋</button>
+            <button class="icon-btn" data-act="edit" title="Szerkesztés" data-idx="${i}">✏️</button>
+            <button class="icon-btn" data-act="del"  title="Törlés" data-idx="${i}">🗑️</button>
+          </div>
+        `;
+        $msgs.appendChild(el);
+      });
+    }
+    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+    // ===== ACTIONS ON MESSAGES =====
+    $msgs.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.icon-btn'); if(!btn) return;
+      const i = +btn.dataset.idx;
+      const act = btn.dataset.act;
+      if(Number.isNaN(i) || !state.messages[i]) return;
+
+      if(act==='copy'){
+        navigator.clipboard.writeText(state.messages[i].content);
+      }else if(act==='del'){
+        state.messages.splice(i,1); saveState(); render();
+      }else if(act==='edit'){
+        const node = $msgs.children[i].querySelector('.content');
+        const editing = node.getAttribute('contenteditable') === 'true';
+        if(!editing){
+          node.setAttribute('contenteditable','true'); node.focus();
+        }else{
+          node.setAttribute('contenteditable','false');
+          state.messages[i].content = node.innerText; state.messages[i].time = Date.now(); saveState(); render();
+        }
+      }
+    });
+
+    // ===== SEND (csak felveszi az üzenetet; API-t később kötjük) =====
+    function send(){
+      const text = $prompt.value.trim();
+      if(!text) return;
+      state.messages.push({ role:'user', content:text, time: Date.now() });
+      $prompt.value=''; autoresize();
+      saveState(); render();
+
+      // IDE jön majd az API hívás:
+      // sendToAPI({ model: $model.value, temperature: +$temp.value, messages: state.messages })
+      //   .then(aiText => { state.messages.push({ role:'assistant', content: aiText, time: Date.now() }); saveState(); render(); });
+    }
+    $send.addEventListener('click', send);
+    $prompt.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); }
+    });
+
+    // ===== EXPORT .txt =====
+    function exportTxt(){
+      const lines = state.messages.map(m => `${m.role.toUpperCase()} [${new Date(m.time).toISOString()}]\n${m.content}\n`);
+      const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'tg-ai-chat.txt'; a.click();
+      URL.revokeObjectURL(url);
+    }
+    $export.addEventListener('click', exportTxt);
+
+    // ===== IMPORT .json =====
+    $import.addEventListener('change', async (e)=>{
+      const file = e.target.files?.[0]; if(!file) return;
+      const text = await file.text();
+      try{
+        const data = JSON.parse(text);
+        if(Array.isArray(data.messages)) { state.messages = data.messages; saveState(); render(); }
+      }catch{}
+      e.target.value = '';
+    });
+
+    // ===== CLEAR =====
+    $clear.addEventListener('click', ()=>{
+      if(confirm('Biztos törlöd az egész beszélgetést?')){ state.messages = []; saveState(); render(); }
+    });
+
+    // első render
+    render();
   </script>
 </body>
 </html>
