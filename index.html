@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TamasGem Studio</title>
   <meta name="description" content="TamasGem Studio – prémium fejlesztői referencia oldal (fehér/arany, elegáns animációk)" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
       --gold:#D4AF37;
       --gold-soft:#e6cc73;
+      --header-top:#fffaf0;
+      --header-bottom:#f9f4df;
       --text:#0b0b0c;
       --muted:#656b73;
       --border:#e6e7eb;
@@ -34,7 +35,7 @@
       filter:blur(.3px);
       animation:stripesMove 14s ease-in-out infinite alternate;
     }
-    .bg-stripes .stripe:nth-child(1){ top:8%;  transform:rotate(-3deg); animation-delay:0s;}
+    .bg-stripes .stripe:nth-child(1){ top:8%; transform:rotate(-3deg); animation-delay:0s;}
     .bg-stripes .stripe:nth-child(2){ top:26%; transform:rotate(4deg);  animation-delay:.6s;}
     .bg-stripes .stripe:nth-child(3){ top:44%; transform:rotate(-3deg); animation-delay:1.2s;}
     .bg-stripes .stripe:nth-child(4){ top:62%; transform:rotate(4deg);  animation-delay:1.8s;}
@@ -49,30 +50,34 @@
     .wrap{position:relative;z-index:1}
     header{
       position:sticky;top:0;z-index:10;
-      background:rgba(255,255,255,.8);
-      backdrop-filter:saturate(140%) blur(8px);
+      background:linear-gradient(to bottom,var(--header-top),var(--header-bottom));
+      backdrop-filter:saturate(150%) blur(6px);
       border-bottom:1px solid var(--border);
+      box-shadow:0 4px 18px rgba(212,175,55,0.1);
     }
     .container{max-width:1120px;margin:0 auto;padding:0 20px;}
-    .bar{height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+    .bar{height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
 
     /* LOGO + NÉV */
     .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit;cursor:pointer;}
     .logo-img{
-      height:40px;width:auto;object-fit:contain;
-      filter:drop-shadow(0 0 8px rgba(212,175,55,0.35));
+      height:44px;width:auto;object-fit:contain;
+      filter:drop-shadow(0 0 10px rgba(212,175,55,0.45));
       opacity:0;transform:translateY(4px);
       animation:logoFadeIn .8s ease-out forwards;
     }
     @keyframes logoFadeIn{to{opacity:1;transform:translateY(0)}}
     .brand-name{
-      position:relative;display:inline-block;font-weight:600;font-size:16px;letter-spacing:.2px;
+      position:relative;display:inline-block;font-weight:600;font-size:17px;letter-spacing:.2px;
       opacity:0;transform:translateY(4px);
       animation:nameEnter .6s ease-out .3s forwards;
+      background:linear-gradient(90deg,#c1a028,#f3e3a1,#d8b048);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
     @keyframes nameEnter{to{opacity:1;transform:translateY(0)}}
     .brand-name.sheen::after{
-      content:\"\";position:absolute;inset:0;border-radius:6px;pointer-events:none;
+      content:"";position:absolute;inset:0;border-radius:6px;pointer-events:none;
       background:linear-gradient(120deg,rgba(255,255,255,0)0%,rgba(212,175,55,.28)40%,rgba(255,255,255,0)80%);
       transform:translateX(-120%);animation:sheen 2.6s linear infinite 0.6s;
     }
@@ -86,7 +91,7 @@
     }
     nav a:hover{color:#0b0b0c}
     nav a::after{
-      content:\"\";position:absolute;left:50%;transform:translateX(-50%);bottom:6px;height:2px;width:0;
+      content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:6px;height:2px;width:0;
       background:linear-gradient(90deg,var(--gold),var(--gold-soft),var(--gold));
       border-radius:999px;transition:width .5s ease;
     }
@@ -99,7 +104,7 @@
     }
     .cta:hover{box-shadow:0 12px 28px rgba(212,175,55,.28);transform:translateY(-1px);background:rgba(255,255,255,.9);}
     .cta::after{
-      content:\"\";position:absolute;inset:-1px;border-radius:14px;pointer-events:none;
+      content:"";position:absolute;inset:-1px;border-radius:14px;pointer-events:none;
       background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);
       opacity:0;transition:opacity .2s ease;animation:btnSheen 3.2s linear infinite;
     }
@@ -118,7 +123,6 @@
 </head>
 <body>
 
-  <!-- Háttér arany fénycsíkok -->
   <div class="bg-stripes" aria-hidden="true">
     <span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span>
   </div>
@@ -127,13 +131,11 @@
     <header>
       <div class="container">
         <div class="bar">
-          <!-- BRAND (LOGÓ + NÉV) -->
           <a class="brand" href="#top" id="brandLink">
             <img src="logo.png" alt="TamasGem Studio logo" class="logo-img" />
             <span class="brand-name" id="brandName">TamasGem Studio</span>
           </a>
 
-          <!-- DESKTOP NAV -->
           <nav id="desktopNav">
             <a href="#about">Rólam</a>
             <a href="#work">Munkák</a>
@@ -141,7 +143,6 @@
             <a class="cta" href="#contact">Írj nekem</a>
           </nav>
 
-          <!-- MOBILE TOGGLE -->
           <button class="toggle" id="menuBtn" aria-label="Menü">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round">
               <path d="M4 6h16M4 12h16M4 18h16"/>
@@ -150,7 +151,6 @@
         </div>
       </div>
 
-      <!-- MOBILE MENU -->
       <div class="menu" id="mobileMenu">
         <a href="#about">Rólam</a>
         <a href="#work">Munkák</a>
@@ -160,17 +160,15 @@
     </header>
 
     <main id="top">
-      <p>(Következő lépés: a HERO rész fehér/arany parallax-szal. Most csak a fejléced működik.)</p>
+      <p>(Következő lépés: a HERO rész fehér/arany parallax-szal. Most a fejléced már elegáns, halvány arany háttérrel fut.)</p>
     </main>
   </div>
 
   <script>
-    // logó + név csillanás
     window.addEventListener('load', ()=>{
       document.getElementById('brandName').classList.add('sheen');
     });
 
-    // mobilmenü
     const btn=document.getElementById('menuBtn');
     const menu=document.getElementById('mobileMenu');
     let open=false;
@@ -181,7 +179,6 @@
       if(e.target.tagName==='A'){open=false;menu.style.display='none';}
     });
 
-    // logóra kattintva sima animált scroll top
     document.getElementById('brandLink').addEventListener('click',e=>{
       e.preventDefault();
       window.scrollTo({top:0,behavior:'smooth'});
