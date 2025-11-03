@@ -16,9 +16,6 @@
     }
     @media (max-width:1100px){ :root{ --phone-max: 250px; } }
     @media (max-width:600px){ :root{ --phone-max: 230px; } }
-    @media (max-width:420px){
-      :root{ --phone-max: 210px; }
-    }
 
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;scroll-behavior:smooth}
@@ -35,9 +32,6 @@
     #bgAll{
       position:fixed; inset:0; width:100vw; height:100vh;
       z-index:0; pointer-events:none; opacity:.92; display:block;
-    }
-    @media (max-width:768px){
-      #bgAll{ opacity:.85; }
     }
 
     /* Dísz csíkok a canvas felett */
@@ -101,7 +95,7 @@
     .flag{width:24px; height:16px; border-radius:4px; display:block}
     .ai-btn{display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border-radius:14px; text-decoration:none; border:1px solid rgba(212,175,55,.35); background:#fff; color:#7a5b0e; font-weight:600; font-size:14px; box-shadow:0 10px 24px rgba(212,175,55,.18); transition:.2s}
     .ai-btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
-    .ai-icon{width:16px; height:16px;} /* px fix */
+    .ai-icon{width:16px; height:16}
 
     /* MOBIL MENU */
     .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; z-index:21}
@@ -177,10 +171,6 @@
       radial-gradient(800px 300px at 50% -10%, #ffffff15, #000000 70%); z-index:1;}
     .app-grid img{width:56px; height:56px; object-fit:contain; border-radius:14px; cursor:pointer; filter:drop-shadow(0 4px 10px rgba(0,0,0,.45)); transition:transform .15s ease;}
     .app-grid img:active{transform:scale(0.95)}
-    @media (max-width:420px){
-      .app-grid{ gap:16px; grid-template-columns:repeat(3, 60px); }
-      .app-grid img{ width:52px; height:52px; }
-    }
 
     .phone-player{position:absolute; inset:46px 0 40px 0; display:none; background:#000; z-index:2;}
     .phone-player video,.phone-player iframe{width:100%; height:100%; object-fit:cover; border:0; display:none; background:#000;}
@@ -189,21 +179,9 @@
     .phone-bottom{position:absolute; left:0; right:0; bottom:6px; display:flex; justify-content:center; gap:10px; pointer-events:none; z-index:5;}
     .phone-back{
       pointer-events:auto;
-      background:rgba(255,255,255,.82);
-      border:1px solid rgba(212,175,55,.55);
-      color:#3d2d09; font-weight:800; font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer; backdrop-filter:blur(6px);
+      background:linear-gradient(90deg,#fff7d4,#f3e1a1); border:1px solid rgba(212,175,55,.55);
+      color:#3d2d09; font-weight:700; font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer; backdrop-filter:blur(6px);
       box-shadow:0 8px 18px rgba(212,175,55,.25);
-      text-shadow:0 1px 0 rgba(255,255,255,.6);
-      transition:transform .18s ease;
-    }
-    .phone-back:hover{ transform:translateY(-1px); }
-    @media (prefers-color-scheme: dark){
-      .phone-back{
-        background:rgba(18,19,22,.72);
-        color:#f3e1a1; border-color:rgba(212,175,55,.55);
-        box-shadow:0 8px 18px rgba(0,0,0,.35);
-        text-shadow:none;
-      }
     }
     .phone-hint{pointer-events:none; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#e6d9b2; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);}
 
@@ -229,6 +207,87 @@
     /* Teljes nézet gomb */
     .fullview{margin-top:10px; display:flex; justify-content:center;}
     .fullview a{display:inline-flex; gap:8px; align-items:center; font-weight:700; font-size:13px; text-decoration:none; background:#fff; border:1px solid rgba(212,175,55,.5); padding:8px 12px; border-radius:12px; box-shadow:0 8px 18px rgba(212,175,55,.15); color:#7a5b0e;}
+
+    /* ===== SHOWREEL (nagy szekció a Rólam alatt) ===== */
+    .showreel{
+      position:relative;
+      background:linear-gradient(180deg, rgba(255,254,249,.86), rgba(255,255,255,.86));
+      isolation:isolate;
+    }
+    .showreel .inner{
+      max-width:1200px; margin:0 auto; padding:96px 20px;
+      display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:start;
+    }
+    @media (max-width:1100px){ .showreel .inner{grid-template-columns:1fr; gap:36px} }
+
+    .sr-title{
+      margin:0 0 10px; font-weight:800; font-size:42px; letter-spacing:.2px;
+      background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .sr-typed{
+      margin:6px 0 10px; font-size:20px; font-weight:700; color:#3b2f12;
+    }
+    .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
+    @keyframes blink{ 50% { opacity:0 } }
+
+    .sr-lead{ color:#5f646b; line-height:1.7; margin:6px 0 16px }
+    .sr-cta{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px }
+    .sr-cta .btn-gold,.sr-cta .btn-ghost{ padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; box-shadow:0 10px 24px rgba(212,175,55,.12); }
+    .sr-cta .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
+    .sr-cta .btn-ghost{ background:rgba(255,255,255,.7); backdrop-filter:blur(6px) }
+    .sr-cta .btn-gold:hover,.sr-cta .btn-ghost:hover{ transform:translateY(-1px) }
+
+    .sr-skills{ display:grid; gap:12px; margin-top:12px }
+    .skill .label{ font-size:14px; color:#6a6f77; margin:0 0 6px; font-weight:700 }
+    .meter{
+      --p: 80%;
+      position:relative; height:12px; border-radius:999px; overflow:hidden;
+      background:linear-gradient(180deg,#f2f2f4,#ececf0);
+      border:1px solid #e6e7eb;
+    }
+    .meter > span{
+      position:absolute; inset:0; display:block;
+      background:linear-gradient(90deg,#fff7d4,#f3e1a1);
+      width:var(--p);
+      animation:fillPulse 3.6s ease-in-out infinite;
+      transform-origin:left center;
+    }
+    @keyframes fillPulse{
+      0%{ width:0% }
+      40%{ width:var(--p) }
+      60%{ width:calc(var(--p) - 8%) }
+      100%{ width:var(--p) }
+    }
+
+    .sr-cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px }
+    @media (max-width:820px){ .sr-cards{ grid-template-columns:1fr 1fr } }
+    @media (max-width:560px){ .sr-cards{ grid-template-columns:1fr } }
+
+    .sr-card{
+      background:linear-gradient(180deg,#14171d,#0d1016);
+      border:1px solid #232834; border-radius:14px;
+      padding:12px; display:flex; flex-direction:column; gap:10px;
+      box-shadow:0 10px 28px rgba(0,0,0,.08);
+    }
+    .sr-card .thumb{
+      height:130px; border-radius:10px; background:#0a0c10;
+      display:grid; place-items:center; overflow:hidden; border:1px solid #1f2430;
+    }
+    .sr-card .thumb img{ max-width:100%; max-height:100%; object-fit:contain }
+    .sr-card h3{ margin:0; font-size:16px; color:#f4f5f7 }
+    .sr-card p{ margin:0; font-size:13px; color:#bac0c9; line-height:1.55 }
+
+    .sr-info{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px }
+    .sr-info .chip{
+      position:relative; padding:8px 12px; border-radius:12px; font-weight:700; font-size:12px; color:#3b2f12;
+      background:#fff; border:1px solid #ede9d1; box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden;
+    }
+    .sr-info .chip::after{
+      content:""; position:absolute; inset:0; background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.45) 40%, rgba(248,240,210,.0) 80%);
+      background-size:200% 100%; animation:chipShine 2.2s linear infinite;
+    }
+    @keyframes chipShine{ to{ background-position:200% 0 } }
   </style>
 </head>
 <body>
@@ -280,6 +339,7 @@
                 </svg>
               </button>
             </div>
+            <!-- AI gomb VISSZARAKVA -->
             <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
               <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/></svg>
               AI
@@ -319,6 +379,7 @@
               </svg>
             </button>
           </div>
+          <!-- AI gomb a mobil menüben is -->
           <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
             <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/></svg>
             AI
@@ -345,7 +406,7 @@
           <div class="right">
             <div class="stage">
               <div class="screen">
-                <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="hero-poster.jpg">
+                <video class="hero-video" autoplay loop muted playsinline preload="auto" poster="">
                   <source src="hero.mp4" type="video/mp4">
                   Böngésződ nem támogatja a videót.
                 </video>
@@ -437,11 +498,88 @@
         </div>
       </section>
       <!-- /ABOUT -->
+
+      <!-- ===== SHOWREEL / BEMUTATKOZÓ (NAGY) ===== -->
+      <section id="showreel" class="showreel">
+        <div class="inner">
+          <div class="sr-left">
+            <h2 class="sr-title">Bemutatkozás</h2>
+
+            <p class="sr-typed" aria-live="polite">
+              <span id="typedPrefix">Horváth Tamás vagyok — </span>
+              <span id="typedText"></span><span class="caret">|</span>
+            </p>
+
+            <p class="sr-lead">
+              Apple-szintű minőség weben, webshopon, adminon és játékfejlesztésben. Tiszta kód, gyors iteráció, élmény-fókusz.
+            </p>
+
+            <div class="sr-cta">
+              <a class="btn-gold" href="#contact">Kapcsolat</a>
+              <a class="btn-ghost" href="#work">Munkáim</a>
+            </div>
+
+            <div class="sr-skills">
+              <div class="skill">
+                <div class="label">JavaScript / TypeScript</div>
+                <div class="meter" style="--p:92%"><span></span></div>
+              </div>
+              <div class="skill">
+                <div class="label">PHP / MySQL</div>
+                <div class="meter" style="--p:90%"><span></span></div>
+              </div>
+              <div class="skill">
+                <div class="label">Unity / C#</div>
+                <div class="meter" style="--p:80%"><span></span></div>
+              </div>
+              <div class="skill">
+                <div class="label">Roblox / Lua</div>
+                <div class="meter" style="--p:85%"><span></span></div>
+              </div>
+              <div class="skill">
+                <div class="label">AI / LLM integráció</div>
+                <div class="meter" style="--p:88%"><span></span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sr-right">
+            <div class="sr-cards">
+              <article class="sr-card">
+                <div class="thumb"><img src="shop.png" alt=""></div>
+                <h3>Teljes Webshop</h3>
+                <p>3200+ termék, Barion, saját Admin PRO. Stabil, bővíthető.</p>
+              </article>
+              <article class="sr-card">
+                <div class="thumb"><img src="web.png" alt=""></div>
+                <h3>Prémium Weboldalak</h3>
+                <p>Arany-fehér téma, gyors betöltés, SEO-barát felépítés.</p>
+              </article>
+              <article class="sr-card">
+                <div class="thumb"><img src="roblox.png" alt=""></div>
+                <h3>Roblox / Unity</h3>
+                <p>Interakciók, monetizáció, optimalizált UX mobilra.</p>
+              </article>
+            </div>
+
+            <div class="sr-info">
+              <div class="chip">~1 hét / MVP</div>
+              <div class="chip">UI/UX fókusz</div>
+              <div class="chip">Tiszta kód</div>
+              <div class="chip">Gyors support</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- /SHOWREEL END -->
+
+      <!-- (Itt jöhet a Work / Contact, ha lesz) -->
+
     </main>
   </div>
 
   <script>
-    /* Hero belibbenés – garantáltan lefut (DOMContentLoaded), nem áll meg hibán */
+    /* Hero belibbenés */
     document.addEventListener('DOMContentLoaded', ()=>{
       const bn = document.getElementById('brandName');
       const hero = document.getElementById('hero');
@@ -455,12 +593,6 @@
     let isOpen = false;
     btn?.addEventListener('click',()=>{ isOpen=!isOpen; mobileMenu.style.display=isOpen?'block':'none'; });
     mobileMenu?.addEventListener('click',e=>{ if(e.target.tagName==='A'){isOpen=false;mobileMenu.style.display='none';} });
-    window.addEventListener('resize', ()=>{
-      if(window.innerWidth >= 768){
-        isOpen = false;
-        if(mobileMenu) mobileMenu.style.display = 'none';
-      }
-    });
 
     /* Brand -> top */
     document.getElementById('brandLink')?.addEventListener('click',e=>{
@@ -479,7 +611,7 @@
       }catch(e){}
     })();
 
-    /* i18n – kulcs hiánya nem dob hibát */
+    /* i18n */
     const I18N = {
       hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem", seeWork:"Munkáim", quote:"Kérj ajánlatot" },
       en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me", seeWork:"See my work", quote:"Get a quote" }
@@ -519,18 +651,12 @@
       const appMap = {
         roblox: { url: 'roblox.mp4',   label: 'roblox-preview.mp4',   type:'video' },
         unity:  { url: 'unity.mp4',    label: 'unity-preview.mp4',    type:'video' },
-        shop:   { url: 'https://serlegkiraly.hu', label: 'serlegkiraly.hu', type:'web', embed:false },
-        web:    { url: 'https://malfiruha.hu',    label: 'malfiruha.hu',    type:'web', embed:false },
-        ai:     { url: 'https://tamas-ai.netlify.app', label: 'tamas-ai.netlify.app', type:'web', embed:true }
+        shop:   { url: 'https://serlegkiraly.hu', label: 'serlegkiraly.hu', type:'web' },
+        web:    { url: 'https://malfiruha.hu',    label: 'malfiruha.hu',    type:'web' },
+        ai:     { url: 'https://tamas-ai.netlify.app', label: 'tamas-ai.netlify.app', type:'web' }
       };
 
-      function isSecure(url){
-        try{ return new URL(url).protocol === 'https:'; }catch(e){ return true; }
-      }
-      const setAddr = (text, secure=true)=>{
-        addr.textContent=text;
-        lockDot.style.background = secure ? '#2ecc71' : '#e67e22';
-      };
+      const setAddr = (text, secure=true)=>{ addr.textContent=text; lockDot.style.background = secure ? '#2ecc71' : '#e67e22'; };
 
       const simulateLoad = (cb)=>{
         loadBar.style.width = '0%';
@@ -546,27 +672,14 @@
 
       function openApp(appName){
         const conf = appMap[appName]; if(!conf) return;
-
-        // Ha web és tiltott az embed, nyissuk külön új lapon
-        if(conf.type==='web' && conf.embed===false){
-          setAddr(conf.label + ' — új lapon', isSecure(conf.url));
-          fullLink.href = conf.url;
-          try{ window.open(conf.url, '_blank', 'noopener'); }catch(e){}
-          // Maradjon a menü, hogy ne tűnjön el a tartalom
-          return;
-        }
-
-        setAddr(conf.label, conf.type==='web' ? isSecure(conf.url) : true);
+        setAddr(conf.label, true);
         hint.style.display='none';
         menu.style.display='none';
         player.style.display='block';
         f.style.display='none'; v.style.display='none';
         simulateLoad(()=>{
-          if(conf.type==='video'){
-            v.src=conf.url; v.style.display='block'; fullLink.href=conf.url;
-          }else{
-            f.src=conf.url; f.style.display='block'; fullLink.href=conf.url;
-          }
+          if(conf.type==='video'){ v.src=conf.url; v.style.display='block'; fullLink.href=conf.url; }
+          else { f.src=conf.url; f.style.display='block'; fullLink.href=conf.url; }
         });
       }
 
@@ -584,22 +697,70 @@
       btnBackTop.addEventListener('click', goBack);
 
       btnReload.addEventListener('click', ()=>{
-        const isIframe = (f.style.display==='block');
+        const isIframe = f.style.display==='block';
         simulateLoad(()=>{
-          if(isIframe){
-            const src=f.src; f.src=''; setTimeout(()=>f.src=src,10);
-          }else if(v.style.display==='block'){
-            v.currentTime=0; v.play();
-          }
+          if(isIframe){ const src=f.src; f.src=''; setTimeout(()=>f.src=src,10); }
+          else if(v.style.display==='block'){ v.currentTime=0; v.play(); }
         });
       });
     })();
 
-    /* Scroll-on belibbenés */
+    /* Scroll-on belibbenés a Rólamhoz */
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('in'); observer.unobserve(entry.target);} });
     }, {threshold: 0.15});
     document.querySelectorAll('#about .revealY').forEach(el => observer.observe(el));
+
+    /* ===== SHOWREEL: gépelt szöveg + belibbenés ===== */
+    (function(){
+      // Gépelős headline (végtelen ciklus)
+      const target = document.getElementById('typedText');
+      if (target){
+        const phrases = [
+          'full-stack fejlesztő.',
+          'webshop-építő.',
+          'UI/UX-mániás.',
+          'Unity & Roblox fejlesztő.',
+          'AI-integrátor.'
+        ];
+        let i=0, j=0, del=false;
+
+        function tick(){
+          const word = phrases[i];
+          if(!del){
+            j++;
+            target.textContent = word.slice(0,j);
+            if(j===word.length){ del=true; setTimeout(tick, 1100); return; }
+            setTimeout(tick, 32);
+          }else{
+            j--;
+            target.textContent = word.slice(0,j);
+            if(j===0){ del=false; i=(i+1)%phrases.length; setTimeout(tick, 220); return; }
+            setTimeout(tick, 18);
+          }
+        }
+        tick();
+      }
+
+      // Belibbenés
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.style.opacity='1';
+            e.target.style.transform='none';
+            io.unobserve(e.target);
+          }
+        });
+      }, {threshold:.12});
+
+      document.querySelectorAll('#showreel .sr-card, #showreel .skill, #showreel .sr-title, #showreel .sr-lead, #showreel .sr-cta')
+        .forEach(el=>{
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(14px)';
+          el.style.transition = 'opacity .6s ease, transform .6s ease';
+          io.observe(el);
+        });
+    })();
 
     /* Globális 3D arany por háttér */
     (function(){
