@@ -11,7 +11,7 @@
       --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --gold-dark2:#e0b84f;
       --header-top:#fffaf0; --header-bottom:#f9f4df; --text:#0b0b0c; --muted:#656b73; --border:#e6e7eb;
       --hero-top:#fffef9; --hero-bottom:#ffffff;
-      --gold-1:#d4af37; --gold-2:#f3e1a1;
+      --chip-bg:#fff; --chip-b:#ede9d1;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;scroll-behavior:smooth}
@@ -75,7 +75,6 @@
     }
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
 
-    /* jobb oldali vezérlők: zászlók + AI */
     .right-controls{display:none; align-items:center; gap:10px}
     .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
     .lang-btn{
@@ -92,7 +91,7 @@
       box-shadow:0 10px 24px rgba(212,175,55,.18); transition:.2s ease;
     }
     .ai-btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
-    .ai-icon{width:16px; height:16px}
+    .ai-icon{width:16px; height:16}
 
     @media(min-width:768px){
       nav{display:flex}
@@ -107,71 +106,91 @@
     .menu a{padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block}
     .menu .cta{margin:8px 20px 16px; display:block; text-align:center}
 
-    /* ARANY KITÖLTÉS ugrálva */
+    /* ARANY KITÖLTÉS ugrálva a nav-on */
     .gold-fill{
       background:linear-gradient(90deg, var(--gold-dark), var(--gold-dark2));
       -webkit-background-clip:text; background-clip:text;
       -webkit-text-fill-color:transparent; color:transparent;
     }
 
-    /* ===== HERO: videó a monitor-keretben + mellette szöveg ===== */
-    .hero{
-      position:relative; background:linear-gradient(180deg,var(--hero-top),var(--hero-bottom));
-      overflow:hidden; isolation:isolate;
-    }
-    .hero .container{
-      max-width:1120px; margin:0 auto; padding:72px 20px 84px;
-      display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;
-    }
+    /* ===== HERO ===== */
+    .hero{position:relative; background:linear-gradient(180deg,var(--hero-top),var(--hero-bottom)); overflow:hidden; isolation:isolate;}
+    .hero .container{max-width:1120px; margin:0 auto; padding:72px 20px 84px; display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;}
     @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:56px 20px 72px} }
-
-    .hero-title{
-      position:relative; margin:0 0 14px; font-weight:800; letter-spacing:.2px;
-      font-size:clamp(34px,6.2vw,58px); line-height:1.03;
-      background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold-1) 60%,#3f351d 90%);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
+    .hero-title{margin:0 0 14px; font-weight:800; letter-spacing:.2px; font-size:clamp(34px,6.2vw,58px); line-height:1.03;
+      background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold) 60%,#3f351d 90%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
     .hero-sub{ color:#5f646b; font-size:clamp(15px,2.2vw,18px); line-height:1.6; margin:0 0 22px }
     .hero-cta{ display:flex; gap:12px; flex-wrap:wrap }
-    .btn-gold,.btn-ghost{
-      display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none;
-      border:1px solid #e6e6ea; background:#fff; transition:.2s; box-shadow:0 10px 24px rgba(212,175,55,.12);
-    }
+    .btn-gold,.btn-ghost{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; transition:.2s; box-shadow:0 10px 24px rgba(212,175,55,.12);}
     .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
     .btn-ghost{ background:rgba(255,255,255,.7); backdrop-filter:blur(6px) }
     .btn-gold:hover,.btn-ghost:hover{ transform:translateY(-1px) }
 
-    /* Apple-stílusú monitor színpad a videóhoz */
-    .stage{
-      position:relative; width:100%; aspect-ratio:16/10; margin:auto;
-      border-radius:16px; background:linear-gradient(180deg,#0e0f12,#171a20);
-      box-shadow:0 22px 50px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.05);
-      overflow:hidden;
-    }
-    .stage::before{
-      content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%);
-      width:68px; height:10px; border-radius:12px; background:#0a0b0e; box-shadow:0 0 0 2px rgba(255,255,255,.06) inset;
-    }
-    .stand{
-      position:absolute; left:50%; transform:translateX(-50%); bottom:-26px; width:46%;
-      height:26px; background:linear-gradient(180deg,#cfcfd4,#b9bbc2); border-radius:0 0 12px 12px; filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));
-    }
-    .screen{
-      position:absolute; inset:14px 14px 18px 14px; border-radius:12px; overflow:hidden;
-      background:#0b0c10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
-    }
-
-    /* Videó a képernyőn */
-    .hero-video{
-      width:100%; height:100%; object-fit:cover; display:block;
-      filter:brightness(0.98);
-    }
-
-    /* bal oldali szövegek finom belibbene */
+    .stage{position:relative; width:100%; aspect-ratio:16/10; margin:auto; border-radius:16px; background:linear-gradient(180deg,#0e0f12,#171a20); box-shadow:0 22px 50px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.05); overflow:hidden;}
+    .stage::before{content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%); width:68px; height:10px; border-radius:12px; background:#0a0b0e; box-shadow:0 0 0 2px rgba(255,255,255,.06) inset;}
+    .stand{position:absolute; left:50%; transform:translateX(-50%); bottom:-26px; width:46%; height:26px; background:linear-gradient(180deg,#cfcfd4,#b9bbc2); border-radius:0 0 12px 12px; filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));}
+    .screen{position:absolute; inset:14px 14px 18px 14px; border-radius:12px; overflow:hidden; background:#0b0c10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
+    .hero-video{width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.98);}
     .hero .left .reveal{ opacity:0; transform:translateY(8px); }
     .hero.ready .left .reveal{ opacity:1; transform:none; transition:.5s ease .15s }
     .hero.ready .left .reveal.d2{ transition-delay:.28s }
     .hero.ready .left .reveal.d3{ transition-delay:.38s }
+
+    /* ===== ABOUT / RÓLAM (új) ===== */
+    #about{background:linear-gradient(180deg,#fffef9,#f8f8f8); position:relative; overflow:hidden;}
+    #about .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:520px 1fr; gap:56px; align-items:center;}
+    @media(max-width:1100px){ #about .inner{grid-template-columns:1fr; gap:36px} }
+
+    /* iPhone keret – világos, valódi hatás */
+    .iphone-frame{position:relative; width:min(360px,90vw); margin:0 auto; aspect-ratio:9/19.5; border-radius:38px;
+      background:#0f1115; box-shadow:0 18px 50px rgba(0,0,0,.18), inset 0 0 0 2px rgba(255,255,255,.06); overflow:hidden;}
+    .iphone-bezel{position:absolute; inset:8px; border-radius:34px; background:#000; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);}
+    .iphone-notch{position:absolute; top:8px; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#000; border-bottom-left-radius:16px; border-bottom-right-radius:16px;}
+    .iphone-screen{position:absolute; inset:0; border-radius:inherit; display:flex; align-items:center; justify-content:center; background:
+      radial-gradient(1200px 400px at 50% -10%, #ffffff 0%, #f7f3e6 40%, #efe8cf 70%, #e9e1c7 100%);}
+    /* ikonrács */
+    .app-grid{display:grid; grid-template-columns:repeat(3, 72px); gap:22px; justify-content:center; padding-top:80px;}
+    .app-grid img{width:64px; height:64px; object-fit:contain; border-radius:14px; cursor:pointer; filter:drop-shadow(0 4px 10px rgba(0,0,0,.18)); transition:transform .15s ease;}
+    .app-grid img:active{transform:scale(0.95)}
+    /* lejátszó */
+    .phone-player{position:absolute; inset:0; display:none; background:#000;}
+    .phone-player video,.phone-player iframe{width:100%; height:100%; object-fit:cover; border:0; display:none;}
+    .phone-back{position:absolute; bottom:18px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.35);
+      color:#fff; font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer; backdrop-filter:blur(6px);}
+
+    /* Szövegoszlop – lépcsőzetes animáció */
+    .about-col h2{font-size:42px; margin:0 0 14px; font-weight:800;
+      background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .about-col p{font-size:17px; line-height:1.7; color:#555; margin:0 0 18px;}
+
+    .revealY{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+    .revealY.in{opacity:1; transform:none;}
+    .revealY[data-delay="1"]{transition-delay:.08s}
+    .revealY[data-delay="2"]{transition-delay:.16s}
+    .revealY[data-delay="3"]{transition-delay:.24s}
+    .revealY[data-delay="4"]{transition-delay:.32s}
+    .revealY[data-delay="5"]{transition-delay:.40s}
+
+    /* Arany „kitöltés” / shimmer a chipeken (végtelen ciklus) */
+    .chip-wrap{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+    .chip{
+      position:relative; padding:10px 14px; border-radius:12px; font-weight:600; font-size:14px; color:#3b2f12;
+      background:var(--chip-bg); border:1px solid var(--chip-b); box-shadow:0 6px 16px rgba(212,175,55,.10);
+      overflow:hidden;
+    }
+    .chip::after{
+      content:""; position:absolute; inset:0; z-index:0;
+      background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.35) 35%, rgba(248,240,210,.0) 70%);
+      background-size:200% 100%;
+      animation:chipShine 2.2s linear infinite;
+    }
+    .chip > span{position:relative; z-index:1;}
+    @keyframes chipShine{0%{background-position:0% 0} 100%{background-position:200% 0}}
+
+    /* opcionális: szekció közti finom elválasztó */
+    .sep{height:1px; background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.3), rgba(212,175,55,0)); margin:24px 0;}
+
   </style>
 </head>
 <body>
@@ -202,7 +221,6 @@
           <!-- RIGHT: zászlók + AI -->
           <div class="right-controls">
             <div class="lang-switch" aria-label="Language switcher">
-              <!-- 🇭🇺 -->
               <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
                 <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                   <rect width="24" height="16" fill="#fff"/>
@@ -210,7 +228,6 @@
                   <rect width="24" height="5.333" y="10.667" fill="#477050"/>
                 </svg>
               </button>
-              <!-- 🇬🇧 -->
               <button class="lang-btn" data-lang="en" title="English" aria-label="English">
                 <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                   <clipPath id="u"><rect width="24" height="16" rx="2" ry="2"/></clipPath>
@@ -279,11 +296,10 @@
       </div>
     </header>
 
-    <!-- ===== HERO (videó a monitorban + mellette szöveg) ===== -->
+    <!-- ===== HERO ===== -->
     <main id="top">
       <section class="hero" id="hero">
         <div class="container">
-          <!-- BAL: szövegek -->
           <div class="left">
             <h1 class="hero-title reveal">TamasGem Studio</h1>
             <p class="hero-sub reveal d2">
@@ -295,7 +311,6 @@
             </div>
           </div>
 
-          <!-- JOBB: monitor-keretben a TE videód -->
           <div class="right">
             <div class="stage">
               <div class="screen">
@@ -310,101 +325,78 @@
         </div>
       </section>
 
-      <!-- ===== ABOUT / RÓLAM szekció (beillesztve) ===== -->
-      <section id="about" style="background:linear-gradient(180deg,#fffef9,#f8f8f8); position:relative; overflow:hidden; padding:100px 20px;">
-        <div class="container" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:60px; max-width:1200px; margin:auto;">
+      <!-- ===== ABOUT / RÓLAM ===== -->
+      <section id="about">
+        <div class="inner">
+          <!-- iPhone blokk -->
+          <div class="iphone-frame">
+            <div class="iphone-bezel">
+              <div class="iphone-notch"></div>
+              <div class="iphone-screen" id="iphoneScreen">
+                <!-- boot logo -->
+                <div id="bootLogo" style="width:80px; opacity:0; transition:opacity 1s ease;">
+                  <img src="logo.png" alt="logo" style="width:100%; filter:drop-shadow(0 0 12px #d4af37)">
+                </div>
 
-          <!-- iPhone keret -->
-          <div class="iphone" style="position:relative; width:330px; height:660px; background:url('iphone.png') center/contain no-repeat;">
-            <div class="screen" id="screen" style="position:absolute; top:49px; left:26px; width:278px; height:602px; border-radius:32px; overflow:hidden; background:#000; display:flex; align-items:center; justify-content:center;">
-              <div id="boot" style="width:80px; opacity:0; transition:opacity 1s ease;">
-                <img src="logo.png" alt="logo" style="width:100%; filter:drop-shadow(0 0 12px #d4af37)">
-              </div>
-              <div id="aboutMenu" style="display:none; flex-wrap:wrap; justify-content:center; gap:24px; padding-top:50px;">
-                <img src="roblox.png" alt="Roblox" class="app" data-app="roblox" style="width:64px; cursor:pointer;">
-                <img src="unity.png" alt="Unity" class="app" data-app="unity" style="width:64px; cursor:pointer;">
-                <img src="shop.png"  alt="Shop"   class="app" data-app="shop"   style="width:64px; cursor:pointer;">
-                <img src="web.png"   alt="Web"    class="app" data-app="web"    style="width:64px; cursor:pointer;">
-                <img src="ai.png"    alt="AI"     class="app" data-app="ai"     style="width:64px; cursor:pointer;">
-              </div>
-              <div id="aboutPlayer" style="display:none; width:100%; height:100%; background:#000; position:relative;">
-                <video id="aboutVideoPlayer" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
-                <iframe id="aboutIframePlayer" style="width:100%; height:100%; border:0; display:none;" allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>
-                <button id="aboutBackBtn" style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; font-size:12px; padding:6px 14px; border-radius:20px; cursor:pointer; backdrop-filter:blur(6px);">Vissza</button>
+                <!-- ikonrács -->
+                <div class="app-grid" id="aboutMenu" style="display:none;">
+                  <img src="roblox.png" alt="Roblox" class="app" data-app="roblox">
+                  <img src="unity.png" alt="Unity" class="app" data-app="unity">
+                  <img src="shop.png"  alt="Shop"   class="app" data-app="shop">
+                  <img src="web.png"   alt="Web"    class="app" data-app="web">
+                  <img src="ai.png"    alt="AI"     class="app" data-app="ai">
+                </div>
+
+                <!-- lejátszó -->
+                <div class="phone-player" id="aboutPlayer">
+                  <video id="aboutVideo" autoplay muted playsinline></video>
+                  <iframe id="aboutIframe" allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>
+                  <button class="phone-back" id="aboutBack">Vissza</button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Szöveg -->
-          <div class="about-text" style="max-width:500px; animation:fadeInUp 1.2s ease forwards;">
-            <h2 style="font-size:42px; font-weight:800; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Rólam</h2>
-            <p style="font-size:17px; line-height:1.7; color:#555;">
-              Horváth Tamás vagyok, fejlesztő és kreatív tervező. A TamasGem Studio célja, hogy az Apple-szintű eleganciát és technikai tökéletességet a magyar fejlesztésbe is elhozza.
-              <br><br>
-              A képernyőn az általam készített fő munkák láthatók: Roblox játékfejlesztés, Unity-projektek, teljes webshop rendszerek (Serlegkirály.hu), weboldalak (Malfiruha.hu) és mesterséges intelligenciás megoldások.
+          <!-- Szöveg + animált chippek -->
+          <div class="about-col">
+            <h2 class="revealY" data-delay="0">Rólam</h2>
+            <p class="revealY" data-delay="1">
+              Horváth Tamás vagyok, fejlesztő és kreatív tervező. Célom, hogy az Apple-szintű eleganciát és technikai
+              minőséget hozam el webre, játékokra és AI-integrációkra.
             </p>
+
+            <div class="sep revealY" data-delay="2"></div>
+
+            <p class="revealY" data-delay="2" style="margin-bottom:6px; font-weight:700;">Technológiák</p>
+            <div class="chip-wrap revealY" data-delay="3">
+              <div class="chip"><span>JavaScript • TypeScript</span></div>
+              <div class="chip"><span>PHP • MySQL</span></div>
+              <div class="chip"><span>HTML • CSS</span></div>
+              <div class="chip"><span>Unity • C#</span></div>
+              <div class="chip"><span>Roblox • Lua</span></div>
+              <div class="chip"><span>AI / LLM integráció</span></div>
+            </div>
+
+            <p class="revealY" data-delay="3" style="margin:18px 0 6px; font-weight:700;">Szolgáltatások</p>
+            <div class="chip-wrap revealY" data-delay="4">
+              <div class="chip"><span>Prémium weboldalak</span></div>
+              <div class="chip"><span>Teljes webshop rendszerek</span></div>
+              <div class="chip"><span>Admin felületek</span></div>
+              <div class="chip"><span>Játékfejlesztés</span></div>
+              <div class="chip"><span>AI-vezérelt megoldások</span></div>
+            </div>
           </div>
         </div>
-
-        <style>
-          @keyframes fadeInUp {
-            from {opacity:0; transform:translateY(30px);}
-            to {opacity:1; transform:translateY(0);}
-          }
-        </style>
-
-        <script>
-          // boot animáció és menü megjelenítése
-          window.addEventListener('load', () => {
-            const bootEl = document.getElementById('boot');
-            const aboutMenuEl = document.getElementById('aboutMenu');
-            setTimeout(()=>bootEl.style.opacity=1,400);
-            setTimeout(()=>{bootEl.style.opacity=0; setTimeout(()=>{bootEl.style.display='none'; aboutMenuEl.style.display='flex';},1000);},2200);
-          });
-
-          // iPhone "app" indító logika - névütközés nélkül
-          (function(){
-            const aboutApps = document.querySelectorAll('#about .app');
-            const aboutPlayer = document.getElementById('aboutPlayer');
-            const aboutBackBtn = document.getElementById('aboutBackBtn');
-            const aboutVideo = document.getElementById('aboutVideoPlayer');
-            const aboutIframe = document.getElementById('aboutIframePlayer');
-            const aboutMenuEl = document.getElementById('aboutMenu');
-
-            aboutApps.forEach(app=>{
-              app.addEventListener('click',()=>{
-                aboutMenuEl.style.display='none';
-                aboutPlayer.style.display='block';
-                aboutIframe.style.display='none';
-                aboutVideo.style.display='none';
-
-                const appName = app.dataset.app;
-                if(appName==='roblox'){ aboutVideo.src='roblox.mp4'; aboutVideo.style.display='block'; }
-                else if(appName==='unity'){ aboutVideo.src='unity.mp4'; aboutVideo.style.display='block'; }
-                else if(appName==='shop'){ aboutIframe.src='https://serlegkiraly.hu'; aboutIframe.style.display='block'; }
-                else if(appName==='web'){ aboutIframe.src='https://malfiruha.hu'; aboutIframe.style.display='block'; }
-                else if(appName==='ai'){ aboutIframe.src='https://tamas-ai.netlify.app'; aboutIframe.style.display='block'; }
-              });
-            });
-
-            aboutBackBtn.addEventListener('click',()=>{
-              aboutPlayer.style.display='none';
-              aboutIframe.src=''; aboutVideo.src='';
-              aboutMenuEl.style.display='flex';
-            });
-          })();
-        </script>
       </section>
-      <!-- ===== /ABOUT END ===== -->
-
+      <!-- /ABOUT -->
     </main>
   </div>
 
   <script>
-    // név csillanás
+    // név csillanás + hero belibbenés
     window.addEventListener('load', ()=>{
       document.getElementById('brandName').classList.add('sheen');
-      document.getElementById('hero')?.classList.add('ready'); // bal oldali szöveg finom beúszása
+      document.getElementById('hero')?.classList.add('ready');
     });
 
     // mobilmenü
@@ -419,12 +411,12 @@
       e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});
     });
 
-    // ARANY KITÖLTÉS ugrálva
+    // Nav arany kitöltés ciklus
     const labels = Array.from(document.querySelectorAll('.nav-label'));
     let idx = -1; function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); }
     step(); setInterval(step, 1100);
 
-    // i18n nav feliratok
+    // i18n
     const I18N = {
       hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem", seeWork:"Munkáim", quote:"Kérj ajánlatot" },
       en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me", seeWork:"See my work", quote:"Get a quote" }
@@ -443,6 +435,51 @@
       applyLang(lbtn.dataset.lang || 'hu');
     });
     applyLang(localStorage.getItem('lang') || 'hu');
+
+    /* ===== ABOUT iPhone logika (névütközés nélkül) ===== */
+    window.addEventListener('load', () => {
+      const bootEl = document.getElementById('bootLogo');
+      const aboutMenuEl = document.getElementById('aboutMenu');
+      setTimeout(()=>bootEl.style.opacity=1,400);
+      setTimeout(()=>{bootEl.style.opacity=0; setTimeout(()=>{bootEl.style.display='none'; aboutMenuEl.style.display='grid';},800);},2000);
+    });
+
+    (function(){
+      const apps = document.querySelectorAll('#about .app');
+      const player = document.getElementById('aboutPlayer');
+      const backBtn = document.getElementById('aboutBack');
+      const v = document.getElementById('aboutVideo');
+      const f = document.getElementById('aboutIframe');
+      const menu = document.getElementById('aboutMenu');
+
+      apps.forEach(app=>{
+        app.addEventListener('click',()=>{
+          menu.style.display='none';
+          player.style.display='block';
+          f.style.display='none'; v.style.display='none';
+          const appName = app.dataset.app;
+          if(appName==='roblox'){ v.src='roblox.mp4'; v.style.display='block'; }
+          else if(appName==='unity'){ v.src='unity.mp4'; v.style.display='block'; }
+          else if(appName==='shop'){ f.src='https://serlegkiraly.hu'; f.style.display='block'; }
+          else if(appName==='web'){ f.src='https://malfiruha.hu'; f.style.display='block'; }
+          else if(appName==='ai'){ f.src='https://tamas-ai.netlify.app'; f.style.display='block'; }
+        });
+      });
+      backBtn.addEventListener('click',()=>{
+        player.style.display='none'; f.src=''; v.src=''; menu.style.display='grid';
+      });
+    })();
+
+    /* ===== Scroll-on belibbenés (stagger) az about oszlopon ===== */
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.15});
+    document.querySelectorAll('#about .revealY').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
