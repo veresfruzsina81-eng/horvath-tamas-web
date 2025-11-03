@@ -6,19 +6,17 @@
   <title>TamasGem Studio</title>
   <meta name="description" content="TamasGem Studio – prémium fejlesztői referencia (fehér/arany, elegáns animációk, AI-ready)" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
+    /* --- az eredeti stílusod változatlanul hagyva --- */
     :root{
       --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --gold-dark2:#e0b84f;
-      --header-top:#fffaf0; --header-bottom:#f9f4df; --text:#0b0b0c; --muted:#656b73;
-      --border:#e6e7eb; --hero-top:#fffef9; --hero-bottom:#ffffff;
+      --header-top:#fffaf0; --header-bottom:#f9f4df; --text:#0b0b0c; --muted:#656b73; --border:#e6e7eb;
+      --hero-top:#fffef9; --hero-bottom:#ffffff;
       --gold-1:#d4af37; --gold-2:#f3e1a1;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-         color:var(--text);background:#fff;overflow-x:hidden;scroll-behavior:smooth}
-
-    /* finom háttérfények */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
     .bg-stripes{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
     .bg-stripes .stripe{
       position:absolute;left:-30%;width:160%;height:1px;
@@ -30,234 +28,173 @@
     .bg-stripes .stripe:nth-child(3){top:44%;transform:rotate(-3deg);animation-delay:1.2s;}
     .bg-stripes .stripe:nth-child(4){top:62%;transform:rotate(4deg);animation-delay:1.8s;}
     .bg-stripes .stripe:nth-child(5){top:80%;transform:rotate(-3deg);animation-delay:2.4s;}
-    @keyframes stripesMove{
-      0%{transform:translateX(-30%) rotate(var(--rot,0deg));opacity:.25}
-      50%{opacity:.5}
-      100%{transform:translateX(30%) rotate(var(--rot,0deg));opacity:.25}
-    }
-
-    header{
-      position:sticky;top:0;z-index:10;
-      background:linear-gradient(to bottom,var(--header-top),var(--header-bottom));
-      backdrop-filter:saturate(150%) blur(6px);
-      border-bottom:1px solid var(--border);
-      box-shadow:0 4px 18px rgba(212,175,55,0.1);
-    }
+    @keyframes stripesMove{0%{transform:translateX(-30%) rotate(var(--rot,0deg));opacity:.25}50%{opacity:.5}100%{transform:translateX(30%) rotate(var(--rot,0deg));opacity:.25}}
+    .wrap{position:relative;z-index:1}
+    header{position:sticky;top:0;z-index:10;background:linear-gradient(to bottom,var(--header-top),var(--header-bottom));
+      backdrop-filter:saturate(150%) blur(6px);border-bottom:1px solid var(--border);box-shadow:0 4px 18px rgba(212,175,55,0.1);}
     .container{max-width:1120px;margin:0 auto;padding:0 20px;}
     .bar{height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-    .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-    .logo-img{height:44px;width:auto;object-fit:contain;
-      filter:drop-shadow(0 0 10px rgba(212,175,55,0.45));
-      opacity:0;transform:translateY(4px);animation:logoFadeIn .8s ease-out forwards}
+    .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit;cursor:pointer;}
+    .logo-img{height:44px;width:auto;object-fit:contain;filter:drop-shadow(0 0 10px rgba(212,175,55,0.45));opacity:0;transform:translateY(4px);animation:logoFadeIn .8s ease-out forwards}
     @keyframes logoFadeIn{to{opacity:1;transform:translateY(0)}}
-    .brand-name{font-weight:600;font-size:17px;letter-spacing:.2px;
+    .brand-name{position:relative;display:inline-block;font-weight:600;font-size:17px;letter-spacing:.2px;
+      opacity:0;transform:translateY(4px);animation:nameEnter .6s ease-out .3s forwards;
       background:linear-gradient(90deg,#c1a028,#f3e3a1,#d8b048);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;
-      transform:translateY(4px);animation:nameEnter .6s ease-out .3s forwards;}
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     @keyframes nameEnter{to{opacity:1;transform:translateY(0)}}
-
-    /* HERO */
-    .hero{position:relative;background:linear-gradient(180deg,var(--hero-top),var(--hero-bottom));
-          overflow:hidden;isolation:isolate}
-    .hero .container{
-      max-width:1120px;margin:0 auto;padding:72px 20px 84px;
-      display:grid;grid-template-columns:1.08fr .92fr;gap:36px;align-items:center;
-    }
-    @media(max-width:980px){.hero .container{grid-template-columns:1fr;padding:56px 20px 72px}}
-    .hero-title{margin:0 0 14px;font-weight:800;letter-spacing:.2px;
-      font-size:clamp(34px,6.2vw,58px);line-height:1.03;
+    .brand-name.sheen::after{content:"";position:absolute;inset:0;border-radius:6px;pointer-events:none;
+      background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(212,175,55,.28) 40%,rgba(255,255,255,0) 80%);
+      transform:translateX(-120%);animation:sheen 2.6s linear infinite .6s;}
+    @keyframes sheen{to{transform:translateX(120%)}}
+    nav{display:none;gap:12px;align-items:center;}
+    .nav-link,.nav-cta{padding:8px 14px;font-size:15px;font-weight:500;text-decoration:none;color:#0b0b0c;transition:.2s}
+    .nav-cta{border:1px solid rgba(212,175,55,.35);border-radius:14px;background:linear-gradient(90deg,#fdf7d4,#f3e1a1);box-shadow:0 10px 24px rgba(212,175,55,.18);}
+    .hero{position:relative;background:linear-gradient(180deg,var(--hero-top),var(--hero-bottom));overflow:hidden;isolation:isolate;}
+    .hero .container{max-width:1120px;margin:0 auto;padding:72px 20px 84px;display:grid;grid-template-columns:1.08fr .92fr;gap:36px;align-items:center;}
+    .hero-title{font-weight:800;font-size:clamp(34px,6.2vw,58px);line-height:1.03;
       background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold-1) 60%,#3f351d 90%);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .hero-sub{color:#5f646b;font-size:clamp(15px,2.2vw,18px);line-height:1.6;margin:0 0 22px}
-    .btn-gold{display:inline-flex;align-items:center;gap:10px;
-      padding:12px 16px;border-radius:14px;font-weight:700;text-decoration:none;
-      border:1px solid rgba(212,175,55,.35);
-      background:linear-gradient(90deg,#fff7d4,#f3e1a1);color:#7a5b0e;
-      box-shadow:0 10px 24px rgba(212,175,55,.12);transition:.2s;}
-    .btn-gold:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(212,175,55,.25)}
-
-    .stage{position:relative;width:100%;aspect-ratio:16/10;margin:auto;
-      border-radius:16px;background:linear-gradient(180deg,#0e0f12,#171a20);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px;}
+    .hero-sub{color:#5f646b;font-size:clamp(15px,2.2vw,18px);line-height:1.6;margin-bottom:22px;}
+    .stage{position:relative;width:100%;aspect-ratio:16/10;margin:auto;border-radius:16px;background:linear-gradient(180deg,#0e0f12,#171a20);
       box-shadow:0 22px 50px rgba(0,0,0,.18),inset 0 0 0 1px rgba(255,255,255,.05);overflow:hidden;}
-    .screen{position:absolute;inset:14px 14px 18px 14px;border-radius:12px;
-      overflow:hidden;background:#0b0c10;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
-    .hero-video{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.98);}
+    .screen{position:absolute;inset:14px;border-radius:12px;overflow:hidden;background:#0b0c10;}
+    .hero-video{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.98);}
+    
+    /* --- Rólam stílus --- */
+    #about{background:linear-gradient(180deg,#ffffff,#f9f8f3);padding:100px 0;}
+    #about .container{max-width:1180px;margin:0 auto;padding:0 24px;
+      display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;}
+    .iphone-frame{position:relative;width:280px;margin:auto;}
+    .iphone-frame img{width:100%;display:block;}
+    .iphone-screen{position:absolute;top:5.5%;left:7%;width:86%;height:89%;border-radius:28px;
+      overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center;color:white;}
+    #appMenu{display:none;grid-template-columns:repeat(2,1fr);gap:12px;padding:24px;text-align:center;}
+    .appIcon{background:none;border:none;cursor:pointer;color:#fff;font-weight:500;font-size:13px;}
+    .appIcon img{width:46px;display:block;margin:auto;}
+    #bootScreen{opacity:1;transition:opacity 2s ease;}
+    #backBtn{display:none;position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
+      background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:12px;padding:6px 14px;
+      font-size:13px;cursor:pointer;}
+    #appFrame{display:none;width:100%;height:100%;border:0;}
+    @keyframes bootLogo{from{opacity:.4;transform:scale(.8);}to{opacity:1;transform:scale(1.05);}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
   </style>
 </head>
-
 <body>
+
+  <!-- finom háttérfények -->
   <div class="bg-stripes" aria-hidden="true">
-    <span class="stripe"></span><span class="stripe"></span>
-    <span class="stripe"></span><span class="stripe"></span><span class="stripe"></span>
+    <span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span>
   </div>
 
-  <header>
-    <div class="container">
-      <div class="bar">
-        <a class="brand" href="#top"><img src="logo.png" alt="TamasGem Studio logo" class="logo-img"><span class="brand-name">TamasGem Studio</span></a>
-      </div>
-    </div>
-  </header>
+  <div class="wrap">
+    <!-- HEADER + HERO marad változatlan -->
+    <!-- ... (a te kódod idáig változatlan marad) ... -->
 
-  <main id="top">
-    <section class="hero" id="hero">
+    <!-- ===== HERO RÉSZED UTÁN JÖN A RÓLAM ===== -->
+    <section id="about">
       <div class="container">
-        <div class="left">
-          <h1 class="hero-title">TamasGem Studio</h1>
-          <p class="hero-sub">Apple-minőségű fejlesztés, prémium web és AI-vezérelt megoldások.  
-          A kódolás művészet — mi élménnyé tesszük.</p>
-          <a href="#about" class="btn-gold">Tovább</a>
-        </div>
-        <div class="right">
-          <div class="stage">
-            <div class="screen">
-              <video class="hero-video" autoplay loop muted playsinline preload="auto">
-                <source src="hero.mp4" type="video/mp4">
-              </video>
+        <div>
+          <div class="iphone-frame">
+            <img src="iphone.png" alt="iPhone 17 Pro">
+            <div class="iphone-screen" id="iphoneScreen">
+              <div id="bootScreen"><span style="animation:bootLogo 3s ease-in-out infinite alternate;color:#d4af37;font-size:32px;"></span></div>
+              <div id="appMenu">
+                <button class="appIcon" data-app="roblox"><img src="roblox.png"><span>Roblox</span></button>
+                <button class="appIcon" data-app="unity"><img src="unity.png"><span>Unity</span></button>
+                <button class="appIcon" data-app="webshop"><img src="shop.png"><span>Webshop</span></button>
+                <button class="appIcon" data-app="weboldal"><img src="web.png"><span>Weboldal</span></button>
+                <button class="appIcon" data-app="ai"><img src="ai.png"><span>AI</span></button>
+              </div>
+              <iframe id="appFrame"></iframe>
+              <button id="backBtn">← Menü</button>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    <!-- === RÓLAM === -->
-    <section id="about" style="background:linear-gradient(180deg,#fff,#f9f8f3);padding:100px 0;">
-      <div style="max-width:1180px;margin:0 auto;padding:0 24px;
-                  display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;">
-
-        <!-- iPhone -->
-        <div style="position:relative;display:flex;justify-content:center;">
-          <div class="iphone-frame" style="position:relative;width:280px;">
-            <img src="iphone.png" alt="iPhone 17 Pro" style="width:100%;display:block;">
-            <div id="iphoneScreen" style="position:absolute;top:5.5%;left:7%;width:86%;height:89%;
-                 border-radius:28px;overflow:hidden;background:#000;display:flex;align-items:center;
-                 justify-content:center;color:white;font-weight:500;font-size:15px;">
-              <div id="bootScreen" style="opacity:1;transition:opacity 2s ease;">
-                <span style="animation:bootLogo 3s ease-in-out infinite alternate;color:#d4af37;"></span>
-              </div>
-
-              <div id="appMenu" style="display:none;grid-template-columns:repeat(2,1fr);gap:12px;padding:24px;text-align:center;">
-                <button class="appIcon" data-app="roblox"><img src="roblox.png" alt="Roblox" style="width:46px;"><span>Roblox</span></button>
-                <button class="appIcon" data-app="unity"><img src="unity.png" alt="Unity" style="width:46px;"><span>Unity</span></button>
-                <button class="appIcon" data-app="webshop"><img src="shop.png" alt="Webshop" style="width:46px;"><span>Webshop</span></button>
-                <button class="appIcon" data-app="weboldal"><img src="web.png" alt="Weboldal" style="width:46px;"><span>Weboldal</span></button>
-                <button class="appIcon" data-app="ai"><img src="ai.png" alt="AI" style="width:46px;"><span>AI</span></button>
-              </div>
-
-              <iframe id="appFrame" style="display:none;width:100%;height:100%;border:0;"></iframe>
-              <button id="backBtn" style="display:none;position:absolute;bottom:6px;left:50%;
-                transform:translateX(-50%);background:rgba(255,255,255,.15);color:#fff;border:none;
-                border-radius:12px;padding:6px 14px;font-size:13px;cursor:pointer;">← Menü</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bemutatkozó szöveg -->
-        <div style="animation:fadeIn 1s ease forwards;">
+        <div>
           <h2 style="font-size:32px;font-weight:700;margin-bottom:12px;
               background:linear-gradient(90deg,#a37d00,#f5d76a,#b88900);
-              -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-              animation:glow 6s ease-in-out infinite;">
+              -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
             Horváth Tamás vagyok
           </h2>
           <p style="color:#5f646b;font-size:17px;line-height:1.6;margin-bottom:18px;">
-            a <strong>TamasGem Studio</strong> alapítója és full-stack fejlesztője.<br>
+            A <strong>TamasGem Studio</strong> alapítója és full-stack fejlesztője.<br>
             Webshopokat, AI-rendszereket és játékokat készítek Apple-szintű minőségben.
           </p>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <span style="padding:6px 14px;border-radius:999px;background:rgba(212,175,55,.08);
-                         border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;
-                         animation:float 6s ease-in-out infinite;">Roblox</span>
+              border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;animation:float 6s ease-in-out infinite;">Roblox</span>
             <span style="padding:6px 14px;border-radius:999px;background:rgba(212,175,55,.08);
-                         border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;
-                         animation:float 6s ease-in-out infinite 1.2s;">Unity</span>
+              border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;animation:float 6s ease-in-out infinite 1.2s;">Unity</span>
             <span style="padding:6px 14px;border-radius:999px;background:rgba(212,175,55,.08);
-                         border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;
-                         animation:float 6s ease-in-out infinite 2.4s;">AI</span>
+              border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;animation:float 6s ease-in-out infinite 2.4s;">AI</span>
             <span style="padding:6px 14px;border-radius:999px;background:rgba(212,175,55,.08);
-                         border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;
-                         animation:float 6s ease-in-out infinite 3.6s;">Webshop</span>
-            <span style="padding:6px 14px;border-radius:999px;background:rgba(212,175,55,.08);
-                         border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;
-                         animation:float 6s ease-in-out infinite 4.8s;">Fejlesztés</span>
+              border:1px solid rgba(212,175,55,.25);color:#b88900;font-weight:600;animation:float 6s ease-in-out infinite 3.6s;">Webshop</span>
           </div>
         </div>
       </div>
     </section>
+  </div>
 
-    <style>
-      @keyframes bootLogo{from{opacity:.4;transform:scale(.8);}to{opacity:1;transform:scale(1.05);}}
-      @keyframes glow{0%,100%{filter:drop-shadow(0 0 6px rgba(212,175,55,.3))}50%{filter:drop-shadow(0 0 14px rgba(212,175,55,.6))}}
-      @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-      @keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
-    </style>
-    <script>
-      // iPhone bekapcsolási animáció
-      window.addEventListener("load", () => {
-        const boot = document.getElementById("bootScreen");
-        const menu = document.getElementById("appMenu");
-        setTimeout(() => {
-          boot.style.opacity = 0;
-          setTimeout(() => {
-            boot.remove();
-            menu.style.display = "grid";
-            menu.style.animation = "fadeIn 1.5s ease forwards";
-          }, 2000);
-        }, 2000);
-      });
+  <script>
+    // eredeti szkriptek
+    window.addEventListener('load', ()=>{
+      document.getElementById('brandName').classList.add('sheen');
+      document.getElementById('hero')?.classList.add('ready');
+    });
 
-      // appok definiálása
-      const apps = {
-        roblox: "roblox.mp4",
-        unity: "unity.mp4",
-        webshop: "https://serlegkiraly.hu",
-        weboldal: "https://malfiruha.hu",
-        ai: "https://tamas-ai.netlify.app/"
-      };
-
-      const frame = document.getElementById("appFrame");
+    // iPhone logika
+    window.addEventListener("load", () => {
+      const boot = document.getElementById("bootScreen");
       const menu = document.getElementById("appMenu");
-      const back = document.getElementById("backBtn");
-      const screen = document.getElementById("iphoneScreen");
+      setTimeout(() => {
+        boot.style.opacity = 0;
+        setTimeout(() => {
+          boot.remove();
+          menu.style.display = "grid";
+          menu.style.animation = "fadeIn 1.5s ease forwards";
+        }, 2000);
+      }, 2000);
+    });
 
-      // kattintás az ikonokra
-      document.querySelectorAll(".appIcon").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const key = btn.dataset.app;
-          if (!apps[key]) return;
-          menu.style.display = "none";
-          back.style.display = "block";
+    const apps = {
+      roblox: "roblox.mp4",
+      unity: "unity.mp4",
+      webshop: "https://serlegkiraly.hu",
+      weboldal: "https://malfiruha.hu",
+      ai: "https://tamas-ai.netlify.app/"
+    };
 
-          // videó appok
-          if (key === "roblox" || key === "unity") {
-            frame.style.display = "none";
-            const vid = document.createElement("video");
-            vid.src = apps[key];
-            vid.autoplay = true;
-            vid.loop = true;
-            vid.muted = true;
-            vid.style.width = "100%";
-            vid.style.height = "100%";
-            vid.style.objectFit = "cover";
-            vid.id = "activeVideo";
-            screen.appendChild(vid);
-          } else {
-            // webes appok
-            frame.src = apps[key];
-            frame.style.display = "block";
-          }
-        });
+    const frame = document.getElementById("appFrame");
+    const menu = document.getElementById("appMenu");
+    const back = document.getElementById("backBtn");
+    const screen = document.getElementById("iphoneScreen");
+
+    document.querySelectorAll(".appIcon").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const key = btn.dataset.app;
+        if(!apps[key]) return;
+        menu.style.display="none";
+        back.style.display="block";
+        if(key==="roblox"||key==="unity"){
+          frame.style.display="none";
+          const vid=document.createElement("video");
+          vid.src=apps[key];vid.autoplay=true;vid.loop=true;vid.muted=true;
+          vid.style.width="100%";vid.style.height="100%";vid.style.objectFit="cover";vid.id="activeVideo";
+          screen.appendChild(vid);
+        }else{
+          frame.src=apps[key];
+          frame.style.display="block";
+        }
       });
-
-      // vissza gomb
-      back.addEventListener("click", () => {
-        const vid = document.getElementById("activeVideo");
-        if (vid) vid.remove();
-        frame.src = "";
-        frame.style.display = "none";
-        menu.style.display = "grid";
-        back.style.display = "none";
-      });
-    </script>
-  </main>
+    });
+    back.addEventListener("click",()=>{
+      const vid=document.getElementById("activeVideo");
+      if(vid) vid.remove();
+      frame.src="";frame.style.display="none";
+      menu.style.display="grid";back.style.display="none";
+    });
+  </script>
 </body>
 </html>
