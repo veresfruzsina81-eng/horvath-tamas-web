@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TamasGem Studio</title>
+  <meta name="description" content="TamasGem Studio – prémium fejlesztői referencia oldal (fehér/arany, elegáns animációk)" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --gold:#D4AF37;           /* arany szín */
+      --gold-soft:#e6cc73;
+      --text:#0b0b0c;
+      --muted:#656b73;
+      --border:#e6e7eb;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:#fff;
+      overflow-x:hidden;
+    }
+
+    /* ===== Lassú, elegáns arany fénycsíkok a háttérben ===== */
+    .bg-stripes{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .bg-stripes .stripe{
+      position:absolute;
+      left:-30%;
+      width:160%;
+      height:1px;
+      background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
+      filter:blur(.3px);
+      animation:stripesMove 14s ease-in-out infinite alternate;
+    }
+    .bg-stripes .stripe:nth-child(1){ top:8%;  transform:rotate(-3deg); animation-delay:.0s;}
+    .bg-stripes .stripe:nth-child(2){ top:26%; transform:rotate(4deg);  animation-delay:.6s;}
+    .bg-stripes .stripe:nth-child(3){ top:44%; transform:rotate(-3deg); animation-delay:1.2s;}
+    .bg-stripes .stripe:nth-child(4){ top:62%; transform:rotate(4deg);  animation-delay:1.8s;}
+    .bg-stripes .stripe:nth-child(5){ top:80%; transform:rotate(-3deg); animation-delay:2.4s;}
+
+    @keyframes stripesMove{
+      0%   { transform: translateX(-30%) rotate(var(--rot,0deg)); opacity:.25 }
+      50%  { opacity:.5 }
+      100% { transform: translateX(30%)  rotate(var(--rot,0deg)); opacity:.25 }
+    }
+
+    /* ===== Header ===== */
+    .wrap{position:relative; z-index:1}
+    header{
+      position:sticky; top:0; z-index:10;
+      background:rgba(255,255,255,.8);
+      backdrop-filter:saturate(140%) blur(8px);
+      border-bottom:1px solid var(--border);
+    }
+    .container{
+      max-width:1120px; margin:0 auto; padding:0 20px;
+    }
+    .bar{
+      height:64px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    /* brand */
+    .brand{
+      display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:inherit;
+    }
+    .gem{
+      height:44px; width:44px; border-radius:16px; background:#fff;
+      border:1px solid color-mix(in oklab, var(--gold) 60%, #fff 40%);
+      box-shadow:0 6px 24px rgba(212,175,55,.18);
+      display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+    }
+    .gem::before{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(120deg, rgba(212,175,55,.18), transparent 40%, rgba(212,175,55,.18));
+      opacity:.7;
+    }
+    .gem span{ font-weight:600; font-size:13px; letter-spacing:.2px; color:#8a6a11; }
+
+    .brand-name{
+      position:relative; display:inline-block;
+      font-weight:600; font-size:16px; letter-spacing:.2px;
+      opacity:0; transform:translateY(4px);
+      animation:nameEnter .6s ease-out .1s forwards;
+    }
+    @keyframes nameEnter{
+      to{ opacity:1; transform:translateY(0) }
+    }
+    /* elegáns csillanás */
+    .brand-name.sheen::after{
+      content:""; position:absolute; inset:0; border-radius:6px; pointer-events:none;
+      background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(212,175,55,.28) 40%, rgba(255,255,255,0) 80%);
+      transform:translateX(-120%);
+      animation:sheen 2.6s linear infinite 0.6s;
+    }
+    @keyframes sheen{
+      to{ transform:translateX(120%) }
+    }
+
+    /* nav */
+    nav{ display:none; gap:8px; align-items:center; }
+    nav a{
+      position:relative; padding:8px 12px; font-size:15px; color:#4a4f55; text-decoration:none;
+      transition:color .2s ease;
+    }
+    nav a:hover{ color:#0b0b0c }
+    nav a::after{
+      content:""; position:absolute; left:50%; transform:translateX(-50%); bottom:6px; height:2px; width:0;
+      background:linear-gradient(90deg, var(--gold), var(--gold-soft), var(--gold));
+      border-radius:999px; transition:width .5s ease;
+    }
+    nav a:hover::after{ width:75% }
+
+    .cta{
+      position:relative; border:1px solid color-mix(in oklab, var(--gold) 60%, #fff 40%);
+      padding:9px 14px; border-radius:14px; font-size:14px; font-weight:600; color:#7a5b0e;
+      background:#fff; box-shadow:0 10px 24px rgba(212,175,55,.18);
+      transition: box-shadow .2s ease, transform .2s ease, background .2s ease;
+      text-decoration:none;
+    }
+    .cta:hover{
+      box-shadow:0 12px 28px rgba(212,175,55,.28);
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.9);
+    }
+    .cta::after{
+      content:""; position:absolute; inset:-1px; border-radius:14px; pointer-events:none;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent);
+      opacity:0; transition:opacity .2s ease;
+      animation:btnSheen 3.2s linear infinite;
+    }
+    .cta:hover::after{ opacity:1 }
+    @keyframes btnSheen{
+      0% { background-position:-100% 0/200% 100% }
+      100% { background-position:100% 0/200% 100% }
+    }
+
+    /* mobile toggle */
+    .toggle{
+      height:40px; width:40px; border-radius:12px; border:1px solid var(--border);
+      background:#fff; display:flex; align-items:center; justify-content:center;
+    }
+    .menu{ display:none; border-top:1px solid var(--border); background:rgba(255,255,255,.94); backdrop-filter:blur(8px); }
+    .menu a{ padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block; }
+    .menu .cta{ margin:8px 20px 16px; display:block; text-align:center; }
+
+    /* layout */
+    @media (min-width: 768px){
+      nav{ display:flex }
+      .toggle{ display:none }
+    }
+
+    /* csak demó: helykitöltő main */
+    main{ max-width:1120px; margin:0 auto; padding:48px 20px; color:var(--muted) }
+  </style>
+</head>
+<body>
+
+  <!-- Háttér arany fénycsíkok -->
+  <div class="bg-stripes" aria-hidden="true">
+    <span class="stripe"></span>
+    <span class="stripe"></span>
+    <span class="stripe"></span>
+    <span class="stripe"></span>
+    <span class="stripe"></span>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <div class="container">
+        <div class="bar">
+          <!-- Brand -->
+          <a class="brand" href="#home">
+            <div class="gem"><span>TG</span></div>
+            <span class="brand-name" id="brandName">TamasGem Studio</span>
+          </a>
+
+          <!-- Desktop nav -->
+          <nav id="desktopNav">
+            <a href="#about">Rólam</a>
+            <a href="#work">Munkák</a>
+            <a href="#contact">Kapcsolat</a>
+            <a class="cta" href="#contact">Írj nekem</a>
+          </nav>
+
+          <!-- Mobile toggle -->
+          <button class="toggle" id="menuBtn" aria-label="Menü">
+            <!-- egyszerű hamburger ikon -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round">
+              <path d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div class="menu" id="mobileMenu">
+        <a href="#about">Rólam</a>
+        <a href="#work">Munkák</a>
+        <a href="#contact">Kapcsolat</a>
+        <a class="cta" href="#contact">Írj nekem</a>
+      </div>
+    </header>
+
+    <main>
+      <p>(Következő lépésként ide jön a HERO rész fehér/arany parallax-szal. Most csak a fejléced fut.)</p>
+    </main>
+  </div>
+
+  <script>
+    // finom csillanás a névre
+    window.addEventListener('load', ()=>{
+      const name = document.getElementById('brandName');
+      if(name) name.classList.add('sheen');
+    });
+
+    // mobil menü
+    const btn = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+    let open = false;
+    btn.addEventListener('click', ()=>{
+      open = !open;
+      menu.style.display = open ? 'block' : 'none';
+    });
+    // zárjuk klikkelésre (mobil UX)
+    menu.addEventListener('click', e=>{
+      if(e.target.tagName === 'A'){ open=false; menu.style.display='none'; }
+    });
+  </script>
+</body>
+</html>
