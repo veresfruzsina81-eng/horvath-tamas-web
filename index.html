@@ -4,12 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TamasGem Studio</title>
-  <meta name="description" content="TamasGem Studio – prémium fejlesztői referencia oldal (fehér/arany, elegáns animációk)" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta name="description" content="TamasGem Studio – prémium fejlesztői referencia (fehér/arany, elegáns animációk, AI-ready)" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
       --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --gold-dark2:#e0b84f;
       --header-top:#fffaf0; --header-bottom:#f9f4df; --text:#0b0b0c; --muted:#656b73; --border:#e6e7eb;
+      --hero-top:#fffef9; --hero-bottom:#ffffff;
+      --gold-1:#d4af37; --gold-2:#f3e1a1;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;scroll-behavior:smooth}
@@ -112,11 +114,104 @@
       -webkit-text-fill-color:transparent; color:transparent;
     }
 
-    main{max-width:1120px; margin:0 auto; padding:48px 20px; color:var(--muted)}
+    /* ===== HERO: öltönyös + Apple monitor + gépelés -> site + zoom ===== */
+    .hero{
+      position:relative; background:linear-gradient(180deg,var(--hero-top),var(--hero-bottom));
+      overflow:hidden; isolation:isolate;
+    }
+    .hero .container{
+      max-width:1120px; margin:0 auto; padding:72px 20px 84px;
+      display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;
+    }
+    @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:56px 20px 72px} }
+
+    .hero-title{
+      position:relative; margin:0 0 14px; font-weight:800; letter-spacing:.2px;
+      font-size:clamp(34px,6.2vw,58px); line-height:1.03;
+      background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold-1) 60%,#3f351d 90%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .hero-sub{ color:#5f646b; font-size:clamp(15px,2.2vw,18px); line-height:1.6; margin:0 0 22px }
+    .hero-cta{ display:flex; gap:12px; flex-wrap:wrap }
+    .btn-gold,.btn-ghost{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none;
+      border:1px solid #e6e6ea; background:#fff; transition:.2s; box-shadow:0 10px 24px rgba(212,175,55,.12);
+    }
+    .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
+    .btn-ghost{ background:rgba(255,255,255,.7); backdrop-filter:blur(6px) }
+    .btn-gold:hover,.btn-ghost:hover{ transform:translateY(-1px) }
+
+    /* Apple-stílusú monitor színpad */
+    .stage{
+      position:relative; width:100%; aspect-ratio:16/10; margin:auto;
+      border-radius:16px; background:linear-gradient(180deg,#0e0f12,#171a20);
+      box-shadow:0 22px 50px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .stage::before{
+      content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%);
+      width:68px; height:10px; border-radius:12px; background:#0a0b0e; box-shadow:0 0 0 2px rgba(255,255,255,.06) inset;
+    }
+    .stand{
+      position:absolute; left:50%; transform:translateX(-50%); bottom:-26px; width:46%;
+      height:26px; background:linear-gradient(180deg,#cfcfd4,#b9bbc2); border-radius:0 0 12px 12px; filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));
+    }
+    .screen{
+      position:absolute; inset:14px 14px 18px 14px; border-radius:12px; overflow:hidden;
+      background:#0b0c10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    /* Öltönyös figura: ha suit.png megvan, azt mutatjuk, különben stilizált sziluett */
+    .suit{
+      position:absolute; bottom:-6px; left:4%;
+      height:78%; width:auto; object-fit:contain; pointer-events:none; opacity:.95;
+      filter: drop-shadow(0 18px 26px rgba(0,0,0,.35));
+    }
+    .silhouette{
+      position:absolute; bottom:-6px; left:6%; width:36%; height:70%;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      -webkit-mask: radial-gradient(180% 100% at 10% 60%, #000 42%, transparent 43%),
+                    radial-gradient(80% 120% at 60% 120%, #000 55%, transparent 56%);
+      mask: radial-gradient(180% 100% at 10% 60%, #000 42%, transparent 43%),
+            radial-gradient(80% 120% at 60% 120%, #000 55%, transparent 56%);
+      opacity:.55; pointer-events:none;
+    }
+
+    /* Scene rétegek */
+    .scene{ position:absolute; inset:0; display:grid; place-items:center; }
+    .code{
+      width:100%; height:100%; padding:18px; color:#e6edf3; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:13px; line-height:1.4; background:linear-gradient(180deg,#0b0c10,#0f1116);
+    }
+    .line{ opacity:.0; transform:translateY(4px); }
+    .line.show{ opacity:1; transform:none; transition:.15s ease; }
+    .c1{color:#7ee787}.c2{color:#79c0ff}.c3{color:#ffa657}.c4{color:#ff7b72}.c5{color:#d2a8ff}
+
+    .site{
+      position:absolute; inset:0; background:#fff; color:#111; transform:scale(1.02); opacity:0; pointer-events:none;
+    }
+    .site-head{ padding:14px 18px; border-bottom:1px solid #eee; display:flex; gap:10px; align-items:center; background:linear-gradient(180deg,#fffdf6,#fff) }
+    .site-dot{ width:10px; height:10px; border-radius:50%; background:#e8e8e8 }
+    .site-hero{ padding:28px 24px; border-bottom:1px solid #f2f2f2; display:grid; grid-template-columns:1.1fr .9fr; gap:16px }
+    .site-title{ font-weight:800; font-size:28px; background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold-1) 60%); -webkit-background-clip:text; -webkit-text-fill-color:transparent }
+    .site-p{ color:#666; line-height:1.6 }
+    .site-card{ border:1px solid #eee; border-radius:12px; padding:14px; background:#fff }
+    .site-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; padding:16px 24px }
+
+    .phase-site .site{ opacity:1; transform:scale(1); transition:opacity .5s ease, transform .6s ease; pointer-events:auto }
+    .phase-site .code{ opacity:0; transition:opacity .4s ease }
+    .zoom-in{ animation:zoom 1.6s ease forwards }
+    @keyframes zoom{ 0%{ transform:translateZ(0) scale(1) } 100%{ transform:translateZ(0) scale(1.06) } }
+
+    .hero .left .reveal{ opacity:0; transform:translateY(8px); }
+    .hero.ready .left .reveal{ opacity:1; transform:none; transition:.5s ease .15s }
+    .hero.ready .left .reveal.d2{ transition-delay:.28s }
+    .hero.ready .left .reveal.d3{ transition-delay:.38s }
   </style>
 </head>
 <body>
 
+  <!-- finom háttérfények -->
   <div class="bg-stripes" aria-hidden="true">
     <span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span>
   </div>
@@ -139,10 +234,10 @@
             <a href="#contact" class="nav-cta  nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
-          <!-- RIGHT: flags + AI -->
+          <!-- RIGHT: zászlók + AI -->
           <div class="right-controls">
             <div class="lang-switch" aria-label="Language switcher">
-              <!-- 🇭🇺 HUNGARY (inline SVG) -->
+              <!-- 🇭🇺 -->
               <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
                 <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                   <rect width="24" height="16" fill="#fff"/>
@@ -150,7 +245,7 @@
                   <rect width="24" height="5.333" y="10.667" fill="#477050"/>
                 </svg>
               </button>
-              <!-- 🇬🇧 UNITED KINGDOM (inline SVG, stilizált) -->
+              <!-- 🇬🇧 -->
               <button class="lang-btn" data-lang="en" title="English" aria-label="English">
                 <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                   <clipPath id="u"><rect width="24" height="16" rx="2" ry="2"/></clipPath>
@@ -189,7 +284,6 @@
         <a href="#contact" class="cta       nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
           <div class="lang-switch">
-            <!-- mobilon is ugyanazok az inline zászlók -->
             <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
               <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                 <rect width="24" height="16" fill="#fff"/>
@@ -220,8 +314,74 @@
       </div>
     </header>
 
+    <!-- ===== HERO ===== -->
     <main id="top">
-      <p>(A zászlók most **beépített SVG-k**, így minden böngészőn megjelennek. A váltás továbbra is működik és mentődik.)</p>
+      <section class="hero" id="hero">
+        <div class="container">
+          <!-- BAL: szövegek -->
+          <div class="left">
+            <h1 class="hero-title reveal">TamasGem Studio</h1>
+            <p class="hero-sub reveal d2">
+              Öltönyös fókusz, Apple-minőség — kódolásból élő, prémium felületek. AI-ready portfóliók, webshopok, adminok.
+            </p>
+            <div class="hero-cta reveal d3">
+              <a class="btn-gold" href="#work" data-i18n="seeWork">Munkáim</a>
+              <a class="btn-ghost" href="#contact" data-i18n="quote">Kérj ajánlatot</a>
+            </div>
+          </div>
+
+          <!-- JOBB: monitor + öltöny + jelenetek -->
+          <div class="right">
+            <div class="stage" id="stage">
+              <!-- monitor képernyő -->
+              <div class="screen">
+                <!-- 1) KÓD jelenet -->
+                <div class="code" id="codeScene" aria-label="Typing code">
+                  <div class="line"><span class="c2">const</span> studio = <span class="c1">'TamasGem'</span>;</div>
+                  <div class="line"><span class="c2">function</span> build(<span class="c3">project</span>){</div>
+                  <div class="line">&nbsp;&nbsp;<span class="c4">return</span> project.<span class="c5">quality</span>(<span class="c1">'premium'</span>)</div>
+                  <div class="line">&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;<span class="c5">ux</span>(<span class="c1">'elegant'</span>)</div>
+                  <div class="line">&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;<span class="c5">speed</span>(<span class="c1">'95+ Lighthouse'</span>);</div>
+                  <div class="line">}</div>
+                  <div class="line">build(<span class="c3">{ type: <span class="c1">'portfolio'</span> }</span>);</div>
+                </div>
+
+                <!-- 2) WEBOLDAL jelenet (mock) -->
+                <div class="site" id="siteScene" aria-hidden="true">
+                  <div class="site-head">
+                    <span class="site-dot"></span><span class="site-dot"></span><span class="site-dot"></span>
+                    <strong style="margin-left:8px">Premium Web</strong>
+                  </div>
+                  <div class="site-hero">
+                    <div>
+                      <div class="site-title">Elegance & Performance</div>
+                      <p class="site-p">Arany-fehér vizuál, villámgyors betöltés, finom animációk. Referencia-szint, üzleti fókusz.</p>
+                    </div>
+                    <div class="site-card">
+                      <strong>Highlights</strong>
+                      <ul style="margin:8px 0 0 16px; color:#555">
+                        <li>AI-ready komponensek</li>
+                        <li>Admin & analytics</li>
+                        <li>Reszponzív, PWA-alap</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="site-grid">
+                    <div class="site-card">Projekt #1</div>
+                    <div class="site-card">Projekt #2</div>
+                    <div class="site-card">Projekt #3</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Öltönyös: ha suit.png van, azt mutatjuk; különben sziluett -->
+              <img src="suit.png" alt="" class="suit" onerror="this.style.display='none'">
+              <div class="silhouette" aria-hidden="true"></div>
+              <div class="stand" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -248,27 +408,49 @@
     let idx = -1; function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); }
     step(); setInterval(step, 1100);
 
-    // i18n
+    // i18n nav feliratok
     const I18N = {
-      hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem" },
-      en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me" }
+      hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem", seeWork:"Munkáim", quote:"Kérj ajánlatot" },
+      en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me", seeWork:"See my work", quote:"Get a quote" }
     };
     function applyLang(lang){
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key = el.getAttribute('data-i18n');
-        const txt = I18N[lang]?.[key];
-        if(txt) el.textContent = txt;
+        const txt = I18N[lang]?.[key]; if(txt) el.textContent = txt;
       });
       document.querySelectorAll('.lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
       localStorage.setItem('lang', lang);
     }
     document.addEventListener('click', (e)=>{
-      const btn = e.target.closest('.lang-btn');
-      if(!btn) return;
+      const btn = e.target.closest('.lang-btn'); if(!btn) return;
       applyLang(btn.dataset.lang || 'hu');
     });
     applyLang(localStorage.getItem('lang') || 'hu');
+
+    // ===== HERO: kód gépelés -> site -> zoom-in -> bal oldali szövegek =====
+    (function(){
+      const codeLines = document.querySelectorAll('#codeScene .line');
+      const hero = document.getElementById('hero');
+      const stage = document.getElementById('stage');
+      const site = document.getElementById('siteScene');
+      if(!codeLines.length || !hero || !stage || !site) return;
+
+      let i = 0;
+      function typeNext(){
+        if(i < codeLines.length){
+          codeLines[i].classList.add('show');
+          i++;
+          setTimeout(typeNext, 240);
+        }else{
+          stage.classList.add('phase-site');
+          site.removeAttribute('aria-hidden');
+          stage.classList.add('zoom-in');
+          setTimeout(()=> hero.classList.add('ready'), 400);
+        }
+      }
+      setTimeout(typeNext, 450);
+    })();
   </script>
 </body>
 </html>
