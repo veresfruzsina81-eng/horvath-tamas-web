@@ -309,88 +309,96 @@
           </div>
         </div>
       </section>
+
+      <!-- ===== ABOUT / RÓLAM szekció (beillesztve) ===== -->
+      <section id="about" style="background:linear-gradient(180deg,#fffef9,#f8f8f8); position:relative; overflow:hidden; padding:100px 20px;">
+        <div class="container" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:60px; max-width:1200px; margin:auto;">
+
+          <!-- iPhone keret -->
+          <div class="iphone" style="position:relative; width:330px; height:660px; background:url('iphone.png') center/contain no-repeat;">
+            <div class="screen" id="screen" style="position:absolute; top:49px; left:26px; width:278px; height:602px; border-radius:32px; overflow:hidden; background:#000; display:flex; align-items:center; justify-content:center;">
+              <div id="boot" style="width:80px; opacity:0; transition:opacity 1s ease;">
+                <img src="logo.png" alt="logo" style="width:100%; filter:drop-shadow(0 0 12px #d4af37)">
+              </div>
+              <div id="aboutMenu" style="display:none; flex-wrap:wrap; justify-content:center; gap:24px; padding-top:50px;">
+                <img src="roblox.png" alt="Roblox" class="app" data-app="roblox" style="width:64px; cursor:pointer;">
+                <img src="unity.png" alt="Unity" class="app" data-app="unity" style="width:64px; cursor:pointer;">
+                <img src="shop.png"  alt="Shop"   class="app" data-app="shop"   style="width:64px; cursor:pointer;">
+                <img src="web.png"   alt="Web"    class="app" data-app="web"    style="width:64px; cursor:pointer;">
+                <img src="ai.png"    alt="AI"     class="app" data-app="ai"     style="width:64px; cursor:pointer;">
+              </div>
+              <div id="aboutPlayer" style="display:none; width:100%; height:100%; background:#000; position:relative;">
+                <video id="aboutVideoPlayer" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+                <iframe id="aboutIframePlayer" style="width:100%; height:100%; border:0; display:none;" allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>
+                <button id="aboutBackBtn" style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; font-size:12px; padding:6px 14px; border-radius:20px; cursor:pointer; backdrop-filter:blur(6px);">Vissza</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Szöveg -->
+          <div class="about-text" style="max-width:500px; animation:fadeInUp 1.2s ease forwards;">
+            <h2 style="font-size:42px; font-weight:800; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Rólam</h2>
+            <p style="font-size:17px; line-height:1.7; color:#555;">
+              Horváth Tamás vagyok, fejlesztő és kreatív tervező. A TamasGem Studio célja, hogy az Apple-szintű eleganciát és technikai tökéletességet a magyar fejlesztésbe is elhozza.
+              <br><br>
+              A képernyőn az általam készített fő munkák láthatók: Roblox játékfejlesztés, Unity-projektek, teljes webshop rendszerek (Serlegkirály.hu), weboldalak (Malfiruha.hu) és mesterséges intelligenciás megoldások.
+            </p>
+          </div>
+        </div>
+
+        <style>
+          @keyframes fadeInUp {
+            from {opacity:0; transform:translateY(30px);}
+            to {opacity:1; transform:translateY(0);}
+          }
+        </style>
+
+        <script>
+          // boot animáció és menü megjelenítése
+          window.addEventListener('load', () => {
+            const bootEl = document.getElementById('boot');
+            const aboutMenuEl = document.getElementById('aboutMenu');
+            setTimeout(()=>bootEl.style.opacity=1,400);
+            setTimeout(()=>{bootEl.style.opacity=0; setTimeout(()=>{bootEl.style.display='none'; aboutMenuEl.style.display='flex';},1000);},2200);
+          });
+
+          // iPhone "app" indító logika - névütközés nélkül
+          (function(){
+            const aboutApps = document.querySelectorAll('#about .app');
+            const aboutPlayer = document.getElementById('aboutPlayer');
+            const aboutBackBtn = document.getElementById('aboutBackBtn');
+            const aboutVideo = document.getElementById('aboutVideoPlayer');
+            const aboutIframe = document.getElementById('aboutIframePlayer');
+            const aboutMenuEl = document.getElementById('aboutMenu');
+
+            aboutApps.forEach(app=>{
+              app.addEventListener('click',()=>{
+                aboutMenuEl.style.display='none';
+                aboutPlayer.style.display='block';
+                aboutIframe.style.display='none';
+                aboutVideo.style.display='none';
+
+                const appName = app.dataset.app;
+                if(appName==='roblox'){ aboutVideo.src='roblox.mp4'; aboutVideo.style.display='block'; }
+                else if(appName==='unity'){ aboutVideo.src='unity.mp4'; aboutVideo.style.display='block'; }
+                else if(appName==='shop'){ aboutIframe.src='https://serlegkiraly.hu'; aboutIframe.style.display='block'; }
+                else if(appName==='web'){ aboutIframe.src='https://malfiruha.hu'; aboutIframe.style.display='block'; }
+                else if(appName==='ai'){ aboutIframe.src='https://tamas-ai.netlify.app'; aboutIframe.style.display='block'; }
+              });
+            });
+
+            aboutBackBtn.addEventListener('click',()=>{
+              aboutPlayer.style.display='none';
+              aboutIframe.src=''; aboutVideo.src='';
+              aboutMenuEl.style.display='flex';
+            });
+          })();
+        </script>
+      </section>
+      <!-- ===== /ABOUT END ===== -->
+
     </main>
-    <!-- ===== ABOUT / RÓLAM szekció ===== -->
-<section id="about" style="background:linear-gradient(180deg,#fffef9,#f8f8f8); position:relative; overflow:hidden; padding:100px 20px;">
-  <div class="container" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:60px; max-width:1200px; margin:auto;">
-
-    <!-- iPhone keret -->
-    <div class="iphone" style="position:relative; width:330px; height:660px; background:url('iphone.png') center/contain no-repeat;">
-      <div class="screen" id="screen" style="position:absolute; top:49px; left:26px; width:278px; height:602px; border-radius:32px; overflow:hidden; background:#000; display:flex; align-items:center; justify-content:center;">
-        <div id="boot" style="width:80px; opacity:0; transition:opacity 1s ease;">
-          <img src="logo.png" alt="logo" style="width:100%; filter:drop-shadow(0 0 12px #d4af37)">
-        </div>
-        <div id="menu" style="display:none; flex-wrap:wrap; justify-content:center; gap:24px; padding-top:50px;">
-          <img src="roblox.png" alt="Roblox" class="app" data-app="roblox" style="width:64px; cursor:pointer;">
-          <img src="unity.png" alt="Unity" class="app" data-app="unity" style="width:64px; cursor:pointer;">
-          <img src="shop.png" alt="Shop" class="app" data-app="shop" style="width:64px; cursor:pointer;">
-          <img src="web.png" alt="Web" class="app" data-app="web" style="width:64px; cursor:pointer;">
-          <img src="ai.png" alt="AI" class="app" data-app="ai" style="width:64px; cursor:pointer;">
-        </div>
-        <div id="player" style="display:none; width:100%; height:100%; background:#000;">
-          <video id="videoPlayer" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
-          <iframe id="iframePlayer" style="width:100%; height:100%; border:0; display:none;"></iframe>
-          <button id="backBtn" style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; font-size:12px; padding:6px 14px; border-radius:20px; cursor:pointer; backdrop-filter:blur(6px);">Vissza</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Szöveg -->
-    <div class="about-text" style="max-width:500px; animation:fadeInUp 1.2s ease forwards;">
-      <h2 style="font-size:42px; font-weight:800; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Rólam</h2>
-      <p style="font-size:17px; line-height:1.7; color:#555;">
-        Horváth Tamás vagyok, fejlesztő és kreatív tervező. A TamasGem Studio célja, hogy az Apple-szintű eleganciát és technikai tökéletességet a magyar fejlesztésbe is elhozza.
-        <br><br>
-        A képernyőn az általam készített fő munkák láthatók: Roblox játékfejlesztés, Unity-projektek, teljes webshop rendszerek (Serlegkirály.hu), weboldalak (Malfiruha.hu) és mesterséges intelligenciás megoldások.
-      </p>
-    </div>
   </div>
-
-  <style>
-    @keyframes fadeInUp {
-      from {opacity:0; transform:translateY(30px);}
-      to {opacity:1; transform:translateY(0);}
-    }
-  </style>
-
-  <script>
-    window.addEventListener('load', () => {
-      const boot = document.getElementById('boot');
-      const menu = document.getElementById('menu');
-      setTimeout(()=>boot.style.opacity=1,400);
-      setTimeout(()=>{boot.style.opacity=0; setTimeout(()=>{boot.style.display='none';menu.style.display='flex';},1000);},2200);
-    });
-
-    const apps = document.querySelectorAll('.app');
-    const player = document.getElementById('player');
-    const backBtn = document.getElementById('backBtn');
-    const video = document.getElementById('videoPlayer');
-    const iframe = document.getElementById('iframePlayer');
-    const menu = document.getElementById('menu');
-
-    apps.forEach(app=>{
-      app.addEventListener('click',()=>{
-        menu.style.display='none';
-        player.style.display='block';
-        iframe.style.display='none';
-        video.style.display='none';
-        const appName = app.dataset.app;
-        if(appName==='roblox'){ video.src='roblox.mp4'; video.style.display='block'; }
-        else if(appName==='unity'){ video.src='unity.mp4'; video.style.display='block'; }
-        else if(appName==='shop'){ iframe.src='https://serlegkiraly.hu'; iframe.style.display='block'; }
-        else if(appName==='web'){ iframe.src='https://malfiruha.hu'; iframe.style.display='block'; }
-        else if(appName==='ai'){ iframe.src='https://tamas-ai.netlify.app'; iframe.style.display='block'; }
-      });
-    });
-
-    backBtn.addEventListener('click',()=>{
-      player.style.display='none';
-      iframe.src=''; video.src='';
-      menu.style.display='flex';
-    });
-  </script>
-</section>
-<!-- ===== /ABOUT END ===== -->
 
   <script>
     // név csillanás
@@ -401,10 +409,10 @@
 
     // mobilmenü
     const btn = document.getElementById('menuBtn');
-    const menu = document.getElementById('mobileMenu');
+    const mobileMenu = document.getElementById('mobileMenu');
     let open = false;
-    btn?.addEventListener('click',()=>{ open=!open; menu.style.display=open?'block':'none'; });
-    menu?.addEventListener('click',e=>{ if(e.target.tagName==='A'){open=false;menu.style.display='none';} });
+    btn?.addEventListener('click',()=>{ open=!open; mobileMenu.style.display=open?'block':'none'; });
+    mobileMenu?.addEventListener('click',e=>{ if(e.target.tagName==='A'){open=false;mobileMenu.style.display='none';} });
 
     // brand -> top
     document.getElementById('brandLink')?.addEventListener('click',e=>{
@@ -431,8 +439,8 @@
       localStorage.setItem('lang', lang);
     }
     document.addEventListener('click', (e)=>{
-      const btn = e.target.closest('.lang-btn'); if(!btn) return;
-      applyLang(btn.dataset.lang || 'hu');
+      const lbtn = e.target.closest('.lang-btn'); if(!lbtn) return;
+      applyLang(lbtn.dataset.lang || 'hu');
     });
     applyLang(localStorage.getItem('lang') || 'hu');
   </script>
