@@ -13,9 +13,6 @@
       --chip-bg:#fff; --chip-b:#ede9d1;
       --phone-max: 240px;
     }
-    @media (max-width:1100px){ :root{ --phone-max: 230px; } }
-    @media (max-width:600px){ :root{ --phone-max: 220px; } }
-
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;scroll-behavior:smooth}
     body{
@@ -27,21 +24,21 @@
       background-attachment: fixed, fixed;
     }
 
-    /* Globális háttér-canvas */
-    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; opacity:.92; display:block;}
+    /* 3D arany por canvas */
+    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; opacity:.92}
 
-    /* Dísz csíkok */
+    /* dísz csíkok */
     .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
       background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
       filter:blur(.3px); animation:stripesMove 14s ease-in-out infinite alternate;
     }
-    .bg-stripes .stripe:nth-child(1){ top:8%;  animation-delay:0s;}
-    .bg-stripes .stripe:nth-child(2){ top:26%; animation-delay:.6s;}
-    .bg-stripes .stripe:nth-child(3){ top:44%; animation-delay:1.2s;}
-    .bg-stripes .stripe:nth-child(4){ top:62%; animation-delay:1.8s;}
-    .bg-stripes .stripe:nth-child(5){ top:80%; animation-delay:2.4s;}
+    .bg-stripes .stripe:nth-child(1){ top:8%}
+    .bg-stripes .stripe:nth-child(2){ top:26%; animation-delay:.6s}
+    .bg-stripes .stripe:nth-child(3){ top:44%; animation-delay:1.2s}
+    .bg-stripes .stripe:nth-child(4){ top:62%; animation-delay:1.8s}
+    .bg-stripes .stripe:nth-child(5){ top:80%; animation-delay:2.4s}
     @keyframes stripesMove{0%{transform:translateX(-30%)}50%{opacity:.5}100%{transform:translateX(30%)}}
 
     .wrap{position:relative; z-index:2}
@@ -56,12 +53,12 @@
     }
     .container{max-width:1120px; margin:0 auto; padding:0 20px;}
     .bar{height:70px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
-    .brand{display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:inherit; cursor:pointer;}
-    .logo-img{height:44px; width:auto; object-fit:contain; filter:drop-shadow(0 0 10px rgba(212,175,55,0.45)); opacity:0; transform:translateY(4px); animation:logoFadeIn .8s ease-out forwards}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit}
+    .logo-img{height:44px; filter:drop-shadow(0 0 10px rgba(212,175,55,.45)); opacity:0; transform:translateY(4px); animation:logoFadeIn .8s ease-out forwards}
     @keyframes logoFadeIn{to{opacity:1;transform:translateY(0)}}
     .brand-name{
-      position:relative; display:inline-block; font-weight:600; font-size:17px; letter-spacing:.2px;
-      opacity:0; transform:translateY(4px); animation:nameEnter .6s ease-out .3s forwards;
+      font-weight:600; font-size:17px; letter-spacing:.2px; opacity:0; transform:translateY(4px);
+      animation:nameEnter .6s ease-out .3s forwards;
       background:linear-gradient(90deg,#c1a028,#f3e3a1,#d8b048);
       -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
@@ -74,18 +71,18 @@
     @keyframes sheen{to{transform:translateX(120%)}}
 
     nav{display:none; gap:12px; align-items:center;}
-    .nav-link, .nav-cta{padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none; color:#0b0b0c; transition:.2s}
+    .nav-link{padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none; color:#0b0b0c; transition:.2s}
     .nav-link:hover{transform:translateY(-2px)}
+
     .right-controls{display:none; align-items:center; gap:10px}
     .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
     .lang-btn{width:36px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:#fff; border:1px solid transparent; transition:.2s}
     .lang-btn.active{border-color:rgba(212,175,55,.6); box-shadow:0 0 0 3px rgba(212,175,55,.12)}
-    .flag{width:24px; height:16px; border-radius:4px; display:block}
-    .ai-btn{display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border-radius:14px; text-decoration:none; border:1px solid rgba(212,175,55,.35); background:#fff; color:#7a5b0e; font-weight:700; font-size:14px; box-shadow:0 10px 24px rgba(212,175,55,.18); transition:.2s}
-    .ai-btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
+    .flag{width:24px; height:16px; border-radius:4px}
+    .ai-btn{display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border-radius:14px; text-decoration:none; border:1px solid rgba(212,175,55,.35); background:#fff; color:#7a5b0e; font-weight:700; font-size:14px; box-shadow:0 10px 24px rgba(212,175,55,.18)}
     .ai-icon{width:16px; height:16}
+    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:block; z-index:21}
 
-    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:block; align-items:center; justify-content:center; z-index:21}
     @media (min-width: 992px){
       nav{display:flex}
       .right-controls{display:flex}
@@ -94,110 +91,95 @@
 
     .menu{display:none; position:fixed; inset:70px 0 0 0; z-index:19; border-top:1px solid var(--border); background:rgba(255,255,255,.96); backdrop-filter:blur(8px)}
     .menu a{padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block}
-    .menu .row{display:flex; gap:10px; align-items:center; padding:12px 20px}
 
     .gold-fill{
       background:linear-gradient(90deg, var(--gold-dark), var(--gold-dark2));
-      -webkit-background-clip:text; background-clip:text;
-      -webkit-text-fill-color:transparent; color:transparent;
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
     }
 
-    /* ===== HERO ===== (érintetlen) */
-    .hero{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.88),rgba(255,255,255,.88));}
+    /* ===== HERO (változatlan) ===== */
+    .hero{background:linear-gradient(180deg,rgba(255,254,249,.88),rgba(255,255,255,.88));}
     .hero .container{max-width:1120px; margin:0 auto; padding:72px 20px 84px; display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;}
     @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:56px 20px 72px} }
     .hero-title{margin:0 0 14px; font-weight:800; letter-spacing:.2px; font-size:clamp(34px,6.2vw,58px); line-height:1.03;
       background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold) 60%,#3f351d 90%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
     .hero-sub{ color:var(--muted); font-size:clamp(15px,2.2vw,18px); line-height:1.6; margin:0 0 22px }
     .hero-cta{ display:flex; gap:12px; flex-wrap:wrap }
-    .btn-gold,.btn-ghost{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; transition:.2s; box-shadow:0 10px 24px rgba(212,175,55,.12);}
-    .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
-    .btn-ghost{ background:rgba(255,255,255,.7); backdrop-filter:blur(6px) }
-    .btn-gold:hover,.btn-ghost:hover{ transform:translateY(-1px) }
+    .btn-gold,.btn-ghost{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; box-shadow:0 10px 24px rgba(212,175,55,.12)}
     .stage{position:relative; width:100%; aspect-ratio:16/10; margin:auto; border-radius:16px; background:linear-gradient(180deg,#0e0f12,#171a20); box-shadow:0 22px 50px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.05); overflow:hidden;}
-    .stage::before{content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%); width:68px; height:10px; border-radius:12px; background:#0a0b0e; box-shadow:0 0 0 2px rgba(255,255,255,.06) inset;}
-    .stand{position:absolute; left:50%; transform:translateX(-50%); bottom:-26px; width:46%; height:26px; background:linear-gradient(180deg,#cfcfd4,#b9bbc2); border-radius:0 0 12px 12px; filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));}
     .screen{position:absolute; inset:14px 14px 18px 14px; border-radius:12px; overflow:hidden; background:#0b0c10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
-    .hero-video{width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.98);}
-    .hero .left .reveal{ opacity:0; transform:translateY(8px); }
-    .hero.ready .left .reveal{ opacity:1; transform:none; transition:.5s ease .15s }
-    .hero.ready .left .reveal.d2{ transition-delay:.28s }
-    .hero.ready .left .reveal.d3{ transition-delay:.38s }
+    .hero-video{width:100%; height:100%; object-fit:cover; filter:brightness(.98)}
 
-    /* ===== ABOUT / RÓLAM (érintetlen tartalom) ===== */
-    #about{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.86),rgba(255,255,255,.86));}
+    /* ===== ABOUT (változatlan tartalmi logika) ===== */
+    #about{background:linear-gradient(180deg,rgba(255,254,249,.86),rgba(255,255,255,.86));}
     #about .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:520px 1fr; gap:56px; align-items:center;}
     @media(max-width:1100px){ #about .inner{grid-template-columns:1fr; gap:36px} }
-    .iphone-frame{position:relative; width:min(var(--phone-max), 90vw); margin:0 auto; aspect-ratio:9/19.5; border-radius:38px;
-      background:#0f1115; box-shadow:0 18px 50px rgba(0,0,0,.18), inset 0 0 0 2px rgba(255,255,255,.06); overflow:hidden; z-index:1;}
-    .iphone-bezel{position:absolute; inset:8px; border-radius:34px; background:#000; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);}
-    .iphone-notch{position:absolute; top:8px; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#000; border-bottom-left-radius:16px; border-bottom-right-radius:16px;}
-    .iphone-screen{position:absolute; inset:0; border-radius:inherit; background:#000; color:#fff; overflow:hidden;}
-    .phone-chrome{position:absolute; top:0; left:0; right:0; height:46px; display:flex; align-items:center; gap:8px; background:linear-gradient(180deg,#121316,#0b0c10); border-bottom:1px solid rgba(255,255,255,.08); padding:0 10px; z-index:5;}
-    .addr{flex:1; height:28px; display:flex; align-items:center; gap:8px; padding:0 10px; border-radius:12px; background:#0f1115; border:1px solid rgba(255,255,255,.08); font-size:12px; color:#e7e7ea; overflow:hidden;}
-    .dot{width:8px;height:8px;border-radius:50%; background:#2ecc71;}
+    .iphone-frame{position:relative; width:min(var(--phone-max), 90vw); margin:0 auto; aspect-ratio:9/19.5; border-radius:38px; background:#0f1115; box-shadow:0 18px 50px rgba(0,0,0,.18), inset 0 0 0 2px rgba(255,255,255,.06); overflow:hidden}
+    .iphone-bezel{position:absolute; inset:8px; border-radius:34px; background:#000; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+    .iphone-notch{position:absolute; top:8px; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#000; border-bottom-left-radius:16px; border-bottom-right-radius:16px}
+    .iphone-screen{position:absolute; inset:0; border-radius:inherit; background:#000; color:#fff; overflow:hidden}
+    .phone-chrome{position:absolute; top:0; left:0; right:0; height:46px; display:flex; align-items:center; gap:8px; background:linear-gradient(180deg,#121316,#0b0c10); border-bottom:1px solid rgba(255,255,255,.08); padding:0 10px; z-index:5}
+    .addr{flex:1; height:28px; display:flex; align-items:center; gap:8px; padding:0 10px; border-radius:12px; background:#0f1115; border:1px solid rgba(255,255,255,.08); font-size:12px; color:#e7e7ea; overflow:hidden}
+    .dot{width:8px;height:8px;border-radius:50%; background:#2ecc71}
     .url{opacity:.9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
     .btn-ic{width:28px;height:28px;border-radius:8px; display:grid;place-items:center; border:1px solid rgba(255,255,255,.08); background:#0f1115; color:#c9c9cf; font-size:12px; cursor:pointer}
-    .prog{position:absolute; top:46px; left:0; height:2px; width:0%; background:linear-gradient(90deg,#fff7d4,#f3e1a1); transition:width .25s ease; z-index:4;}
-    .app-grid{position:absolute; inset:46px 0 44px 0; display:grid; grid-template-columns:repeat(3, 56px); gap:16px; justify-content:center; align-content:start; padding-top:24px; background:
-      radial-gradient(800px 300px at 50% -10%, #ffffff15, #000000 70%); z-index:1;}
-    .app-grid img{width:56px; height:56px; object-fit:contain; border-radius:14px; cursor:pointer; filter:drop-shadow(0 4px 10px rgba(0,0,0,.45)); transition:transform .15s ease;}
-    .app-grid img:active{transform:scale(0.95)}
-    .phone-player{position:absolute; inset:46px 0 40px 0; display:none; background:#000; z-index:2;}
-    .phone-player video,.phone-player iframe{width:100%; height:100%; object-fit:cover; border:0; display:none; background:#000;}
-    .phone-bottom{position:absolute; left:0; right:0; bottom:6px; display:flex; justify-content:center; gap:10px; pointer-events:none; z-index:5;}
-    .phone-back{pointer-events:auto; background:linear-gradient(90deg,#fff7d4,#f3e1a1); border:1px solid rgba(212,175,55,.55); color:#3d2d09; font-weight:700; font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer; backdrop-filter:blur(6px); box-shadow:0 8px 18px rgba(212,175,55,.25);}
-    .phone-hint{pointer-events:none; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#e6d9b2; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);}
-    .about-col h2{font-size:42px; margin:0 0 14px; font-weight:800; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-    .about-col p{font-size:17px; line-height:1.7; color:#555; margin:0 0 18px;}
-    .revealY{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
-    .revealY.in{opacity:1; transform:none;}
-    .sep{height:1px; background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.3), rgba(212,175,55,0)); margin:24px 0;}
+    .prog{position:absolute; top:46px; left:0; height:2px; width:0%; background:linear-gradient(90deg,#fff7d4,#f3e1a1); transition:width .25s ease; z-index:4}
+    .app-grid{position:absolute; inset:46px 0 44px 0; display:grid; grid-template-columns:repeat(3, 56px); gap:16px; justify-content:center; align-content:start; padding-top:24px; background:radial-gradient(800px 300px at 50% -10%, #ffffff15, #000 70%); z-index:1}
+    .app-grid img{width:56px;height:56px;object-fit:contain; border-radius:14px; cursor:pointer; filter:drop-shadow(0 4px 10px rgba(0,0,0,.45)); transition:transform .15s ease}
+    .app-grid img:active{transform:scale(.95)}
+    .phone-player{position:absolute; inset:46px 0 40px 0; display:none; background:#000; z-index:2}
+    .phone-player video,.phone-player iframe{width:100%; height:100%; object-fit:cover; border:0; display:none; background:#000}
+    .phone-bottom{position:absolute; left:0; right:0; bottom:6px; display:flex; justify-content:center; gap:10px; pointer-events:none; z-index:5}
+    .phone-back{pointer-events:auto; background:linear-gradient(90deg,#fff7d4,#f3e1a1); border:1px solid rgba(212,175,55,.55); color:#3d2d09; font-weight:700; font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer; box-shadow:0 8px 18px rgba(212,175,55,.25)}
+    .phone-hint{pointer-events:none; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#e6d9b2; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12)}
+    .about-col h2{font-size:42px; margin:0 0 14px; font-weight:800; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+    .about-col p{font-size:17px; line-height:1.7; color:#555; margin:0 0 18px}
+    .sep{height:1px; background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.3), rgba(212,175,55,0)); margin:24px 0}
     .chip-wrap{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
-    .chip{position:relative; padding:10px 14px; border-radius:12px; font-weight:600; font-size:14px; color:#3b2f12; background:var(--chip-bg); border:1px solid var(--chip-b); box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden;}
-    .chip::after{content:""; position:absolute; inset:0; z-index:0; background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.38) 35%, rgba(248,240,210,.0) 70%); background-size:200% 100%; animation:chipShine 2.2s linear infinite;}
-    .chip > span{position:relative; z-index:1;}
+    .chip{position:relative; padding:10px 14px; border-radius:12px; font-weight:600; font-size:14px; color:#3b2f12; background:var(--chip-bg); border:1px solid var(--chip-b); box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden}
+    .chip::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.38) 35%, rgba(248,240,210,.0) 70%); background-size:200% 100%; animation:chipShine 2.2s linear infinite}
+    @keyframes chipShine{to{background-position:200% 0}}
 
-    /* ===== SHOWREEL / BEMUTATKOZÁS (érintetlen) ===== */
-    .showreel{position:relative; background:linear-gradient(180deg, rgba(255,254,249,.86), rgba(255,255,255,.86));}
-    .showreel .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:start;}
+    /* ===== SHOWREEL / BEMUTATKOZÁS ===== */
+    .showreel{background:linear-gradient(180deg, rgba(255,254,249,.86), rgba(255,255,255,.86))}
+    .showreel .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:start}
     @media (max-width:1100px){ .showreel .inner{grid-template-columns:1fr; gap:36px} }
-    .sr-title{margin:0 0 10px; font-weight:800; font-size:42px; letter-spacing:.2px; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-    .sr-typed{margin:6px 0 10px; font-size:20px; font-weight:800; color:#1a1a1d;}
-    .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
-    @keyframes blink{ 50% { opacity:0 } }
+    .sr-title{margin:0 0 10px; font-weight:800; font-size:42px; letter-spacing:.2px; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+    .sr-typed{margin:6px 0 10px; font-size:20px; font-weight:800; color:#1a1a1d}
+    .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite}
+    @keyframes blink{50%{opacity:0}}
     .sr-lead{ color:#3a3f46; line-height:1.7; margin:6px 0 16px; font-weight:600 }
-    .sr-cta{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px }
     .sr-stats{display:flex; flex-wrap:wrap; gap:12px; margin:6px 0 18px}
     .stat{background:#fff; border:1px solid var(--chip-b); border-radius:14px; padding:10px 14px; font-weight:800; display:flex; gap:10px; align-items:baseline; box-shadow:0 8px 20px rgba(0,0,0,.06)}
     .stat .n{font-size:20px; background:linear-gradient(90deg,#1a1a1d,#c7a23a); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
     .stat .t{font-size:12px; color:#6a6f77}
-    .sr-skills{ display:grid; gap:12px; margin-top:10px }
-    .skill .label{ font-size:14px; color:#6a6f77; margin:0 0 6px; font-weight:700 }
-    .meter{--p: 80%; position:relative; height:12px; border-radius:999px; overflow:hidden; background:linear-gradient(180deg,#f2f2f4,#ececf0); border:1px solid #e6e7eb;}
-    .meter > span{position:absolute; inset:0; display:block; background:linear-gradient(90deg,#fff7d4,#f3e1a1); width:var(--p); animation:fillPulse 3.6s ease-in-out infinite; transform-origin:left center;}
-    @keyframes fillPulse{0%{width:0%}40%{width:var(--p)}60%{width:calc(var(--p) - 8%)}100%{width:var(--p)}}
-    .sr-cards{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px }
+
+    /* Kártyarács stabilizálás */
+    .sr-cards{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; align-items:stretch }
     @media (max-width:980px){ .sr-cards{ grid-template-columns:1fr 1fr } }
     @media (max-width:560px){ .sr-cards{ grid-template-columns:1fr } }
-    .sr-card{background:linear-gradient(180deg,#14171d,#0d1016); border:1px solid #232834; border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:10px; box-shadow:0 10px 28px rgba(0,0,0,.08); transform:translateY(6px); transition:transform .35s ease, box-shadow .35s ease}
-    .sr-card .thumb{height:130px; border-radius:10px; background:#0a0c10; display:grid; place-items:center; overflow:hidden; border:1px solid #1f2430;}
+    .sr-card{display:flex; flex-direction:column; gap:10px; height:100%;
+      background:linear-gradient(180deg,#14171d,#0d1016); border:1px solid #232834; border-radius:14px; padding:12px;
+      box-shadow:0 10px 28px rgba(0,0,0,.08); transition:transform .25s ease, box-shadow .25s ease}
+    .sr-card:hover{transform:translateY(-3px); box-shadow:0 16px 36px rgba(0,0,0,.12)}
+    .sr-card .thumb{aspect-ratio:16/9; border-radius:10px; background:#0a0c10; display:grid; place-items:center; overflow:hidden; border:1px solid #1f2430}
+    .sr-card .thumb img{max-width:95%; max-height:95%; object-fit:contain}
+    .sr-card h3{margin:0; font-size:16px; color:#f4f5f7}
+    .sr-card p{margin:0; font-size:13px; color:#bac0c9; line-height:1.55}
     .sr-info{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px }
-    .sr-info .chip{position:relative; padding:8px 12px; border-radius:12px; font-weight:700; font-size:12px; background:#fff; border:1px solid #ede9d1; box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden;}
+    .sr-info .chip{padding:8px 12px; border-radius:12px; font-weight:700; font-size:12px; background:#fff; border:1px solid #ede9d1; box-shadow:0 6px 16px rgba(212,175,55,.10)}
 
-    /* ===== KÓDOLÓ PANEL (külön szekció a showreel alatt) ===== */
-    #coder{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.9),#fff); padding:68px 20px 96px;}
-    #coder .inner{max-width:1120px; margin:0 auto;}
+    /* ===== KÓDOLÁS SZEKCIÓ ===== */
+    #coder{background:linear-gradient(180deg,rgba(255,254,249,.9),#fff); padding:68px 20px 96px}
+    #coder .inner{max-width:1120px; margin:0 auto}
     .tg-typing{
       position: relative;
-      max-width: 1000px; /* desktopon kicsit nagyobb */
-      margin:0 auto;
+      max-width: 1000px; margin:0 auto;
       background:#0d1016;border:1px solid #222936;border-radius:14px;padding:14px 14px 136px;
       box-shadow:0 12px 34px rgba(0,0,0,.10);
-      overflow:visible; /* hogy semmi ne vágja le */
+      overflow:visible;
     }
-    @media (min-width: 1200px){ .tg-typing{ max-width: 1100px; } }
-    @media (max-width: 980px){ .tg-typing{ max-width:100%; } }
+    @media (min-width:1200px){ .tg-typing{max-width:1100px} }
 
     .tg-typing .tty-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
     .tg-typing .dot{width:10px;height:10px;border-radius:50%}
@@ -209,48 +191,51 @@
       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
       color:#e6e8f0;
       font-size:14px; line-height:1.7;
-      height:240px; /* magasabb, hogy semmi ne takarja */
-      white-space:pre-wrap; margin:0;
-      overflow:hidden;
+      height:260px; white-space:pre-wrap; margin:0; overflow:hidden;
     }
-    @media (min-width: 1024px){ .tg-typing .tty-code{ height:280px; font-size:15px; } }
-    @media (max-width: 560px){ .tg-typing .tty-code{ height:220px; font-size:13.5px; } }
-
+    @media (min-width:1024px){ .tg-typing .tty-code{ height:300px; font-size:15px } }
+    @media (max-width:560px){ .tg-typing .tty-code{ height:230px; font-size:13.5px } }
     .tg-typing .caret{display:inline-block;width:10px;margin-left:2px;opacity:.9;animation:tgBlink 1s step-start infinite}
     @keyframes tgBlink{50%{opacity:0}}
 
+    /* EREDMÉNY – több sor, animált háttér, 8s */
     .tg-typing .tty-result{
       position:absolute; left:12px; right:12px; bottom:12px; height:120px;
-      border-radius:10px;border:1px solid #232834;
-      background:radial-gradient(600px 220px at 20% 10%, #242a36, #121621 70%);
-      display:none; align-items:center;justify-content:center;
-      color:#f3e3a1;font-weight:800;letter-spacing:.4px;text-align:center;padding:0 14px;
-      box-shadow:0 14px 40px rgba(0,0,0,.16);
-      overflow:hidden;
+      border-radius:12px;border:1px solid #232834; overflow:hidden;
+      background:#121621; display:none; align-items:center; justify-content:center; padding:0 18px;
+      text-align:center; color:#f3e3a1; font-weight:800; letter-spacing:.2px; white-space:pre-wrap;
     }
+    .tg-typing .tty-result::before{
+      content:""; position:absolute; inset:-40% -20%;
+      background:conic-gradient(from 0deg, rgba(212,175,55,.05), rgba(255,255,255,0) 40%, rgba(212,175,55,.08), rgba(255,255,255,0) 80%);
+      animation:shine 6s linear infinite;
+    }
+    .tg-typing .tty-result::after{
+      content:""; position:absolute; inset:0; border-radius:inherit;
+      background:radial-gradient(800px 260px at 20% 10%, #242a36, #121621 70%);
+      mix-blend-mode:overlay;
+    }
+    @keyframes shine{to{transform:rotate(360deg)}}
+    .tg-typing .tty-result > span{position:relative; z-index:2}
     .tg-typing .tty-result.in{display:flex;animation:tgPop .35s ease both}
     @keyframes tgPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 
-    /* Betűnkénti beúszás az üzenetre */
-    .tty-result .char{opacity:0; transform:translateY(8px); display:inline-block; transition:opacity .35s ease, transform .35s ease;}
-    .tty-result .char.show{opacity:1; transform:none;}
+    /* betűnkénti felúszás */
+    .tty-result .char{opacity:0; transform:translateY(8px); display:inline-block; transition:opacity .35s ease, transform .35s ease}
+    .tty-result .char.show{opacity:1; transform:none}
 
-    /* Mobil rács/kártya fixek */
-    @media (max-width: 980px){
+    /* Reszponzív apróságok */
+    @media (max-width:980px){
+      .showreel .inner{gap:28px}
       .sr-cards{grid-template-columns:1fr 1fr}
-      .app-grid{grid-template-columns:repeat(3, 56px); gap:14px; padding-top:22px}
     }
-    @media (max-width: 560px){
+    @media (max-width:560px){
       .sr-cards{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
-
-  <!-- 3D háttér -->
   <canvas id="bgAll" aria-hidden="true"></canvas>
-
-  <!-- dísz csíkok -->
   <div class="bg-stripes" aria-hidden="true">
     <span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span>
   </div>
@@ -261,7 +246,7 @@
       <div class="container">
         <div class="bar">
           <a class="brand" href="#top" id="brandLink">
-            <img src="logo.png" alt="TamasGem Studio logo" class="logo-img" />
+            <img src="logo.png" alt="TamasGem Studio" class="logo-img" />
             <span class="brand-name" id="brandName">TamasGem Studio</span>
           </a>
 
@@ -274,11 +259,7 @@
           <div class="right-controls">
             <div class="lang-switch" aria-label="Language switcher">
               <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
-                <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="24" height="16" fill="#fff"/>
-                  <rect width="24" height="5.333" y="0" fill="#CE2939"/>
-                  <rect width="24" height="5.333" y="10.667" fill="#477050"/>
-                </svg>
+                <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="16" fill="#fff"/><rect width="24" height="5.333" y="0" fill="#CE2939"/><rect width="24" height="5.333" y="10.667" fill="#477050"/></svg>
               </button>
               <button class="lang-btn" data-lang="en" title="English" aria-label="English">
                 <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
@@ -286,18 +267,14 @@
                   <g clip-path="url(#u)">
                     <rect width="24" height="16" fill="#012169"/>
                     <path d="M0,0 L24,16 M24,0 L0,16" stroke="#FFF" stroke-width="3.2"/>
-                    <path d="M0,0 L24,16 M24,0 L0,16" stroke="#C8102E" stroke-width="1.6"/>
                     <path d="M12,0 V16 M0,8 H24" stroke="#FFF" stroke-width="5.2"/>
+                    <path d="M0,0 L24,16 M24,0 L0,16" stroke="#C8102E" stroke-width="1.6"/>
                     <path d="M12,0 V16 M0,8 H24" stroke="#C8102E" stroke-width="3.2"/>
                   </g>
                 </svg>
               </button>
               <button class="lang-btn" data-lang="de" title="Deutsch" aria-label="Deutsch">
-                <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="24" height="16" fill="#000"/>
-                  <rect width="24" height="10.666" y="5.333" fill="#DD0000"/>
-                  <rect width="24" height="5.333" y="10.667" fill="#FFCE00"/>
-                </svg>
+                <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="16" fill="#000"/><rect width="24" height="10.666" y="5.333" fill="#DD0000"/><rect width="24" height="5.333" y="10.667" fill="#FFCE00"/></svg>
               </button>
             </div>
             <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
@@ -312,39 +289,11 @@
         </div>
       </div>
 
-      <!-- MOBIL MENÜ -->
       <div class="menu" id="mobileMenu">
-        <a href="#about"    class="menu-link nav-label" data-i18n="about">Rólam</a>
-        <a href="#showreel" class="menu-link nav-label" data-i18n="work">Munkáim</a>
-        <a href="#showreel" class="menu-link nav-label" data-i18n="contact">Bemutatkozás</a>
-        <div class="row">
-          <div class="lang-switch">
-            <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
-              <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-                <rect width="24" height="16" fill="#fff"/>
-                <rect width="24" height="5.333" y="0" fill="#CE2939"/>
-                <rect width="24" height="5.333" y="10.667" fill="#477050"/>
-              </svg>
-            </button>
-            <button class="lang-btn" data-lang="en" title="English" aria-label="English">
-              <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-                <clipPath id="u2"><rect width="24" height="16" rx="2" ry="2"/></clipPath>
-                <g clip-path="url(#u2)"><rect width="24" height="16" fill="#012169"/>
-                  <path d="M0,0 L24,16 M24,0 L0,16" stroke="#FFF" stroke-width="3.2"/>
-                  <path d="M0,0 L24,16 M24,0 L0,16" stroke="#C8102E" stroke-width="1.6"/>
-                  <path d="M12,0 V16 M0,8 H24" stroke="#FFF" stroke-width="5.2"/>
-                  <path d="M12,0 V16 M0,8 H24" stroke="#C8102E" stroke-width="3.2"/>
-                </g>
-              </svg>
-            </button>
-            <button class="lang-btn" data-lang="de" title="Deutsch" aria-label="Deutsch">
-              <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-                <rect width="24" height="16" fill="#000"/>
-                <rect width="24" height="10.666" y="5.333" fill="#DD0000"/>
-                <rect width="24" height="5.333" y="10.667" fill="#FFCE00"/>
-              </svg>
-            </button>
-          </div>
+        <a href="#about"    class="nav-label">Rólam</a>
+        <a href="#showreel" class="nav-label">Munkáim</a>
+        <a href="#showreel" class="nav-label">Bemutatkozás</a>
+        <div style="padding:12px 20px">
           <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
             <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/></svg>
             AI
@@ -353,7 +302,7 @@
       </div>
     </header>
 
-    <!-- ===== HERO (érintetlen) ===== -->
+    <!-- ===== HERO ===== -->
     <main id="top">
       <section class="hero" id="hero">
         <div class="container left">
@@ -371,9 +320,8 @@
           <div class="right">
             <div class="stage">
               <div class="screen">
-                <video class="hero-video" autoplay loop muted playsinline preload="auto" poster="">
+                <video class="hero-video" autoplay loop muted playsinline preload="auto">
                   <source src="hero.mp4" type="video/mp4">
-                  Böngésződ nem támogatja a videót.
                 </video>
               </div>
               <div class="stand" aria-hidden="true"></div>
@@ -382,9 +330,10 @@
         </div>
       </section>
 
-      <!-- ===== ABOUT / RÓLAM (érintetlen tartalom) ===== -->
+      <!-- ===== ABOUT / RÓLAM ===== -->
       <section id="about">
         <div class="inner">
+          <!-- Telefon blokk -->
           <div>
             <div class="iphone-frame">
               <div class="iphone-bezel">
@@ -415,21 +364,22 @@
                 </div>
               </div>
             </div>
-            <div class="fullview">
-              <a id="fullLink" href="#" target="_blank" rel="noopener">🔗 Megnyitás teljes nézetben</a>
+            <div class="fullview" style="text-align:center;margin-top:10px">
+              <a id="fullLink" href="#" target="_blank" rel="noopener" style="font-weight:700;color:#7a5b0e;text-decoration:none;border:1px solid rgba(212,175,55,.5);padding:8px 12px;border-radius:12px;background:#fff;box-shadow:0 8px 18px rgba(212,175,55,.15)">🔗 Megnyitás teljes nézetben</a>
             </div>
           </div>
 
+          <!-- Szöveg oszlop -->
           <div class="about-col">
-            <h2 class="revealY" data-delay="0">Rólam</h2>
-            <p class="revealY" data-delay="1">
+            <h2>Rólam</h2>
+            <p>
               Horváth Tamás vagyok. <b>Teljesen egyedi rendszereket</b> építek vállalkozásoknak:
               prémium weboldal, <b>teljes webshop</b> (termékkezelés, fizetés, admin), <b>Admin PRO</b>,
               <b>Unity/Roblox</b> játékok és <b>AI-integrációk</b>. Nem “skin-csere” — <i>megoldást</i> fejlesztek a céljaidhoz.
             </p>
-            <div class="sep revealY" data-delay="2"></div>
-            <p class="revealY" data-delay="2" style="margin-bottom:6px; font-weight:700;">Szolgáltatások</p>
-            <div class="chip-wrap revealY" data-delay="3">
+            <div class="sep"></div>
+            <p style="margin-bottom:6px; font-weight:700;">Szolgáltatások</p>
+            <div class="chip-wrap">
               <div class="chip"><span>Weboldal – személyre szabott UX</span></div>
               <div class="chip"><span>Webshop – katalógus, fizetés, logisztika</span></div>
               <div class="chip"><span>Admin PRO – jogosultság, riport, státuszok</span></div>
@@ -440,51 +390,38 @@
         </div>
       </section>
 
-      <!-- ===== SHOWREEL / BEMUTATKOZÁS (érintetlen) ===== -->
+      <!-- ===== SHOWREEL / BEMUTATKOZÁS ===== -->
       <section id="showreel" class="showreel">
         <div class="inner">
           <div class="sr-left">
             <h2 class="sr-title">Bemutatkozás</h2>
-            <p class="sr-typed" aria-live="polite">
-              <span id="typedPrefix">Horváth Tamás vagyok — </span>
-              <span id="typedText"></span><span class="caret">|</span>
-            </p>
-            <p class="sr-lead">
-              Minden projekt <b>egyedi tervezés</b> és <b>egyedi fejlesztés</b>. Nem sablont adok el,
-              hanem <b>üzleti célra optimalizált</b> rendszert — <i>pont úgy</i>, ahogy kéred.
-            </p>
+            <p class="sr-typed"><span id="typedPrefix">Horváth Tamás vagyok — </span><span id="typedText"></span><span class="caret">|</span></p>
+            <p class="sr-lead">Minden projekt <b>egyedi tervezés</b> és <b>egyedi fejlesztés</b>. Nem sablont adok el, hanem <b>üzleti célra optimalizált</b> rendszert — <i>pont úgy</i>, ahogy kéred.</p>
             <div class="sr-stats">
               <div class="stat"><span class="n" data-count="3200">0</span><span class="t">+ termék kezelt</span></div>
               <div class="stat"><span class="n" data-count="7">0</span><span class="t">nap / MVP</span></div>
               <div class="stat"><span class="n" data-count="99.9">0</span><span class="t">% uptime céllal</span></div>
             </div>
-            <div class="sr-skills">
-              <div class="skill"><div class="label">JavaScript / TypeScript</div><div class="meter" style="--p:92%"><span></span></div></div>
-              <div class="skill"><div class="label">PHP / MySQL</div><div class="meter" style="--p:90%"><span></span></div></div>
-              <div class="skill"><div class="label">Unity / C#</div><div class="meter" style="--p:80%"><span></span></div></div>
-              <div class="skill"><div class="label">Roblox / Lua</div><div class="meter" style="--p:85%"><span></span></div></div>
-              <div class="skill"><div class="label">AI / LLM integráció</div><div class="meter" style="--p:88%"><span></span></div></div>
-            </div>
           </div>
 
           <div class="sr-right">
             <div class="sr-cards">
-              <article class="sr-card" data-parallax="1.8">
-                <div class="thumb"><img src="shop.png" alt=""></div>
+              <article class="sr-card">
+                <div class="thumb"><img src="shop.png" alt="Webshop"></div>
                 <h3>Teljes Webshop</h3>
                 <p>Termékadatbázis, Barion, rendelések, státuszok, riportok.</p>
               </article>
-              <article class="sr-card" data-parallax="1.4">
-                <div class="thumb"><img src="web.png" alt=""></div>
+              <article class="sr-card">
+                <div class="thumb"><img src="web.png" alt="Weboldal"></div>
                 <h3>Prémium Weboldalak</h3>
                 <p>Villámgyors betöltés, SEO, accessibility.</p>
               </article>
-              <article class="sr-card" data-parallax="1.6">
-                <div class="thumb"><img src="roblox.png" alt=""></div>
+              <article class="sr-card">
+                <div class="thumb"><img src="roblox.png" alt="Roblox/Unity"></div>
                 <h3>Roblox / Unity</h3>
                 <p>UX-mechanikák, monetizáció, mobil-PC kompatibilitás.</p>
               </article>
-              <article class="sr-card" data-parallax="1.5">
+              <article class="sr-card">
                 <div class="thumb"><img src="ai.png" alt="AI"></div>
                 <h3>AI / Automatizálás</h3>
                 <p>Űrlap-feldolgozás, ajánlórendszer, chatbot, okos admin.</p>
@@ -501,7 +438,7 @@
         </div>
       </section>
 
-      <!-- ===== KÓDOLÓ PANEL ===== -->
+      <!-- ===== KÓDOLÁS ===== -->
       <section id="coder">
         <div class="inner">
           <div class="tg-typing" id="typing1">
@@ -518,50 +455,19 @@
   </div>
 
   <script>
-    /* Ready effektek + menü */
+    /* sticky header anim */
     document.addEventListener('DOMContentLoaded', ()=>{
       document.getElementById('brandName')?.classList.add('sheen');
-      document.getElementById('hero')?.classList.add('ready');
     });
+
+    /* mobilmenü */
     const btn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     let isOpen = false;
     btn?.addEventListener('click',()=>{ isOpen=!isOpen; mobileMenu.style.display=isOpen?'block':'none'; });
     mobileMenu?.addEventListener('click',e=>{ if(e.target.tagName==='A'){isOpen=false;mobileMenu.style.display='none';} });
-    document.getElementById('brandLink')?.addEventListener('click',e=>{ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); });
 
-    /* Nav arany pulzálás */
-    (function(){
-      const labels = Array.from(document.querySelectorAll('.nav-label'));
-      if(!labels.length) return;
-      let idx = -1;
-      const step=()=>{ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); };
-      step(); setInterval(step, 1100);
-    })();
-
-    /* i18n */
-    const I18N = {
-      hu: { about:"Rólam", work:"Munkáim", contact:"Bemutatkozás", hire:"Írj nekem", seeWork:"Munkáim", quote:"Bemutatkozás" },
-      en: { about:"About", work:"Work", contact:"Showreel", hire:"Contact me", seeWork:"See my work", quote:"Showreel" },
-      de: { about:"Über mich", work:"Arbeiten", contact:"Showreel", hire:"Schreib mir", seeWork:"Meine Arbeiten", quote:"Showreel" }
-    };
-    function applyLang(lang){
-      document.documentElement.lang = lang;
-      document.querySelectorAll('[data-i18n]').forEach(el=>{
-        const key = el.getAttribute('data-i18n');
-        const txt = (I18N[lang] && I18N[lang][key]) || el.textContent;
-        el.textContent = txt;
-      });
-      document.querySelectorAll('.lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
-      try{ localStorage.setItem('lang', lang); }catch(e){}
-    }
-    document.addEventListener('click', (e)=>{
-      const lbtn = e.target.closest('.lang-btn'); if(!lbtn) return;
-      applyLang(lbtn.dataset.lang || 'hu');
-    });
-    applyLang((()=>{try{return localStorage.getItem('lang')||'hu'}catch(e){return 'hu'}})());
-
-    /* Mini “telefon” böngésző (érintetlen logika) */
+    /* telefon-app logika */
     (function(){
       const apps = document.querySelectorAll('#about .app');
       const player = document.getElementById('aboutPlayer');
@@ -569,7 +475,8 @@
       const f = document.getElementById('aboutIframe');
       const menu = document.getElementById('aboutMenu');
       const hint = document.getElementById('phoneHint');
-      const btnBackTop = document.getElementById('btnBack');
+      const btnBack = document.getElementById('btnBack');
+      const aboutBack = document.getElementById('aboutBack');
       const btnReload = document.getElementById('btnReload');
       const addr = document.getElementById('addrText');
       const lockDot = document.getElementById('lockDot');
@@ -587,42 +494,32 @@
       const setAddr = (text, secure=true)=>{ addr.textContent=text; lockDot.style.background = secure ? '#2ecc71' : '#e67e22'; };
 
       const simulateLoad = (cb)=>{
-        loadBar.style.width = '0%';
-        loadBar.offsetHeight;
-        let w = 0;
-        const id = setInterval(()=>{
-          w += Math.random()*22 + 8;
-          if(w>=100){ w=100; clearInterval(id); }
-          loadBar.style.width = w+'%';
-          if(w===100){ setTimeout(cb, 120); }
+        loadBar.style.width = '0%'; loadBar.offsetHeight;
+        let w = 0; const id = setInterval(()=>{
+          w += Math.random()*22 + 8; if(w>=100){ w=100; clearInterval(id); }
+          loadBar.style.width = w+'%'; if(w===100){ setTimeout(cb, 120); }
         }, 160);
       };
 
-      function openApp(appName){
-        const conf = appMap[appName]; if(!conf) return;
+      function openApp(key){
+        const conf = appMap[key]; if(!conf) return;
         setAddr(conf.label, true);
-        hint.style.display='none';
-        menu.style.display='none';
-        player.style.display='block';
+        hint.style.display='none'; menu.style.display='none'; player.style.display='block';
         f.style.display='none'; v.style.display='none';
         simulateLoad(()=>{
           if(conf.type==='video'){ v.src=conf.url; v.style.display='block'; fullLink.href=conf.url; }
           else { f.src=conf.url; f.style.display='block'; fullLink.href=conf.url; }
         });
       }
-
-      apps.forEach(app=> app.addEventListener('click', ()=> openApp(app.dataset.app)));
+      apps.forEach(a=> a.addEventListener('click', ()=> openApp(a.dataset.app)));
 
       function goBack(){
-        player.style.display='none';
-        f.src=''; v.src='';
-        menu.style.display='grid';
-        hint.style.display='inline-block';
-        setAddr('Válassz egy appot…', true);
-        loadBar.style.width='0%';
+        player.style.display='none'; f.src=''; v.src='';
+        menu.style.display='grid'; hint.style.display='inline-block';
+        setAddr('Válassz egy appot…', true); loadBar.style.width='0%';
       }
-      document.getElementById('aboutBack')?.addEventListener('click', goBack);
-      btnBackTop?.addEventListener('click', goBack);
+      btnBack?.addEventListener('click', goBack);
+      aboutBack?.addEventListener('click', goBack);
 
       btnReload?.addEventListener('click', ()=>{
         const isIframe = f.style.display==='block';
@@ -633,100 +530,60 @@
       });
     })();
 
-    /* Rólam belibbenés */
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('in'); observer.unobserve(entry.target);} });
-    }, {threshold: 0.15});
-    document.querySelectorAll('#about .revealY').forEach(el => observer.observe(el));
-
-    /* Showreel kiegészítők */
+    /* gépelt headline + stat számláló */
     (function(){
-      const target = document.getElementById('typedText');
-      if (target){
-        const phrases = [
-          'full-stack fejlesztő.',
-          'egyedi webshop-építő.',
-          'UI/UX-mániás.',
-          'Unity & Roblox fejlesztő.',
-          'AI-integrátor.',
-          'Admin PRO alkotó.'
-        ];
+      const t = document.getElementById('typedText');
+      if (t){
+        const phrases = ['full-stack fejlesztő.','egyedi webshop-építő.','UI/UX-mániás.','Unity & Roblox fejlesztő.','AI-integrátor.','Admin PRO alkotó.'];
         let i=0, j=0, del=false;
-        function tick(){
-          const word = phrases[i];
-          if(!del){
-            j++; target.textContent = word.slice(0,j);
-            if(j===word.length){ del=true; setTimeout(tick, 1100); return; }
-            setTimeout(tick, 28);
-          }else{
-            j--; target.textContent = word.slice(0,j);
-            if(j===0){ del=false; i=(i+1)%phrases.length; setTimeout(tick, 220); return; }
-            setTimeout(tick, 16);
-          }
-        }
-        tick();
+        (function loop(){
+          const w = phrases[i];
+          if(!del){ j++; t.textContent=w.slice(0,j); if(j===w.length){del=true; setTimeout(loop,1100); return;} setTimeout(loop,28);}
+          else { j--; t.textContent=w.slice(0,j); if(j===0){del=false; i=(i+1)%phrases.length; setTimeout(loop,220); return;} setTimeout(loop,16);}
+        })();
       }
-
-      // stat számláló
       const counters = document.querySelectorAll('.stat .n');
-      const io1 = new IntersectionObserver((ents)=>{
-        ents.forEach(e=>{
-          if(!e.isIntersecting) return;
-          const el = e.target; io1.unobserve(el);
-          const target = parseFloat(el.dataset.count); let cur = 0;
-          const isPercent = String(target).includes('.');
-          const step = ()=> {
-            const inc = Math.max(0.8, target/48);
-            cur = Math.min(target, cur+inc);
-            el.textContent = isPercent ? cur.toFixed(1) : Math.round(cur);
-            if(cur<target) requestAnimationFrame(step);
-          };
-          requestAnimationFrame(step);
+      const io = new IntersectionObserver((es)=>{
+        es.forEach(e=>{
+          if(!e.isIntersecting) return; io.unobserve(e.target);
+          const el=e.target, goal=parseFloat(el.dataset.count); let cur=0;
+          const isPct=String(goal).includes('.'); (function step(){
+            const inc=Math.max(.8, goal/48); cur=Math.min(goal,cur+inc);
+            el.textContent=isPct?cur.toFixed(1):Math.round(cur);
+            if(cur<goal) requestAnimationFrame(step);
+          })();
         });
-      }, {threshold:.3});
-      counters.forEach(el=> io1.observe(el));
+      },{threshold:.3});
+      counters.forEach(el=>io.observe(el));
     })();
 
-    /* 3D arany por háttér */
+    /* 3D arany por */
     (function(){
-      const canvas = document.getElementById('bgAll'); if(!canvas) return;
-      const ctx = canvas.getContext('2d',{alpha:true});
-      let w=0,h=0,particles=[]; const MAX=130; let mx=0,my=0;
-
-      function setSize(){
-        const r = Math.min(2, window.devicePixelRatio||1);
-        const vw = Math.max(1, (window.innerWidth*r)|0);
-        const vh = Math.max(1, (window.innerHeight*r)|0);
-        if(vw!==w || vh!==h){ w=canvas.width=vw; h=canvas.height=vh; canvas.style.width='100vw'; canvas.style.height='100vh'; }
-      }
-      setSize(); window.addEventListener('resize', setSize, {passive:true});
-
+      const c=document.getElementById('bgAll'); if(!c) return;
+      const x=c.getContext('2d',{alpha:true}); let w=0,h=0,p=[]; const N=130; let mx=0,my=0;
+      function size(){ const r=Math.min(2, devicePixelRatio||1), vw=(innerWidth*r)|0, vh=(innerHeight*r)|0;
+        if(vw!==w||vh!==h){ w=c.width=vw; h=c.height=vh; c.style.width='100vw'; c.style.height='100vh'; } }
+      size(); addEventListener('resize', size,{passive:true});
       const rnd=(a,b)=>a+Math.random()*(b-a);
-      function reset(p){ p.x=rnd(-w*.1,w*1.1); p.y=rnd(-h*.1,h*1.1); p.z=rnd(.4,1.4); p.r=rnd(1,2.6)*p.z; p.sx=rnd(.02,.08)*p.z; p.sy=rnd(-.01,.01)*p.z; p.a=rnd(.5,.85); p.h=rnd(45,52); }
-      function init(){ particles.length=0; for(let i=0;i<MAX;i++){ const p={}; reset(p); particles.push(p);} } init();
-
-      canvas.addEventListener('pointermove', e=>{ mx = (e.clientX/window.innerWidth)-.5; my=(e.clientY/window.innerHeight)-.5; });
-
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ canvas.style.display='none'; return; }
-
+      function reset(o){ o.x=rnd(-w*.1,w*1.1); o.y=rnd(-h*.1,h*1.1); o.z=rnd(.4,1.4); o.r=rnd(1,2.6)*o.z; o.sx=rnd(.02,.08)*o.z; o.sy=rnd(-.01,.01)*o.z; o.a=rnd(.5,.85); o.h=rnd(45,52); }
+      p.length=0; for(let i=0;i<N;i++){ const o={}; reset(o); p.push(o); }
+      c.addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5;});
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches){ c.style.display='none'; return; }
       (function draw(){
-        ctx.clearRect(0,0,w,h);
-        const g = ctx.createRadialGradient(w*.7,h*.18,0, w*.7,h*.18, Math.max(w,h)*.9);
+        x.clearRect(0,0,w,h);
+        const g=x.createRadialGradient(w*.7,h*.18,0,w*.7,h*.18,Math.max(w,h)*.9);
         g.addColorStop(0,'rgba(255,241,200,0.35)'); g.addColorStop(1,'rgba(255,255,255,0)');
-        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-
-        particles.forEach(p=>{
-          const ox=mx*40*p.z, oy=my*30*p.z; p.x+=p.sx; p.y+=p.sy;
-          if(p.x>w*1.12 || p.y<-h*.12 || p.y>h*1.12){ reset(p); p.x=-w*.05; }
-          ctx.beginPath(); ctx.arc(p.x+ox,p.y+oy,p.r,0,Math.PI*2); ctx.fillStyle=`hsla(${p.h},75%,55%,${p.a})`; ctx.fill();
-          ctx.beginPath(); ctx.arc(p.x+ox+p.r*.55,p.y+oy-p.r*.45,p.r*.45,0,Math.PI*2); ctx.fillStyle=`hsla(${p.h},90%,75%,${p.a*.7})`; ctx.fill();
+        x.fillStyle=g; x.fillRect(0,0,w,h);
+        p.forEach(o=>{ const ox=mx*40*o.z, oy=my*30*o.z; o.x+=o.sx; o.y+=o.sy;
+          if(o.x>w*1.12||o.y<-h*.12||o.y>h*1.12){ reset(o); o.x=-w*.05; }
+          x.beginPath(); x.arc(o.x+ox,o.y+oy,o.r,0,Math.PI*2); x.fillStyle=`hsla(${o.h},75%,55%,${o.a})`; x.fill();
+          x.beginPath(); x.arc(o.x+ox+o.r*.55,o.y+oy-o.r*.45,o.r*.45,0,Math.PI*2); x.fillStyle=`hsla(${o.h},90%,75%,${o.a*.7})`; x.fill();
         });
-
         requestAnimationFrame(draw);
       })();
     })();
 
-    /* ===== GÉPELŐ PANEL – sorokra ír, nagyobb desktopon, üzenet animálva ===== */
+    /* ===== KÓDOLÁS – soronként, üzenet középen 8s, aztán restart ===== */
     (function(){
       const out = document.getElementById('typing1-code');
       const result = document.getElementById('typing1-result');
@@ -749,7 +606,11 @@
         '</html>'
       ];
 
-      const finaleMsg = 'Hello kedves látogató! Bízd rám weboldalad, webshopod vagy akár a játékod — teljes, profi megoldást kapsz vissza.';
+      const finale = [
+        'Hello kedves látogató!',
+        'Bízd rám weboldalad, webshopod vagy akár a játékod.',
+        'Teljes, profi megoldást kapsz vissza!'
+      ].join('\\n');
 
       const rand=(a,b)=>Math.random()*(b-a)+a;
       const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -765,40 +626,34 @@
           const ch=line[i];
           await sleep(rand(14,42)+(',.—>}'.includes(ch)?rand(80,180):0));
         }
-        out.textContent+='\n';
-        await sleep(rand(80,160));
+        out.textContent+='\n'; await sleep(rand(70,140));
       }
 
       function animateResultText(text){
         result.innerHTML = '';
         const frag = document.createDocumentFragment();
         [...text].forEach((ch, i)=>{
-          const span = document.createElement('span');
-          span.textContent = ch;
-          span.className = 'char';
-          frag.appendChild(span);
-          // később adjuk rá a show-t
-          setTimeout(()=> span.classList.add('show'), 20*i);
+          const s = document.createElement('span');
+          s.textContent = ch;
+          s.className = 'char';
+          frag.appendChild(s);
+          setTimeout(()=> s.classList.add('show'), 14*i);
         });
         result.appendChild(frag);
       }
 
-      async function cycle(){
+      (async function loop(){
         while(true){
-          result.classList.remove('in');
-          result.innerHTML='';
-          out.textContent='';
-          for(const line of lines){ await typeLine(line); }
-          // üzenet + animáció ugyanebben a dobozban ~8s
+          result.classList.remove('in'); result.innerHTML=''; out.textContent='';
+          for(const l of lines){ await typeLine(l); }
           result.classList.add('in');
-          animateResultText(finaleMsg);
-          await sleep(8000);
+          animateResultText(finale);
+          await sleep(8000);                    // 8 mp olvashatóság
           result.classList.remove('in');
           out.textContent='';
           await sleep(500);
         }
-      }
-      cycle();
+      })();
     })();
   </script>
 </body>
