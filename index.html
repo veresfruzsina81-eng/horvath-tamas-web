@@ -10,14 +10,13 @@
     :root{
       --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --gold-dark2:#e0b84f;
       --header-top:#fffaf0; --header-bottom:#f9f4df; --text:#0b0b0c; --muted:#656b73; --border:#e6e7eb;
-      --hero-top:#fffef9; --hero-bottom:#ffffff;
-      --gold-1:#d4af37; --gold-2:#f3e1a1;
+      --hero-top:#fffef9; --hero-bottom:#ffffff; --gold-1:#d4af37; --gold-2:#f3e1a1;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;scroll-behavior:smooth}
     body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
 
-    /* finom háttérfények */
+    /* háttér fénysávok */
     .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
@@ -39,9 +38,9 @@
     .wrap{position:relative;z-index:1}
     header{
       position:sticky; top:0; z-index:10;
-      background:linear-gradient(to bottom,var(--header-top),var(--header-bottom));
+      background:linear-gradient(to bottom, rgba(255,250,240,.95), rgba(249,244,223,.92));
       backdrop-filter:saturate(150%) blur(6px);
-      border-bottom:1px solid var(--border);
+      border-bottom:1px solid rgba(0,0,0,.06);
       box-shadow:0 4px 18px rgba(212,175,55,0.1);
     }
     .container{max-width:1120px; margin:0 auto; padding:0 20px;}
@@ -114,7 +113,7 @@
       -webkit-text-fill-color:transparent; color:transparent;
     }
 
-    /* ===== HERO: videó a monitor-keretben + mellette szöveg ===== */
+    /* ===== HERO (videó a monitorban + mellette szöveg) ===== */
     .hero{
       position:relative; background:linear-gradient(180deg,var(--hero-top),var(--hero-bottom));
       overflow:hidden; isolation:isolate;
@@ -123,7 +122,7 @@
       max-width:1120px; margin:0 auto; padding:72px 20px 84px;
       display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;
     }
-    @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:56px 20px 72px} }
+    @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:72px 20px 64px} }
 
     .hero-title{
       position:relative; margin:0 0 14px; font-weight:800; letter-spacing:.2px;
@@ -131,6 +130,15 @@
       background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold-1) 60%,#3f351d 90%);
       -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
+    /* finom arany csillanás */
+    .hero-title.shine{ position:relative }
+    .hero-title.shine::after{
+      content:""; position:absolute; inset:0; border-radius:.03em; pointer-events:none;
+      background:linear-gradient(120deg, transparent, rgba(212,175,55,.28), transparent);
+      transform:translateX(-120%); animation:titleSheen 3.6s linear infinite 1.1s;
+    }
+    @keyframes titleSheen{ to{ transform:translateX(120%) } }
+
     .hero-sub{ color:#5f646b; font-size:clamp(15px,2.2vw,18px); line-height:1.6; margin:0 0 22px }
     .hero-cta{ display:flex; gap:12px; flex-wrap:wrap }
     .btn-gold,.btn-ghost{
@@ -141,13 +149,14 @@
     .btn-ghost{ background:rgba(255,255,255,.7); backdrop-filter:blur(6px) }
     .btn-gold:hover,.btn-ghost:hover{ transform:translateY(-1px) }
 
-    /* Apple-stílusú monitor színpad a videóhoz */
+    /* Monitor keret + lebegés + üvegfény */
     .stage{
       position:relative; width:100%; aspect-ratio:16/10; margin:auto;
-      border-radius:16px; background:linear-gradient(180deg,#0e0f12,#171a20);
-      box-shadow:0 22px 50px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.05);
-      overflow:hidden;
+      border-radius:20px; background:linear-gradient(180deg,#0d0f14,#171a20);
+      box-shadow:0 26px 60px rgba(0,0,0,.22), inset 0 0 0 1px rgba(255,255,255,.06), inset 0 0 12px rgba(0,0,0,.35);
+      overflow:hidden; animation:float 6s ease-in-out infinite;
     }
+    @keyframes float{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-4px) } }
     .stage::before{
       content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%);
       width:68px; height:10px; border-radius:12px; background:#0a0b0e; box-shadow:0 0 0 2px rgba(255,255,255,.06) inset;
@@ -157,26 +166,56 @@
       height:26px; background:linear-gradient(180deg,#cfcfd4,#b9bbc2); border-radius:0 0 12px 12px; filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));
     }
     .screen{
-      position:absolute; inset:14px 14px 18px 14px; border-radius:12px; overflow:hidden;
-      background:#0b0c10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+      position:absolute; inset:14px; border-radius:14px; overflow:hidden;
+      background:#0a0b10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+    }
+    .screen::after{
+      content:""; position:absolute; inset:-20% -40% auto -40%; height:120%;
+      background:linear-gradient(110deg, transparent, rgba(255,255,255,.18), transparent);
+      transform:translateX(-60%) rotate(8deg);
+      animation:glare 5.5s ease-in-out infinite; pointer-events:none;
+    }
+    @keyframes glare{
+      0%{ transform:translateX(-65%) rotate(8deg); opacity:0 }
+      30%{ opacity:.8 }
+      60%{ transform:translateX(65%) rotate(8deg); opacity:0 }
+      100%{ transform:translateX(65%) rotate(8deg); opacity:0 }
     }
 
-    /* Videó a képernyőn */
+    /* videó a képernyőn */
     .hero-video{
       width:100%; height:100%; object-fit:cover; display:block;
-      filter:brightness(0.98);
+      border-radius:10px;
+      filter:brightness(.98) contrast(1.02) saturate(1.02);
     }
 
-    /* bal oldali szövegek finom belibbene */
+    /* play/pause gomb (hoverre jelenik meg) */
+    .stage:hover .vid-ctrl{ opacity:1; transform:translateY(0) }
+    .vid-ctrl{
+      position:absolute; right:16px; bottom:16px; z-index:2;
+      opacity:0; transform:translateY(6px); transition:.2s ease;
+    }
+    .vid-ctrl button{
+      border:1px solid rgba(255,255,255,.4); background:rgba(0,0,0,.35);
+      color:#fff; font-weight:600; padding:8px 12px; border-radius:12px; cursor:pointer;
+      backdrop-filter:blur(6px);
+    }
+
+    /* bal szövegek beúszása */
     .hero .left .reveal{ opacity:0; transform:translateY(8px); }
     .hero.ready .left .reveal{ opacity:1; transform:none; transition:.5s ease .15s }
     .hero.ready .left .reveal.d2{ transition-delay:.28s }
     .hero.ready .left .reveal.d3{ transition-delay:.38s }
+
+    @media(max-width:900px){
+      .hero .container{ gap:28px; }
+      header{ padding:10px 16px; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- finom háttérfények -->
+  <!-- háttér fénysávok -->
   <div class="bg-stripes" aria-hidden="true">
     <span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span><span class="stripe"></span>
   </div>
@@ -202,7 +241,6 @@
           <!-- RIGHT: zászlók + AI -->
           <div class="right-controls">
             <div class="lang-switch" aria-label="Language switcher">
-              <!-- 🇭🇺 -->
               <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
                 <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                   <rect width="24" height="16" fill="#fff"/>
@@ -210,7 +248,6 @@
                   <rect width="24" height="5.333" y="10.667" fill="#477050"/>
                 </svg>
               </button>
-              <!-- 🇬🇧 -->
               <button class="lang-btn" data-lang="en" title="English" aria-label="English">
                 <svg class="flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                   <clipPath id="u"><rect width="24" height="16" rx="2" ry="2"/></clipPath>
@@ -279,13 +316,13 @@
       </div>
     </header>
 
-    <!-- ===== HERO (videó a monitorban + mellette szöveg) ===== -->
+    <!-- ===== HERO ===== -->
     <main id="top">
       <section class="hero" id="hero">
         <div class="container">
           <!-- BAL: szövegek -->
           <div class="left">
-            <h1 class="hero-title reveal">TamasGem Studio</h1>
+            <h1 class="hero-title reveal shine">TamasGem Studio</h1>
             <p class="hero-sub reveal d2">
               Apple-minőségű fejlesztés, prémium web és AI-vezérelt megoldások. A kódolás művészet — mi élménnyé tesszük.
             </p>
@@ -299,11 +336,13 @@
           <div class="right">
             <div class="stage">
               <div class="screen">
-                <video class="hero-video" autoplay loop muted playsinline preload="auto" poster="">
-                  <source src="hero.mp4" type="video/mp4">
+                <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="poster.jpg">
+                  <source src="hero.webm" type="video/webm"><!-- ha van -->
+                  <source src="hero.mp4"  type="video/mp4">
                   Böngésződ nem támogatja a videót.
                 </video>
               </div>
+              <div class="vid-ctrl"><button id="toggleVid">Pause</button></div>
               <div class="stand" aria-hidden="true"></div>
             </div>
           </div>
@@ -313,10 +352,10 @@
   </div>
 
   <script>
-    // név csillanás
+    // név csillanás + hero szöveg aktiválása
     window.addEventListener('load', ()=>{
       document.getElementById('brandName').classList.add('sheen');
-      document.getElementById('hero')?.classList.add('ready'); // bal oldali szöveg finom beúszása
+      document.getElementById('hero')?.classList.add('ready');
     });
 
     // mobilmenü
@@ -331,12 +370,12 @@
       e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});
     });
 
-    // ARANY KITÖLTÉS ugrálva
+    // ARANY KITÖLTÉS ugrálva a menüpontokon
     const labels = Array.from(document.querySelectorAll('.nav-label'));
-    let idx = -1; function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx].classList.add('gold-fill'); }
-    step(); setInterval(step, 1100);
+    let idx = -1; function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx=(idx+1)%labels.length; labels[idx]?.classList.add('gold-fill'); }
+    if(labels.length){ step(); setInterval(step, 1100); }
 
-    // i18n nav feliratok
+    // i18n feliratok
     const I18N = {
       hu: { about:"Rólam", work:"Munkák", contact:"Kapcsolat", hire:"Írj nekem", seeWork:"Munkáim", quote:"Kérj ajánlatot" },
       en: { about:"About", work:"Work", contact:"Contact", hire:"Contact me", seeWork:"See my work", quote:"Get a quote" }
@@ -351,10 +390,35 @@
       localStorage.setItem('lang', lang);
     }
     document.addEventListener('click', (e)=>{
-      const btn = e.target.closest('.lang-btn'); if(!btn) return;
-      applyLang(btn.dataset.lang || 'hu');
+      const b = e.target.closest('.lang-btn'); if(!b) return;
+      applyLang(b.dataset.lang || 'hu');
     });
     applyLang(localStorage.getItem('lang') || 'hu');
+
+    // Autoplay biztosítása + reduced-motion támogatás
+    (function(){
+      const v = document.querySelector('.hero-video'); if(!v) return;
+      v.muted = true; v.playsInline = true;
+      const tryPlay = () => v.play().catch(()=>{});
+      if (document.readyState === 'complete') tryPlay();
+      else window.addEventListener('load', tryPlay);
+      document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryPlay(); });
+
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      function applyPref(){ if(mq.matches) v.pause(); else tryPlay(); }
+      mq.addEventListener?.('change', applyPref); applyPref();
+    })();
+
+    // Play/Pause gomb
+    (function(){
+      const v = document.querySelector('.hero-video');
+      const b = document.getElementById('toggleVid');
+      if(!v || !b) return;
+      b.addEventListener('click', ()=>{
+        if(v.paused){ v.play().catch(()=>{}); b.textContent='Pause'; }
+        else { v.pause(); b.textContent='Play'; }
+      });
+    })();
   </script>
 </body>
 </html>
