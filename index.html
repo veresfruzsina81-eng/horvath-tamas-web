@@ -84,10 +84,11 @@
     .nav-cta{border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1); box-shadow:0 10px 24px rgba(212,175,55,.18);}
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
 
-    /* ÚJ: második kiemelt CTA */
+    /* ÚJ: második kiemelt CTA (ezt használjuk a "Miért minket" gombra) */
     .nav-cta.secondary{
       border-color:rgba(212,175,55,.45);
       background:linear-gradient(90deg,#fff7e1,#f7dfa3);
+      font-weight:800;
     }
 
     .right-controls{display:none; align-items:center; gap:10px}
@@ -339,6 +340,32 @@
       box-shadow:0 10px 24px rgba(212,175,55,.18);
     }
 
+    /* ÚJ: arany buborékok + gépelés */
+    .why-bubbles{margin-top:26px; display:flex; flex-direction:column; gap:12px}
+    .bubble{
+      position:relative;
+      max-width:860px;
+      padding:14px 16px;
+      border-radius:16px 16px 16px 8px;
+      border:1px solid rgba(212,175,55,.45);
+      background:
+        radial-gradient(900px 320px at 100% -10%, rgba(212,175,55,.12), rgba(0,0,0,0) 60%),
+        linear-gradient(180deg,#fffaf0,#fff);
+      box-shadow:0 12px 24px rgba(212,175,55,.14);
+      font-weight:800; color:#3a2b07; letter-spacing:.2px;
+      opacity:0; transform:translateY(10px); animation:bubbleIn .45s ease forwards;
+      overflow:hidden;
+    }
+    .bubble:after{
+      content:""; position:absolute; left:8px; bottom:-6px; width:12px; height:12px;
+      border-radius:4px; transform:rotate(45deg);
+      border:1px solid rgba(212,175,55,.45); border-top:0; border-right:0;
+      background:linear-gradient(180deg,#fff7e1,#fff);
+      box-shadow: -2px 2px 8px rgba(212,175,55,.18);
+    }
+    .bubble .type{min-height:1.3em; display:inline-block}
+    .bubble .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
+    @keyframes bubbleIn{to{opacity:1; transform:none}}
   </style>
 </head>
 <body>
@@ -364,10 +391,10 @@
           <nav id="desktopNav">
             <a href="#about"    class="nav-link nav-label" data-i18n="about">Rólam</a>
             <a href="#showreel" class="nav-link nav-label" data-i18n="work">Munkáim</a>
-            <a href="#why"      class="nav-link nav-label">Miért válassz minket</a>
+            <!-- Eltávolítva a sima nav-link 'Miért' – csak a kiemelt marad -->
             <a href="#contact"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
-            <a href="#why"      class="nav-cta  secondary">Miért válassz minket</a>
-            <a href="#contact"  class="nav-cta  nav-label" data-i18n="hire">Írj nekem</a>
+            <a href="#why"      class="nav-cta secondary">Miért válassz minket</a>
+            <a href="#contact"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
           <div class="right-controls">
@@ -415,7 +442,7 @@
       <div class="menu" id="mobileMenu">
         <a href="#about"    class="menu-link nav-label" data-i18n="about">Rólam</a>
         <a href="#showreel" class="menu-link nav-label" data-i18n="work">Munkáim</a>
-        <a href="#why"      class="menu-link">Miért válassz minket</a>
+        <!-- Eltávolítva a duplikált 'Miért' menü-link – csak a CTA marad -->
         <a href="#contact"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
         <a href="#why"      class="cta">Miért válassz minket</a>
         <a href="#contact"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
@@ -632,7 +659,7 @@
         </div>
       </section>
 
-      <!-- ===== WHY / HŰHA BLOKK ===== -->
+      <!-- ===== WHY / HŰHA BLOKK + BUBORÉKOS GÉPÍRÁS ===== -->
       <section id="why">
         <div class="inner">
           <h2>Miért válassz minket</h2>
@@ -658,6 +685,9 @@
               <span class="why-badge">MVP 7 nap alatt</span>
             </div>
           </div>
+
+          <!-- ÚJ: gépelt arany buborékok -->
+          <div class="why-bubbles" id="whyBubbles"></div>
         </div>
       </section>
 
@@ -902,6 +932,59 @@
         entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
       }, {threshold:.2});
       els.forEach(el=> io.observe(el));
+    })();
+
+    /* ÚJ: WHY – arany buborékok gépírással */
+    (function(){
+      const container = document.getElementById('whyBubbles');
+      if(!container) return;
+
+      const lines = [
+        'Profi kommunikáció: napi állapot, gyors válasz.',
+        'Tiszta kód + dokumentált átadás (nem vendor lock).',
+        'Skálázható architektúra: webshop + Admin PRO + AI.',
+        'Mobil-első UX, Core Web Vitals fókusz.',
+        'Valódi mérföldkövek, 7 napos MVP opció.'
+      ];
+
+      const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+      async function typeInto(el, text){
+        const holder = document.createElement('span');
+        holder.className = 'type';
+        const caret = document.createElement('span');
+        caret.className = 'caret';
+        caret.textContent = '|';
+        el.appendChild(holder);
+        el.appendChild(caret);
+        for(let i=0;i<text.length;i++){
+          holder.textContent = text.slice(0,i+1);
+          await sleep(18 + (',.;:!?'.includes(text[i]) ? 90 : 0));
+        }
+        caret.remove();
+      }
+
+      async function play(){
+        while(true){
+          container.innerHTML='';
+          for(let i=0;i<lines.length;i++){
+            const b = document.createElement('div');
+            b.className = 'bubble';
+            container.appendChild(b);
+            await sleep(120); // belépő anim indul
+            await typeInto(b, lines[i]);
+            await sleep(800); // olvasási pici szünet két buborék közt
+            // képernyőn max 4 buborék – a legrégebbit elhalványítjuk
+            if(container.children.length>4){
+              container.firstElementChild.style.opacity = '.25';
+            }
+          }
+          await sleep(2200);
+          container.innerHTML='';
+          await sleep(200);
+        }
+      }
+      play();
     })();
 
     /* Globális 3D arany por háttér */
