@@ -10,8 +10,8 @@
     :root{
       --gold:#D4AF37;
       --gold-soft:#f5e6a2;
-      --gold-dark:#b88900;    /* sötétebb arany a kitöltéshez */
-      --gold-dark2:#e0b84f;   /* átmenet másik oldala */
+      --gold-dark:#b88900;
+      --gold-dark2:#e0b84f;
       --header-top:#fffaf0;
       --header-bottom:#f9f4df;
       --text:#0b0b0c;
@@ -20,19 +20,16 @@
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;scroll-behavior:smooth}
-    body{
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text); background:#fff; overflow-x:hidden;
-    }
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
 
-    /* háttér fénycsíkok (nagyon finoman) */
+    /* háttér fénycsíkok */
     .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
       background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
       filter:blur(.3px); animation:stripesMove 14s ease-in-out infinite alternate;
     }
-    .bg-stripes .stripe:nth-child(1){ top:8%; transform:rotate(-3deg); animation-delay:0s;}
+    .bg-stripes .stripe:nth-child(1){ top:8%;  transform:rotate(-3deg); animation-delay:0s;}
     .bg-stripes .stripe:nth-child(2){ top:26%; transform:rotate(4deg);  animation-delay:.6s;}
     .bg-stripes .stripe:nth-child(3){ top:44%; transform:rotate(-3deg); animation-delay:1.2s;}
     .bg-stripes .stripe:nth-child(4){ top:62%; transform:rotate(4deg);  animation-delay:1.8s;}
@@ -55,13 +52,9 @@
     .container{max-width:1120px; margin:0 auto; padding:0 20px;}
     .bar{height:70px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
 
-    /* LOGÓ + NÉV */
+    /* BRAND */
     .brand{display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:inherit; cursor:pointer;}
-    .logo-img{
-      height:44px; width:auto; object-fit:contain;
-      filter:drop-shadow(0 0 10px rgba(212,175,55,0.45));
-      opacity:0; transform:translateY(4px); animation:logoFadeIn .8s ease-out forwards;
-    }
+    .logo-img{height:44px; width:auto; object-fit:contain; filter:drop-shadow(0 0 10px rgba(212,175,55,0.45)); opacity:0; transform:translateY(4px); animation:logoFadeIn .8s ease-out forwards}
     @keyframes logoFadeIn{to{opacity:1;transform:translateY(0)}}
     .brand-name{
       position:relative; display:inline-block; font-weight:600; font-size:17px; letter-spacing:.2px;
@@ -77,40 +70,53 @@
     }
     @keyframes sheen{to{transform:translateX(120%)}}
 
-    /* NAVIGATION – alap: fekete betűk */
+    /* NAV LEFT (középen) */
     nav{display:none; gap:12px; align-items:center;}
-    .nav-link, .nav-cta{
-      position:relative; padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none;
-      color:#0b0b0c; transition:transform .2s ease, color .2s ease;
-    }
+    .nav-link, .nav-cta{position:relative; padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none; color:#0b0b0c; transition:transform .2s ease, color .2s ease}
     .nav-link:hover{transform:translateY(-2px)}
-
-    /* CTA gomb stílus (világos) */
     .nav-cta{
       border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1);
       box-shadow:0 10px 24px rgba(212,175,55,.18);
     }
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
 
-    /* --- SÖTÉTEBB ARANY “KITÖLTÉS” EFFEKT — teljes szöveg --- */
+    /* jobb oldali vezérlők: nyelvváltó + AI */
+    .right-controls{display:none; align-items:center; gap:10px}
+    .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
+    .lang-btn{
+      width:34px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+      font-size:16px; cursor:pointer; background:#fff; border:1px solid transparent; transition:.2s ease;
+    }
+    .lang-btn:hover{transform:translateY(-1px)}
+    .lang-btn.active{border-color:rgba(212,175,55,.6); box-shadow:0 0 0 3px rgba(212,175,55,.12)}
+    .ai-btn{
+      display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border-radius:14px; text-decoration:none;
+      border:1px solid rgba(212,175,55,.35); background:#fff; color:#7a5b0e; font-weight:600; font-size:14px;
+      box-shadow:0 10px 24px rgba(212,175,55,.18); transition:.2s ease;
+    }
+    .ai-btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
+    .ai-icon{width:16px; height:16px}
+    @media(min-width:768px){
+      nav{display:flex}
+      .toggle{display:none}
+      .right-controls{display:flex}
+    }
+
+    /* MOBIL MENU */
+    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center}
+    .menu{display:none; border-top:1px solid var(--border); background:rgba(255,255,255,.94); backdrop-filter:blur(8px)}
+    .menu .row{display:flex; gap:10px; align-items:center; padding:12px 20px}
+    .menu a{padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block}
+    .menu .cta{margin:8px 20px 16px; display:block; text-align:center}
+
+    /* ARANY KITÖLTÉS ugrálva */
     .gold-fill{
-      /* teljes arany kitöltés (sötétebb) a szövegen */
       background:linear-gradient(90deg, var(--gold-dark), var(--gold-dark2));
       -webkit-background-clip:text; background-clip:text;
       -webkit-text-fill-color:transparent; color:transparent;
-      text-shadow:0 0 0 rgba(0,0,0,0); /* biztosan ne legyen maradék árnyék */
     }
-    /* CTA-nál is a feliratot töltjük (a gomb háttere marad) */
-    .nav-cta.gold-fill{ /* csak a textet színezzük, a háttér megmarad */}
-    @media(min-width:768px){nav{display:flex} .toggle{display:none}}
 
-    /* MOBIL MENU */
-    .toggle{height:40px; width:40px; border-radius:12px; border:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center;}
-    .menu{display:none; border-top:1px solid var(--border); background:rgba(255,255,255,.94); backdrop-filter:blur(8px);}
-    .menu a{padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block;}
-    .menu .cta{margin:8px 20px 16px; display:block; text-align:center;}
-
-    main{max-width:1120px; margin:0 auto; padding:48px 20px; color:var(--muted);}
+    main{max-width:1120px; margin:0 auto; padding:48px 20px; color:var(--muted)}
   </style>
 </head>
 <body>
@@ -130,13 +136,28 @@
             <span class="brand-name" id="brandName">TamasGem Studio</span>
           </a>
 
-          <!-- DESKTOP NAV -->
+          <!-- NAV -->
           <nav id="desktopNav">
             <a href="#about"   class="nav-link nav-label">Rólam</a>
             <a href="#work"    class="nav-link nav-label">Munkák</a>
             <a href="#contact" class="nav-link nav-label">Kapcsolat</a>
             <a href="#contact" class="nav-cta  nav-label">Írj nekem</a>
           </nav>
+
+          <!-- RIGHT CONTROLS: language + AI -->
+          <div class="right-controls">
+            <div class="lang-switch" id="langSwitch" aria-label="Language switcher">
+              <button class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
+              <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
+            </div>
+            <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
+              <!-- kis csillogó AI ikon -->
+              <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/>
+              </svg>
+              AI
+            </a>
+          </div>
 
           <!-- MOBILE TOGGLE -->
           <button class="toggle" id="menuBtn" aria-label="Menü">
@@ -149,15 +170,27 @@
 
       <!-- MOBILE MENU -->
       <div class="menu" id="mobileMenu">
-        <a href="#about"   class="menu-link">Rólam</a>
-        <a href="#work"    class="menu-link">Munkák</a>
-        <a href="#contact" class="menu-link">Kapcsolat</a>
-        <a href="#contact" class="cta">Írj nekem</a>
+        <a href="#about"   class="menu-link nav-label">Rólam</a>
+        <a href="#work"    class="menu-link nav-label">Munkák</a>
+        <a href="#contact" class="menu-link nav-label">Kapcsolat</a>
+        <a href="#contact" class="cta       nav-label">Írj nekem</a>
+        <div class="row">
+          <div class="lang-switch" id="langSwitchMobile">
+            <button class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
+            <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
+          </div>
+          <a class="ai-btn" href="ai.html" target="_blank" rel="noopener">
+            <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="#b88900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5 2.5-5z"/>
+            </svg>
+            AI
+          </a>
+        </div>
       </div>
     </header>
 
     <main id="top">
-      <p>(Most a feliratok **egymás után, ugrással** kapják meg a **teljes sötétebb arany** kitöltést, majd ismétlődik.)</p>
+      <p>(A nyelvválasztó és az AI gomb a fejléchez került. Az AI külön lapon nyitja a <code>ai.html</code>-t.)</p>
     </main>
   </div>
 
@@ -165,6 +198,7 @@
     // név csillanás indítása
     window.addEventListener('load', ()=>{
       document.getElementById('brandName').classList.add('sheen');
+      initLangSwitcher();
     });
 
     // mobilmenü nyit/zár
@@ -183,17 +217,39 @@
       e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});
     });
 
-    // ====== ARANY KITÖLTÉS UGRÁLÁS – sorban Rólam → Munkák → Kapcsolat → Írj nekem ======
-    const labels = Array.from(document.querySelectorAll('.nav-label')); // 4 elem
+    // ARANY KITÖLTÉS ugrálva a nav címkéken (Rólam → Munkák → Kapcsolat → Írj nekem)
+    const labels = Array.from(document.querySelectorAll('.nav-label'));
     let idx = -1;
-    function step(){
-      labels.forEach(el => el.classList.remove('gold-fill'));
-      idx = (idx + 1) % labels.length;
-      labels[idx].classList.add('gold-fill');
+    function step(){ labels.forEach(el => el.classList.remove('gold-fill')); idx = (idx + 1) % labels.length; labels[idx].classList.add('gold-fill'); }
+    step(); setInterval(step, 1100);
+
+    // ===== Nyelvválasztó (vizuális, localStorage-ben jegyzi meg) =====
+    function initLangSwitcher(){
+      const current = localStorage.getItem('lang') || 'hu';
+      const sets = [
+        document.getElementById('langSwitch'),
+        document.getElementById('langSwitchMobile')
+      ].filter(Boolean);
+
+      function applyActive(lang){
+        sets.forEach(set=>{
+          set.querySelectorAll('.lang-btn').forEach(btn=>{
+            btn.classList.toggle('active', btn.dataset.lang===lang);
+          });
+        });
+      }
+      applyActive(current);
+
+      function handleClick(e){
+        const btn = e.target.closest('.lang-btn'); if(!btn) return;
+        const lang = btn.dataset.lang || 'hu';
+        localStorage.setItem('lang', lang);
+        applyActive(lang);
+        // ide később jöhet az i18n váltás – most csak megjegyezzük
+      }
+
+      sets.forEach(set=> set.addEventListener('click', handleClick));
     }
-    // indítás és ismétlés
-    step();
-    setInterval(step, 1100); // 1.1s-enként ugrik a következő feliratra
   </script>
 </body>
 </html>
