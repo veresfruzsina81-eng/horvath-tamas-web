@@ -13,6 +13,8 @@
       --hero-top:#fffef9; --hero-bottom:#ffffff;
       --chip-bg:#fff; --chip-b:#ede9d1;
       --phone-max: 280px;
+      /* ÚJ: háttérvideó átlátszóság */
+      --bgvideo-opacity:.22;
     }
     @media (max-width:1100px){ :root{ --phone-max: 250px; } }
     @media (max-width:600px){ :root{ --phone-max: 230px; } }
@@ -28,11 +30,20 @@
       background-attachment: fixed, fixed;
     }
 
-    /* Globális háttér-canvas – klikket nem blokkol */
-    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; opacity:.92; display:block;}
+    /* ÚJ: Globális háttérvideó */
+    #bgVideo{
+      position:fixed; inset:0;
+      width:100vw; height:100vh; object-fit:cover;
+      z-index:0; pointer-events:none; opacity:var(--bgvideo-opacity);
+      filter:saturate(110%) contrast(105%);
+      display:block;
+    }
 
-    /* Dísz csíkok a canvas felett */
-    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
+    /* Globális háttér-canvas – klikket nem blokkol (z: 1 lett) */
+    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:1; pointer-events:none; opacity:.92; display:block;}
+
+    /* Dísz csíkok a canvas felett (z: 2 lett) */
+    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
       background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
@@ -45,8 +56,8 @@
     .bg-stripes .stripe:nth-child(5){ top:80%; transform:rotate(-3deg); animation-delay:2.4s;}
     @keyframes stripesMove{0%{transform:translateX(-30%) rotate(0)}50%{opacity:.5}100%{transform:translateX(30%) rotate(0)}}
 
-    /* Tartalom a háttér fölött */
-    .wrap{position:relative; z-index:2}
+    /* Tartalom a háttér fölött (z: 3 lett) */
+    .wrap{position:relative; z-index:3}
 
     /* ===== HEADER ===== */
     header{
@@ -369,6 +380,11 @@
   </style>
 </head>
 <body>
+
+  <!-- ÚJ: Globális háttérvideó -->
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="hatter.mp4" type="video/mp4" />
+  </video>
 
   <!-- Globális 3D háttér -->
   <canvas id="bgAll" aria-hidden="true"></canvas>
@@ -723,6 +739,13 @@
     document.addEventListener('DOMContentLoaded', ()=>{
       document.getElementById('brandName')?.classList.add('sheen');
       document.getElementById('hero')?.classList.add('ready');
+
+      /* (Opcionális) Reduced motion: videó elrejtése */
+      try{
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+          const v = document.getElementById('bgVideo'); if(v) v.style.display='none';
+        }
+      }catch(e){}
     });
 
     /* Mobilmenü (≤991px) */
@@ -971,10 +994,9 @@
             const b = document.createElement('div');
             b.className = 'bubble';
             container.appendChild(b);
-            await sleep(120); // belépő anim indul
+            await sleep(120);
             await typeInto(b, lines[i]);
-            await sleep(800); // olvasási pici szünet két buborék közt
-            // képernyőn max 4 buborék – a legrégebbit elhalványítjuk
+            await sleep(800);
             if(container.children.length>4){
               container.firstElementChild.style.opacity = '.25';
             }
