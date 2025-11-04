@@ -6,7 +6,6 @@
   <title>TamasGem Studio</title>
   <meta name="description" content="TamasGem Studio – egyedi fejlesztés kérésre: prémium weboldal, teljes webshop, Admin PRO, Unity/Roblox, AI-integráció. Apple-szint, magyar kivitel." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     :root{
       --gold:#D4AF37; --gold-soft:#f5e6a2; --gold-dark:#b88900; --gold-dark2:#e0b84f;
@@ -23,21 +22,32 @@
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text); overflow-x:hidden;
+      /* FINOMÍTOTT HÁTTÉR, HOGY A VIDEÓ LÁTSZÓDJON */
       background:
-        radial-gradient(1200px 380px at 72% 8%, rgba(255,241,200,.18), rgba(255,255,255,0) 70%),
-        linear-gradient(180deg,#fffef9,#ffffff);
+        radial-gradient(1200px 380px at 72% 8%, rgba(255,241,200,.08), rgba(255,255,255,0) 70%),
+        linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0));
       background-attachment: fixed, fixed;
     }
 
-    /* Globális háttér-canvas – klikket nem blokkol */
-    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; opacity:.92; display:block;}
+    /* === ÚJ: GLOBÁLIS HÁTTÉRVIDEÓ A LEGALJON === */
+    #bgVideo{
+      position:fixed; inset:0;
+      width:100vw; height:100vh;
+      object-fit:cover;
+      z-index:0;            /* legalul */
+      pointer-events:none;  /* ne blokkoljon klikket */
+      filter:brightness(.88) contrast(1.08) saturate(1.12);
+    }
 
-    /* Dísz csíkok a canvas felett */
-    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
+    /* Globális háttér-canvas – klikket nem blokkol (EGGYEL FELJEBB) */
+    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:1; pointer-events:none; opacity:.92; display:block;}
+
+    /* Dísz csíkok a canvas felett (MÉG FELJEBB) */
+    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
       background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
-      filter:blur(.3px); animation:stripesMove 14s ease-in-out infinite alternate; opacity:.35;
+      filter:blur(.3px); animation:stripesMove 14s ease-in-out infinite alternate;
     }
     .bg-stripes .stripe:nth-child(1){ top:8%; transform:rotate(-3deg); animation-delay:0s;}
     .bg-stripes .stripe:nth-child(2){ top:26%; transform:rotate(4deg);  animation-delay:.6s;}
@@ -46,7 +56,8 @@
     .bg-stripes .stripe:nth-child(5){ top:80%; transform:rotate(-3deg); animation-delay:2.4s;}
     @keyframes stripesMove{0%{transform:translateX(-30%) rotate(0)}50%{opacity:.5}100%{transform:translateX(30%) rotate(0)}}
 
-    .wrap{position:relative; z-index:2}
+    /* Tartalom a háttér fölött (LEGFELÜL A TARTALOM) */
+    .wrap{position:relative; z-index:3}
 
     /* ===== HEADER ===== */
     header{
@@ -59,6 +70,7 @@
     .container{max-width:1120px; margin:0 auto; padding:0 20px;}
     .bar{height:70px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
 
+    /* BRAND */
     .brand{display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:inherit; cursor:pointer;}
     .logo-img{height:44px; width:auto; object-fit:contain; filter:drop-shadow(0 0 10px rgba(212,175,55,0.45)); opacity:0; transform:translateY(4px); animation:logoFadeIn .8s ease-out forwards}
     @keyframes logoFadeIn{to{opacity:1;transform:translateY(0)}}
@@ -76,12 +88,17 @@
     }
     @keyframes sheen{to{transform:translateX(120%)}}
 
+    /* NAV + RIGHT (desktop) */
     nav{display:none; gap:12px; align-items:center;}
     .nav-link, .nav-cta{padding:8px 14px; font-size:15px; font-weight:500; text-decoration:none; color:#0b0b0c; transition:.2s}
     .nav-link:hover{transform:translateY(-2px)}
     .nav-cta{border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1); box-shadow:0 10px 24px rgba(212,175,55,.18);}
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
-    .nav-cta.secondary{border-color:rgba(212,175,55,.45); background:linear-gradient(90deg,#fff7e1,#f7dfa3); font-weight:800;}
+    .nav-cta.secondary{
+      border-color:rgba(212,175,55,.45);
+      background:linear-gradient(90deg,#fff7e1,#f7dfa3);
+      font-weight:800;
+    }
 
     .right-controls{display:none; align-items:center; gap:10px}
     .lang-switch{display:flex; gap:6px; background:#fff; border:1px solid var(--border); padding:4px; border-radius:999px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
@@ -99,7 +116,7 @@
       .toggle{display:none}
     }
 
-    /* MOBIL MENÜ */
+    /* MOBIL MENÜ (csak ≤991px) */
     .menu{display:none; position:fixed; inset:70px 0 0 0; z-index:19; border-top:1px solid var(--border); background:rgba(255,255,255,.96); backdrop-filter:blur(8px)}
     .menu .row{display:flex; gap:10px; align-items:center; padding:12px 20px}
     .menu a{padding:12px 20px; font-size:15px; color:#222; text-decoration:none; display:block}
@@ -121,36 +138,28 @@
     .hero-cta{ display:flex; gap:12px; flex-wrap:wrap }
     .btn-gold,.btn-ghost{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; transition:.2s; box-shadow:0 10px 24px rgba(212,175,55,.12);}
     .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
-    .btn-ghost{ background:#fff } /* nem átlátszó */
+    .btn-ghost{ background:rgba(255,255,255,.7); backdrop-filter:blur(6px) }
     .btn-gold:hover,.btn-ghost:hover{ transform:translateY(-1px) }
 
-    /* OPAK (nem átlátszó) hero kártya a szöveg mögé */
-    .hero .container > .hero-copy{
-      background:linear-gradient(180deg,#ffffff,#fbf5e6);
-      border:1px solid rgba(214,191,120,.35);
-      border-radius:18px;
-      padding:18px;
-      box-shadow:0 12px 30px rgba(0,0,0,.08);
-    }
-
-    .stage{position:relative; width:100%; aspect-ratio:16/10; margin:auto; border-radius:16px; background:linear-gradient(180deg,#0e0f12,#171a20); box-shadow:0 24px 60px rgba(0,0,0,.22), inset 0 0 0 1px rgba(255,255,255,.05); overflow:hidden;}
+    .stage{position:relative; width:100%; aspect-ratio:16/10; margin:auto; border-radius:16px; background:linear-gradient(180deg,#0e0f12,#171a20); box-shadow:0 22px 50px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.05); overflow:hidden;}
     .stage::before{content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%); width:68px; height:10px; border-radius:12px; background:#0a0b0e; box-shadow:0 0 0 2px rgba(255,255,255,.06) inset;}
     .stand{position:absolute; left:50%; transform:translateX(-50%); bottom:-26px; width:46%; height:26px; background:linear-gradient(180deg,#cfcfd4,#b9bbc2); border-radius:0 0 12px 12px; filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));}
     .screen{position:absolute; inset:14px 14px 18px 14px; border-radius:12px; overflow:hidden; background:#0b0c10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
     .hero-video{width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.98);}
 
-    /* ===== ABOUT ===== */
+    /* ===== ABOUT (RÓLAM) ===== */
     #about{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.86),rgba(255,255,255,.86));}
     #about .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:520px 1fr; gap:56px; align-items:center;}
     @media(max-width:1100px){ #about .inner{grid-template-columns:1fr; gap:36px} }
 
     /* iPhone */
     .iphone-frame{position:relative; width:min(var(--phone-max), 90vw); margin:0 auto; aspect-ratio:9/19.5; border-radius:38px;
-      background:#0f1115; box-shadow:0 22px 60px rgba(0,0,0,.28), inset 0 0 0 2px rgba(255,255,255,.06); overflow:hidden; z-index:1;}
+      background:#0f1115; box-shadow:0 18px 50px rgba(0,0,0,.18), inset 0 0 0 2px rgba(255,255,255,.06); overflow:hidden; z-index:1;}
     .iphone-bezel{position:absolute; inset:8px; border-radius:34px; background:#000; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);}
     .iphone-notch{position:absolute; top:8px; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#000; border-bottom-left-radius:16px; border-bottom-right-radius:16px;}
     .iphone-screen{position:absolute; inset:0; border-radius:inherit; background:#000; color:#fff; overflow:hidden;}
 
+    /* Mini böngésző fej + progress sáv */
     .phone-chrome{
       position:absolute; top:0; left:0; right:0; height:46px; display:flex; align-items:center; gap:8px;
       background:linear-gradient(180deg,#121316,#0b0c10); border-bottom:1px solid rgba(255,255,255,.08);
@@ -163,6 +172,7 @@
 
     .prog{position:absolute; top:46px; left:0; height:2px; width:0%; background:linear-gradient(90deg,#fff7d4,#f3e1a1); transition:width .25s ease; z-index:4;}
 
+    /* Ikonrács / player */
     .app-grid{position:absolute; inset:46px 0 40px 0; display:grid; grid-template-columns:repeat(3, 64px); gap:18px; justify-content:center; align-content:start; padding-top:28px; background:
       radial-gradient(800px 300px at 50% -10%, #ffffff15, #000000 70%); z-index:1;}
     .app-grid img{width:56px; height:56px; object-fit:contain; border-radius:14px; cursor:pointer; filter:drop-shadow(0 4px 10px rgba(0,0,0,.45)); transition:transform .15s ease;}
@@ -170,6 +180,7 @@
     .phone-player{position:absolute; inset:46px 0 40px 0; display:none; background:#000; z-index:2;}
     .phone-player video,.phone-player iframe{width:100%; height:100%; object-fit:cover; border:0; display:none; background:#000;}
 
+    /* Alsó sáv */
     .phone-bottom{position:absolute; left:0; right:0; bottom:6px; display:flex; justify-content:center; gap:10px; pointer-events:none; z-index:5;}
     .phone-back{
       pointer-events:auto;
@@ -179,6 +190,7 @@
     }
     .phone-hint{pointer-events:none; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; color:#e6d9b2; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);}
 
+    /* Szöveg oszlop */
     .about-col h2{font-size:42px; margin:0 0 14px; font-weight:800; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
     .about-col p{font-size:17px; line-height:1.7; color:#555; margin:0 0 18px;}
     .revealY{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
@@ -190,6 +202,7 @@
     .chip > span{position:relative; z-index:1;}
     @keyframes chipShine{0%{background-position:0% 0} 100%{background-position:200% 0}}
 
+    /* Rólam – lebegő tech kártyák */
     .float-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px}
     @media (max-width:820px){ .float-cards{grid-template-columns:1fr 1fr} }
     @media (max-width:560px){ .float-cards{grid-template-columns:1fr} }
@@ -197,21 +210,21 @@
     .fcard:hover{transform:translateY(-3px); box-shadow:0 16px 36px rgba(0,0,0,.12)}
     .fcard small{display:block; color:#b7bcca; font-weight:600}
 
-    /* ===== SHOWREEL ===== */
+    /* ===== SHOWREEL (Bemutatkozás) ===== */
     .showreel{position:relative; background:linear-gradient(180deg, rgba(255,254,249,.86), rgba(255,255,255,.86));}
     .showreel .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:start;}
     @media (max-width:1100px){ .showreel .inner{grid-template-columns:1fr; gap:36px} }
 
     .sr-title{margin:0 0 10px; font-weight:800; font-size:42px; letter-spacing:.2px; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-    .sr-typed{margin:6px 0 10px; font-size:20px; font-weight:800; color:#1a1a1d; text-shadow:0 2px 8px rgba(0,0,0,.28);}
+    .sr-typed{margin:6px 0 10px; font-size:20px; font-weight:800; color:#1a1a1d;}
     .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
     @keyframes blink{ 50% { opacity:0 } }
-    .sr-lead{ color:#3a3f46; line-height:1.7; margin:6px 0 16px; font-weight:600; text-shadow:0 2px 8px rgba(0,0,0,.28);}
+    .sr-lead{ color:#3a3f46; line-height:1.7; margin:6px 0 16px; font-weight:600 }
 
     .sr-cta{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px }
     .sr-cta .btn-gold,.sr-cta .btn-ghost{ padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; box-shadow:0 10px 24px rgba(212,175,55,.12); }
     .sr-cta .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
-    .sr-cta .btn-ghost{ background:#fff }
+    .sr-cta .btn-ghost{ background:rgba(255,255,255,.7); backdrop-filter:blur(6px) }
     .sr-cta .btn-gold:hover,.sr-cta .btn-ghost:hover{ transform:translateY(-1px) }
 
     .sr-stats{display:flex; flex-wrap:wrap; gap:12px; margin:6px 0 18px}
@@ -233,13 +246,62 @@
     .sr-card .thumb{height:130px; border-radius:10px; background:#0a0c10; display:grid; place-items:center; overflow:hidden; border:1px solid #1f2430;}
     .sr-card .thumb img{ max-width:100%; max-height:100%; object-fit:contain }
     .sr-card h3{ margin:0; font-size:16px; color:#f4f5f7 }
-    .sr-card p{ margin:0; font-size:13px; color:#bac0c9; line-height:1.55; text-shadow:none }
+    .sr-card p{ margin:0; font-size:13px; color:#bac0c9; line-height:1.55 }
 
     .sr-info{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px }
     .sr-info .chip{position:relative; padding:8px 12px; border-radius:12px; font-weight:700; font-size:12px; color:#3b2f12; background:#fff; border:1px solid #ede9d1; box-shadow:0 6px 16px rgba(212,175,55,.10); overflow:hidden;}
     .sr-info .chip::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, rgba(248,240,210,.0) 0%, rgba(248,232,172,.45) 40%, rgba(248,240,210,.0) 80%); background-size:200% 100%; animation:chipShine 2.2s linear infinite;}
+    @keyframes chipShine{ to{ background-position:200% 0 } }
 
-    /* ===== WHY ===== */
+    /* ===== KÓDOLÁS SZEKCIÓ ===== */
+    #kodolas{position:relative; background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.92));}
+    #kodolas .inner{max-width:1100px; margin:0 auto; padding:86px 20px;}
+    .kod-title{margin:0 0 8px; font-weight:800; font-size:36px; letter-spacing:.2px; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .kod-sub{margin:0 0 18px; color:#485062; font-weight:600}
+
+    .tg-typing{background:#0d1016;border:1px solid #222936;border-radius:14px;padding:14px;
+      box-shadow:0 12px 34px rgba(0,0,0,.10); position:relative; overflow:hidden;
+      max-width:900px; margin:0 auto;}
+    @media (min-width:992px){ .tg-typing{transform:scale(1.02)} }
+    .tg-typing .tty-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .tg-typing .dot{width:10px;height:10px;border-radius:50%}
+    .tg-typing .dot.r{background:#ff5f56}.tg-typing .dot.y{background:#ffbd2e}.tg-typing .dot.g{background:#27c93f}
+    .tg-typing .title{margin-left:6px;color:#cfd3dc;font:600 12px/1.2 ui-sans-serif,system-ui}
+    .tg-typing .tty-code{position:relative;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      color:#e6e8f0;font-size:14px;line-height:1.7;min-height:200px;white-space:pre-wrap;margin:0}
+    .tg-typing .caret{display:inline-block;width:10px;margin-left:2px;opacity:.9;animation:tgBlink 1s step-start infinite}
+    @keyframes tgBlink{50%{opacity:0}}
+
+    /* overlay a végére (8mp) */
+    .typing-overlay{
+      position:absolute; inset:12px; display:none;
+      align-items:center; justify-content:center; text-align:center;
+      padding:22px; border-radius:12px; border:1px solid #232834;
+      background:
+        radial-gradient(900px 380px at 50% -20%, rgba(255,241,200,.14), rgba(0,0,0,0) 60%),
+        radial-gradient(800px 300px at 15% 120%, rgba(212,175,55,.12), rgba(0,0,0,0) 65%),
+        linear-gradient(180deg,#1a202c,#0d121b);
+      box-shadow:0 18px 48px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.04);
+      animation:overlayIn .45s ease both;
+    }
+    .typing-overlay.in{ display:flex }
+    @keyframes overlayIn{ from{ opacity:0; transform:scale(.96) } to{ opacity:1; transform:scale(1) } }
+
+    .typing-overlay .msg{
+      max-width:680px; color:#f5e6c7; line-height:1.45;
+      font-weight:800; letter-spacing:.2px; font-size:clamp(16px,1.5vw,20px);
+      text-shadow:0 2px 10px rgba(0,0,0,.4);
+    }
+    .typing-overlay .msg b{
+      background:linear-gradient(90deg,#ffeaa7,#ffd166,#d4af37);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .typing-overlay .logo{
+      width:48px; height:48px; object-fit:contain; margin:12px auto 0; opacity:.95;
+      filter:drop-shadow(0 6px 18px rgba(212,175,55,.35));
+    }
+
+    /* ===== WHY (Miért válassz minket) – HŰHA BLOKK ===== */
     #why{
       position:relative;
       background:
@@ -251,9 +313,11 @@
       margin:0 0 10px; font-weight:800; font-size:42px;
       background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
-    #why .lead{margin:0 0 28px; color:#3a3f46; font-weight:600; text-shadow:0 2px 8px rgba(0,0,0,.28);}
+    #why .lead{margin:0 0 28px; color:#3a3f46; font-weight:600}
 
-    .why-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .why-grid{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+    }
     @media (max-width:980px){ .why-grid{grid-template-columns:1fr 1fr} }
     @media (max-width:620px){ .why-grid{grid-template-columns:1fr} }
 
@@ -268,13 +332,14 @@
     }
     .why-card.in{ transform:none; opacity:1; }
     .why-card:hover{ box-shadow:0 22px 60px rgba(0,0,0,.16) }
+
     .why-card .halo{
       position:absolute; inset:-30% -10% auto -10%; height:60%;
       background:radial-gradient(600px 220px at 20% 40%, rgba(212,175,55,.18), transparent 60%);
       pointer-events:none; filter:blur(6px);
     }
     .why-card h3{margin:6px 0 8px; font-size:18px}
-    .why-card p{margin:0; font-size:14px; color:#d9e0ea}
+    .why-card p{margin:0; font-size:14px; color:#c8d0dc}
     .why-badge{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 12px; border-radius:999px; margin-top:12px;
@@ -284,12 +349,17 @@
       box-shadow:0 10px 24px rgba(212,175,55,.18);
     }
 
+    /* ÚJ: arany buborékok + gépelés */
     .why-bubbles{margin-top:26px; display:flex; flex-direction:column; gap:12px}
     .bubble{
-      position:relative; max-width:860px; padding:14px 16px;
+      position:relative;
+      max-width:860px;
+      padding:14px 16px;
       border-radius:16px 16px 16px 8px;
       border:1px solid rgba(212,175,55,.45);
-      background:linear-gradient(180deg,#fffaf0,#fff); /* nem átlátszó */
+      background:
+        radial-gradient(900px 320px at 100% -10%, rgba(212,175,55,.12), rgba(0,0,0,0) 60%),
+        linear-gradient(180deg,#fffaf0,#fff);
       box-shadow:0 12px 24px rgba(212,175,55,.14);
       font-weight:800; color:#3a2b07; letter-spacing:.2px;
       opacity:0; transform:translateY(10px); animation:bubbleIn .45s ease forwards;
@@ -305,52 +375,14 @@
     .bubble .type{min-height:1.3em; display:inline-block}
     .bubble .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
     @keyframes bubbleIn{to{opacity:1; transform:none}}
-
-    /* ===== KÓDOLÁS ===== */
-    #kodolas{position:relative; background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.92));}
-    #kodolas .inner{max-width:1100px; margin:0 auto; padding:86px 20px;}
-    .kod-title{margin:0 0 8px; font-weight:800; font-size:36px; letter-spacing:.2px; background:linear-gradient(90deg,#1a1a1d,#d4af37 60%,#3f351d); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-    .kod-sub{margin:0 0 18px; color:#485062; font-weight:600; text-shadow:0 2px 8px rgba(0,0,0,.28)}
-
-    .tg-typing{background:#0d1016;border:1px solid #222936;border-radius:14px;padding:14px;
-      box-shadow:0 12px 34px rgba(0,0,0,.10); position:relative; overflow:hidden;
-      max-width:900px; margin:0 auto;}
-    @media (min-width:992px){ .tg-typing{transform:scale(1.02)} }
-    .tg-typing .tty-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-    .tg-typing .dot{width:10px;height:10px;border-radius:50%}
-    .tg-typing .dot.r{background:#ff5f56}.tg-typing .dot.y{background:#ffbd2e}.tg-typing .dot.g{background:#27c93f}
-    .tg-typing .title{margin-left:6px;color:#cfd3dc;font:600 12px/1.2 ui-sans-serif,system-ui}
-    .tg-typing .tty-code{position:relative;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      color:#e6e8f0;font-size:14px;line-height:1.7;min-height:200px;white-space:pre-wrap;margin:0}
-    .tg-typing .caret{display:inline-block;width:10px;margin-left:2px;opacity:.9;animation:tgBlink 1s step-start infinite}
-    @keyframes tgBlink{50%{opacity:0}}
-
-    .typing-overlay{
-      position:absolute; inset:12px; display:none;
-      align-items:center; justify-content:center; text-align:center;
-      padding:22px; border-radius:12px; border:1px solid #232834;
-      background:
-        radial-gradient(900px 380px at 50% -20%, rgba(255,241,200,.14), rgba(0,0,0,0) 60%),
-        radial-gradient(800px 300px at 15% 120%, rgba(212,175,55,.12), rgba(0,0,0,0) 65%),
-        linear-gradient(180deg,#1a202c,#0d121b);
-      box-shadow:0 18px 48px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.04);
-      animation:overlayIn .45s ease both;
-    }
-    .typing-overlay.in{ display:flex }
-    @keyframes overlayIn{ from{ opacity:0; transform:scale(.96) } to{ opacity:1; transform:scale(1) } }
-    .typing-overlay .msg{ max-width:680px; color:#f5e6c7; line-height:1.45; font-weight:800; letter-spacing:.2px; font-size:clamp(16px,1.5vw,20px); text-shadow:0 2px 10px rgba(0,0,0,.4); }
-    .typing-overlay .msg b{
-      background:linear-gradient(90deg,#ffeaa7,#ffd166,#d4af37);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .typing-overlay .logo{ width:48px; height:48px; object-fit:contain; margin:12px auto 0; opacity:.95; filter:drop-shadow(0 6px 18px rgba(212,175,55,.35)); }
-
-    /* Biztonsági rétegek */
-    .wrap{ position:relative; z-index:2; }
-    header{ z-index:20; }
   </style>
 </head>
 <body>
+
+  <!-- ÚJ: Globális háttérvideó (minden szekció mögött fut) -->
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <source src="hatter.mp4" type="video/mp4">
+  </video>
 
   <!-- Globális 3D háttér -->
   <canvas id="bgAll" aria-hidden="true"></canvas>
@@ -372,10 +404,11 @@
 
           <nav id="desktopNav">
             <a href="#about"    class="nav-link nav-label" data-i18n="about">Rólam</a>
-            <a href="work.html" class="nav-link">Munkáim</a>
-            <a href="contact.html"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
+            <a href="#showreel" class="nav-link nav-label" data-i18n="work">Munkáim</a>
+            <!-- Eltávolítva a sima nav-link 'Miért' – csak a kiemelt marad -->
+            <a href="#contact"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
             <a href="#why"      class="nav-cta secondary">Miért válassz minket</a>
-            <a href="contact.html"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
+            <a href="#contact"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
           <div class="right-controls">
@@ -422,10 +455,11 @@
       <!-- MOBIL MENÜ -->
       <div class="menu" id="mobileMenu">
         <a href="#about"    class="menu-link nav-label" data-i18n="about">Rólam</a>
-        <a href="work.html" class="menu-link">Munkáim</a>
-        <a href="contact.html"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
+        <a href="#showreel" class="menu-link nav-label" data-i18n="work">Munkáim</a>
+        <!-- Eltávolítva a duplikált 'Miért' menü-link – csak a CTA marad -->
+        <a href="#contact"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
         <a href="#why"      class="cta">Miért válassz minket</a>
-        <a href="contact.html"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
+        <a href="#contact"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
           <div class="lang-switch">
             <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
@@ -467,13 +501,13 @@
     <main id="top">
       <section class="hero" id="hero">
         <div class="container left">
-          <div class="hero-copy">
+          <div>
             <h1 class="hero-title reveal">TamasGem Studio</h1>
             <p class="hero-sub reveal d2">
               Egyedi fejlesztés <b>kérésre</b>: nem sablon, nem “egy kaptafa” — hanem az üzletedhez tervezett rendszer, Apple-szintű kivitelben.
             </p>
             <div class="hero-cta reveal d3">
-              <a class="btn-gold" href="work.html" data-i18n="seeWork">Munkáim</a>
+              <a class="btn-gold" href="#showreel" data-i18n="seeWork">Munkáim</a>
               <a class="btn-ghost" href="#why">Miért mi?</a>
             </div>
           </div>
@@ -492,7 +526,7 @@
         </div>
       </section>
 
-      <!-- ===== ABOUT ===== -->
+      <!-- ===== ABOUT (RÓLAM) ===== -->
       <section id="about">
         <div class="inner">
           <!-- Telefon blokk -->
@@ -532,7 +566,7 @@
               </div>
             </div>
 
-            <div class="fullview" style="text-align:center; margin-top:10px;">
+            <div class="fullview">
               <a id="fullLink" href="#" target="_blank" rel="noopener">🔗 Megnyitás teljes nézetben</a>
             </div>
           </div>
@@ -557,6 +591,7 @@
               <div class="chip"><span>AI – ajánlórendszer, űrlap-automata</span></div>
             </div>
 
+            <!-- Lebegő tech kártyák extra tartalom -->
             <div class="float-cards revealY" data-delay="4">
               <div class="fcard">Clean Code <small>architektúra, tesztelhetőség</small></div>
               <div class="fcard">SEO+Core Web Vitals <small>gyors betöltés</small></div>
@@ -566,7 +601,7 @@
         </div>
       </section>
 
-      <!-- ===== SHOWREEL ===== -->
+      <!-- ===== SHOWREEL / BEMUTATKOZÁS ===== -->
       <section id="showreel" class="showreel">
         <div class="inner">
           <div class="sr-left">
@@ -589,6 +624,7 @@
               <div class="stat"><span class="n" data-count="99.9">0</span><span class="t">% uptime céllal</span></div>
             </div>
 
+            <!-- Technológiák itt -->
             <div class="sr-skills">
               <div class="skill"><div class="label">JavaScript / TypeScript</div><div class="meter" style="--p:92%"><span></span></div></div>
               <div class="skill"><div class="label">PHP / MySQL</div><div class="meter" style="--p:90%"><span></span></div></div>
@@ -598,8 +634,8 @@
             </div>
 
             <div class="sr-cta">
-              <a class="btn-gold" href="contact.html">Kapcsolat</a>
-              <a class="btn-ghost" href="work.html">Munkáim</a>
+              <a class="btn-gold" href="#contact">Kapcsolat</a>
+              <a class="btn-ghost" href="#work">Munkáim</a>
             </div>
           </div>
 
@@ -637,7 +673,7 @@
         </div>
       </section>
 
-      <!-- ===== WHY ===== -->
+      <!-- ===== WHY / HŰHA BLOKK + BUBORÉKOS GÉPÍRÁS ===== -->
       <section id="why">
         <div class="inner">
           <h2>Miért válassz minket</h2>
@@ -664,11 +700,12 @@
             </div>
           </div>
 
+          <!-- ÚJ: gépelt arany buborékok -->
           <div class="why-bubbles" id="whyBubbles"></div>
         </div>
       </section>
 
-      <!-- ===== KÓDOLÁS ===== -->
+      <!-- ===== KÓDOLÁS – külön szekció ===== -->
       <section id="kodolas">
         <div class="inner">
           <h2 class="kod-title">Valós idejű kódírás — prémium kivitelben</h2>
@@ -681,6 +718,7 @@
             </div>
             <pre class="tty-code" aria-live="polite"><code id="typing1-code"></code><span class="caret">|</span></pre>
 
+            <!-- Profi overlay a végén -->
             <div class="typing-overlay" id="typingOverlay">
               <div class="msg" id="typingOverlayMsg"></div>
               <img class="logo" src="logo.png" alt="TamasGem Studio">
@@ -689,7 +727,7 @@
         </div>
       </section>
 
-      <!-- (A Work / Contact külön fájlokban lesznek) -->
+      <!-- (Később: Work / Contact) -->
       <section id="contact" style="padding:80px 20px; display:none"></section>
     </main>
   </div>
@@ -701,7 +739,7 @@
       document.getElementById('hero')?.classList.add('ready');
     });
 
-    /* Mobilmenü */
+    /* Mobilmenü (≤991px) */
     const btn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     let isOpen = false;
@@ -817,14 +855,15 @@
       });
     })();
 
-    /* Rólam belibbenés */
+    /* Scroll-on belibbenés a Rólamhoz */
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('in'); observer.unobserve(entry.target);} });
     }, {threshold: 0.15});
     document.querySelectorAll('#about .revealY').forEach(el => observer.observe(el));
 
-    /* SHOWREEL – gépelés + stat + parallax */
+    /* ===== SHOWREEL: gépelés + stat számláló + parallax ===== */
     (function(){
+      // Gépelős headline
       const target = document.getElementById('typedText');
       if (target){
         const phrases = [
@@ -851,6 +890,7 @@
         tick();
       }
 
+      // Stat számláló
       const counters = document.querySelectorAll('.stat .n');
       const io1 = new IntersectionObserver((ents)=>{
         ents.forEach(e=>{
@@ -869,6 +909,7 @@
       }, {threshold:.3});
       counters.forEach(el=> io1.observe(el));
 
+      // Parallax lebegés a kártyákra
       const cards = document.querySelectorAll('.sr-card');
       window.addEventListener('mousemove', (e)=>{
         const cx = window.innerWidth/2, cy = window.innerHeight/2;
@@ -879,6 +920,7 @@
         });
       }, {passive:true});
 
+      // Belibbenés
       const io2 = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
           if(e.isIntersecting){
@@ -906,7 +948,7 @@
       els.forEach(el=> io.observe(el));
     })();
 
-    /* WHY – arany buborékok gépírással */
+    /* ÚJ: WHY – arany buborékok gépírással */
     (function(){
       const container = document.getElementById('whyBubbles');
       if(!container) return;
@@ -997,7 +1039,7 @@
       })();
     })();
 
-    /* GÉPELŐ PANEL – JS hiba javítva */
+    /* ===== GÉPELŐ PANEL LOGIKA (külön szekció) ===== */
     (function(){
       const out = document.getElementById('typing1-code');
       const overlay = document.getElementById('typingOverlay');
@@ -1041,7 +1083,7 @@
           }
           out.textContent += line[i];
           const ch=line[i];
-          const base = rand(16,48) + (',.;:>)'.includes(ch) ? rand(80,160) : 0; /* <- javított sor */
+          const base=rand(16,48) + (',.;:>)'.includes(ch)? rand(80,160): 0);
           await sleep(base);
         }
         out.textContent += '\n';
