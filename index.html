@@ -22,28 +22,17 @@
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text); overflow-x:hidden;
-      /* FINOMÍTOTT HÁTTÉR, HOGY A VIDEÓ LÁTSZÓDJON */
       background:
-        radial-gradient(1200px 380px at 72% 8%, rgba(255,241,200,.08), rgba(255,255,255,0) 70%),
-        linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0));
+        radial-gradient(1200px 380px at 72% 8%, rgba(255,241,200,.18), rgba(255,255,255,0) 70%),
+        linear-gradient(180deg,#fffef9,#ffffff);
       background-attachment: fixed, fixed;
     }
 
-    /* === ÚJ: GLOBÁLIS HÁTTÉRVIDEÓ A LEGALJON === */
-    #bgVideo{
-      position:fixed; inset:0;
-      width:100vw; height:100vh;
-      object-fit:cover;
-      z-index:0;            /* legalul */
-      pointer-events:none;  /* ne blokkoljon klikket */
-      filter:brightness(.88) contrast(1.08) saturate(1.12);
-    }
+    /* Globális háttér-canvas – klikket nem blokkol */
+    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; opacity:.92; display:block;}
 
-    /* Globális háttér-canvas – klikket nem blokkol (EGGYEL FELJEBB) */
-    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:1; pointer-events:none; opacity:.92; display:block;}
-
-    /* Dísz csíkok a canvas felett (MÉG FELJEBB) */
-    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden}
+    /* Dísz csíkok a canvas felett */
+    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
       background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
@@ -56,8 +45,8 @@
     .bg-stripes .stripe:nth-child(5){ top:80%; transform:rotate(-3deg); animation-delay:2.4s;}
     @keyframes stripesMove{0%{transform:translateX(-30%) rotate(0)}50%{opacity:.5}100%{transform:translateX(30%) rotate(0)}}
 
-    /* Tartalom a háttér fölött (LEGFELÜL A TARTALOM) */
-    .wrap{position:relative; z-index:3}
+    /* Tartalom a háttér fölött */
+    .wrap{position:relative; z-index:2}
 
     /* ===== HEADER ===== */
     header{
@@ -94,6 +83,7 @@
     .nav-link:hover{transform:translateY(-2px)}
     .nav-cta{border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1); box-shadow:0 10px 24px rgba(212,175,55,.18);}
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
+
     .nav-cta.secondary{
       border-color:rgba(212,175,55,.45);
       background:linear-gradient(90deg,#fff7e1,#f7dfa3);
@@ -130,11 +120,16 @@
 
     /* ===== HERO ===== */
     .hero{position:relative; background:linear-gradient(180deg,rgba(255,254,249,.88),rgba(255,255,255,.88));}
-    .hero .container{max-width:1120px; margin:0 auto; padding:72px 20px 84px; display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;}
-    @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:56px 20px 72px} }
-    .hero-title{margin:0 0 14px; font-weight:800; letter-spacing:.2px; font-size:clamp(34px,6.2vw,58px); line-height:1.03;
+    .hero::before{ /* finom arany fény a hero tetején */
+      content:""; position:absolute; inset:-60px 0 auto 0; height:160px;
+      background:radial-gradient(800px 140px at 20% 30%, rgba(212,175,55,.18), transparent 70%);
+      pointer-events:none; filter:blur(8px);
+    }
+    .hero .container{max-width:1120px; margin:0 auto; padding:80px 20px 92px; display:grid; grid-template-columns:1.08fr .92fr; gap:36px; align-items:center;}
+    @media(max-width:980px){ .hero .container{grid-template-columns:1fr; padding:58px 20px 72px} }
+    .hero-title{margin:0 0 14px; font-weight:800; letter-spacing:.2px; font-size:clamp(36px,6.6vw,62px); line-height:1.03;
       background:linear-gradient(90deg,#1a1a1d,#4a4026 30%,var(--gold) 60%,#3f351d 90%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-    .hero-sub{ color:var(--muted); font-size:clamp(15px,2.2vw,18px); line-height:1.6; margin:0 0 22px }
+    .hero-sub{ color:var(--muted); font-size:clamp(16px,2.2vw,19px); line-height:1.7; margin:0 0 22px }
     .hero-cta{ display:flex; gap:12px; flex-wrap:wrap }
     .btn-gold,.btn-ghost{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; font-weight:700; text-decoration:none; border:1px solid #e6e6ea; background:#fff; transition:.2s; box-shadow:0 10px 24px rgba(212,175,55,.12);}
     .btn-gold{ background:linear-gradient(90deg,#fff7d4,#f3e1a1); color:#7a5b0e; border-color:rgba(212,175,55,.35) }
@@ -145,6 +140,11 @@
     .stage::before{content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%); width:68px; height:10px; border-radius:12px; background:#0a0b0e; box-shadow:0 0 0 2px rgba(255,255,255,.06) inset;}
     .stand{position:absolute; left:50%; transform:translateX(-50%); bottom:-26px; width:46%; height:26px; background:linear-gradient(180deg,#cfcfd4,#b9bbc2); border-radius:0 0 12px 12px; filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));}
     .screen{position:absolute; inset:14px 14px 18px 14px; border-radius:12px; overflow:hidden; background:#0b0c10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
+    .screen::after{ /* lágy vignetta, hogy a videó ne mossa el a szöveget vizuálisan */
+      content:""; position:absolute; inset:0;
+      background:radial-gradient(80% 80% at 50% 50%, transparent 55%, rgba(0,0,0,.15) 100%);
+      pointer-events:none;
+    }
     .hero-video{width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.98);}
 
     /* ===== ABOUT (RÓLAM) ===== */
@@ -152,9 +152,25 @@
     #about .inner{max-width:1200px; margin:0 auto; padding:96px 20px; display:grid; grid-template-columns:520px 1fr; gap:56px; align-items:center;}
     @media(max-width:1100px){ #about .inner{grid-template-columns:1fr; gap:36px} }
 
-    /* iPhone */
+    /* iPhone – PRÉMIUM GLOW + DROP */
     .iphone-frame{position:relative; width:min(var(--phone-max), 90vw); margin:0 auto; aspect-ratio:9/19.5; border-radius:38px;
-      background:#0f1115; box-shadow:0 18px 50px rgba(0,0,0,.18), inset 0 0 0 2px rgba(255,255,255,.06); overflow:hidden; z-index:1;}
+      background:#0f1115; box-shadow:
+        0 28px 60px rgba(0,0,0,.28),
+        0 8px 18px rgba(0,0,0,.18),
+        inset 0 0 0 2px rgba(255,255,255,.06); overflow:hidden; z-index:1;
+      transform:translateY(0); transition:transform .35s ease, box-shadow .35s ease;}
+    .iphone-frame::after{ /* puha arany aura alatta */
+      content:""; position:absolute; left:50%; bottom:-26px; transform:translateX(-50%);
+      width:82%; height:36px; border-radius:999px;
+      background:radial-gradient(60% 100% at 50% 100%, rgba(212,175,55,.35), transparent 70%);
+      filter:blur(10px); pointer-events:none;
+    }
+    @media (min-width:992px){
+      .iphone-frame:hover{ transform:translateY(-4px); box-shadow:
+        0 34px 70px rgba(0,0,0,.32),
+        0 10px 22px rgba(0,0,0,.18),
+        inset 0 0 0 2px rgba(255,255,255,.06);}
+    }
     .iphone-bezel{position:absolute; inset:8px; border-radius:34px; background:#000; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);}
     .iphone-notch{position:absolute; top:8px; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#000; border-bottom-left-radius:16px; border-bottom-right-radius:16px;}
     .iphone-screen{position:absolute; inset:0; border-radius:inherit; background:#000; color:#fff; overflow:hidden;}
@@ -375,14 +391,70 @@
     .bubble .type{min-height:1.3em; display:inline-block}
     .bubble .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
     @keyframes bubbleIn{to{opacity:1; transform:none}}
+
+    /* ======== READABILITY BOOST – GOLD-GLASS SCRIMS (minden fő szövegblokk) ======== */
+    :root{
+      --glass-bd: rgba(212,175,55,.35);
+      --glass-shadow: 0 10px 30px rgba(212,175,55,.18);
+      --ink-shadow: 0 1px 0 rgba(255,255,255,.6), 0 2px 10px rgba(0,0,0,.08);
+    }
+    /* a kijelölt szöveg-hasábokra tesszük a scrimet (HTML módosítás nélkül) */
+    .hero .container > div:first-child,
+    #about .about-col,
+    #showreel .sr-left,
+    #why .inner > h2,
+    #why .lead,
+    #kodolas .kod-title,
+    #kodolas .kod-sub{
+      position:relative;
+      padding:14px 16px;
+      border-radius:16px;
+    }
+    .hero .container > div:first-child::before,
+    #about .about-col::before,
+    #showreel .sr-left::before,
+    #why .inner > h2::before,
+    #why .lead::before,
+    #kodolas .kod-title::before,
+    #kodolas .kod-sub::before{
+      content:"";
+      position:absolute; inset:-12px -14px -12px -14px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.38));
+      border:1px solid var(--glass-bd);
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: blur(6px) saturate(120%);
+      -webkit-backdrop-filter: blur(6px) saturate(120%);
+      z-index:-1;
+    }
+    /* tipók kis árnyéka, hogy minden háttéren olvasható legyen */
+    .hero-title, .about-col h2, .sr-title, #why h2, .kod-title{
+      text-shadow: 0 2px 16px rgba(0,0,0,.12);
+    }
+    .hero-sub, .about-col p, .sr-lead, .sr-info .chip, #why .lead, .kod-sub{
+      text-shadow: var(--ink-shadow);
+    }
+    /* mobilon picit erősebb a scrim */
+    @media (max-width:640px){
+      .hero .container > div:first-child::before,
+      #about .about-col::before,
+      #showreel .sr-left::before,
+      #why .inner > h2::before,
+      #why .lead::before,
+      #kodolas .kod-title::before,
+      #kodolas .kod-sub::before{
+        background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.5));
+        border-color: rgba(212,175,55,.45);
+      }
+    }
+
+    /* CTA-k picit erősebb árnyékkal, hogy ne vesszenek el */
+    .btn-gold, .btn-ghost{
+      box-shadow: 0 12px 24px rgba(212,175,55,.16), 0 2px 8px rgba(0,0,0,.06);
+    }
   </style>
 </head>
 <body>
-
-  <!-- ÚJ: Globális háttérvideó (minden szekció mögött fut) -->
-  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-    <source src="hatter.mp4" type="video/mp4">
-  </video>
 
   <!-- Globális 3D háttér -->
   <canvas id="bgAll" aria-hidden="true"></canvas>
@@ -405,7 +477,6 @@
           <nav id="desktopNav">
             <a href="#about"    class="nav-link nav-label" data-i18n="about">Rólam</a>
             <a href="#showreel" class="nav-link nav-label" data-i18n="work">Munkáim</a>
-            <!-- Eltávolítva a sima nav-link 'Miért' – csak a kiemelt marad -->
             <a href="#contact"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
             <a href="#why"      class="nav-cta secondary">Miért válassz minket</a>
             <a href="#contact"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
@@ -456,7 +527,6 @@
       <div class="menu" id="mobileMenu">
         <a href="#about"    class="menu-link nav-label" data-i18n="about">Rólam</a>
         <a href="#showreel" class="menu-link nav-label" data-i18n="work">Munkáim</a>
-        <!-- Eltávolítva a duplikált 'Miért' menü-link – csak a CTA marad -->
         <a href="#contact"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
         <a href="#why"      class="cta">Miért válassz minket</a>
         <a href="#contact"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
@@ -1083,7 +1153,7 @@
           }
           out.textContent += line[i];
           const ch=line[i];
-          const base=rand(16,48) + (',.;:>)'.includes(ch)? rand(80,160): 0);
+          const base = rand(16,48) + (',.;:>)'.includes(ch) ? rand(80,160) : 0); /* timing finomítás */
           await sleep(base);
         }
         out.textContent += '\n';
