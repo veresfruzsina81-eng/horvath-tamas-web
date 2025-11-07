@@ -624,77 +624,7 @@ picture,figure{display:block}
 })();
 </script>
 
-<script id="tg-i18n">
-(function(){
-  var dict = {
-    hu: {
-      "menu.about":"Rólam",
-      "menu.work":"Munkák",
-      "menu.contact":"Kapcsolat",
-      "cta.write":"Írj nekem",
-      "why.title":"Miért válassz minket",
-      "hero.title":"Valós idejű kódírás — prémium",
-      "hero.subtitle":"Egyedi tervezés és egyedi fejlesztés"
-    },
-    en: {
-      "menu.about":"About",
-      "menu.work":"Work",
-      "menu.contact":"Contact",
-      "cta.write":"Write to me",
-      "why.title":"Why choose us",
-      "hero.title":"Real‑time coding — premium",
-      "hero.subtitle":"Bespoke design & development"
-    },
-    de: {
-      "menu.about":"Über mich",
-      "menu.work":"Arbeiten",
-      "menu.contact":"Kontakt",
-      "cta.write":"Schreib mir",
-      "why.title":"Warum uns wählen",
-      "hero.title":"Echtzeit‑Coding — Premium",
-      "hero.subtitle":"Individuelles Design & Entwicklung"
-    }
-  };
 
-  // Helper to translate elements with [data-i18n="key"]
-  function applyLang(lang){
-    var table = dict[lang] || dict.hu;
-    document.documentElement.setAttribute('lang', lang);
-    document.querySelectorAll('[data-i18n]').forEach(function(el){
-      var k = el.getAttribute('data-i18n');
-      if(table[k]) el.textContent = table[k];
-    });
-    // also translate common menu items by text if they lack data-i18n
-    var map = table;
-    document.querySelectorAll('a,button').forEach(function(el){
-      var t = el.textContent.trim();
-      // HU originals -> target
-      var hu = dict.hu;
-      for (var key in hu){
-        if(hu[key]===t && map[key]){
-          el.textContent = map[key];
-        }
-      }
-    });
-  }
-
-  // Wire language buttons if present (flags with data-lang attr)
-  function wire(){
-    document.querySelectorAll('[data-lang]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var lang = btn.getAttribute('data-lang');
-        localStorage.setItem('tg-lang', lang);
-        applyLang(lang);
-      });
-    });
-    var saved = localStorage.getItem('tg-lang') || 'hu';
-    applyLang(saved);
-  }
-
-  if(document.readyState!=='loading') wire();
-  else document.addEventListener('DOMContentLoaded', wire);
-})();
-</script>
 
 <style id="tg-right-drawer-strong-css">
 .tg-right-drawer{
@@ -791,112 +721,7 @@ picture,figure{display:block}
 })();
 </script>
 
-<script id="tg-i18n-extended">
-(function(){
-  var dict = {
-    hu: {
-      "menu.about":"Rólam",
-      "menu.work":"Munkák",
-      "menu.contact":"Kapcsolat",
-      "cta.write":"Írj nekem",
-      "cta.workbtn":"Nézd meg a munkáim",
-      "why.title":"Miért válassz minket",
-      "hero.title":"TamasGem Studio",
-      "hero.subtitle":"Egyedi fejlesztés kérésre: nem sablon, nem “egy kaptafa” — hanem az üzletedhez tervezett rendszer, Apple‑szintű kivitelben.",
-      "see.work":"See my work",
-      "contact.me":"Contact me",
-      "whyus.inline":"Miért mi?"
-    },
-    en: {
-      "menu.about":"About",
-      "menu.work":"Work",
-      "menu.contact":"Contact",
-      "cta.write":"Write to me",
-      "cta.workbtn":"See my work",
-      "why.title":"Why choose us",
-      "hero.title":"TamasGem Studio",
-      "hero.subtitle":"Custom development on request: not a template, not one‑size‑fits‑all — but a system tailored to your business, built to Apple‑level quality.",
-      "see.work":"See my work",
-      "contact.me":"Contact me",
-      "whyus.inline":"Why choose us"
-    },
-    de: {
-      "menu.about":"Über mich",
-      "menu.work":"Arbeiten",
-      "menu.contact":"Kontakt",
-      "cta.write":"Schreib mir",
-      "cta.workbtn":"Meine Arbeiten ansehen",
-      "why.title":"Warum uns wählen",
-      "hero.title":"TamasGem Studio",
-      "hero.subtitle":"Individuelle Entwicklung auf Anfrage: keine Vorlage, kein Einheitsbrei — sondern ein auf Ihr Geschäft zugeschnittenes System in Apple‑Qualität.",
-      "see.work":"Meine Arbeiten ansehen",
-      "contact.me":"Kontaktiere mich",
-      "whyus.inline":"Warum wir?"
-    }
-  };
 
-  // Map HU originals -> keys (helps auto-tagging existing DOM)
-  var originals = {
-    "Rólam":"menu.about",
-    "Munkák":"menu.work",
-    "Kapcsolat":"menu.contact",
-    "Írj nekem":"cta.write",
-    "Miért válassz minket":"why.title",
-    "TamasGem Studio":"hero.title",
-    "Egyedi fejlesztés kérésre: nem sablon, nem “egy kaptafa” — hanem az üzletedhez tervezett rendszer, Apple‑szintű kivitelben.":"hero.subtitle",
-    "See my work":"see.work",
-    "Contact me":"contact.me",
-    "Miért mi?":"whyus.inline",
-    "Why choose us":"why.title" // in case mixed
-  };
-
-  function translateNodeText(node, lang){
-    var t = node.textContent.trim();
-    // Try direct match against HU originals and English fallbacks
-    for (var k in originals){
-      if(t === k){
-        var key = originals[k];
-        var val = (dict[lang] && dict[lang][key]) || (dict.hu && dict.hu[key]) || t;
-        node.textContent = val;
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function applyLang(lang){
-    var table = dict[lang] || dict.hu;
-    document.documentElement.setAttribute('lang', lang);
-
-    // 1) Elements with explicit data-i18n
-    document.querySelectorAll('[data-i18n]').forEach(function(el){
-      var key = el.getAttribute('data-i18n');
-      if(table[key]) el.textContent = table[key];
-    });
-
-    // 2) Global pass: replace exact matches we know
-    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-    var nodes = [];
-    while(walker.nextNode()){ nodes.push(walker.currentNode); }
-    nodes.forEach(function(n){ translateNodeText(n, lang); });
-  }
-
-  function wire(){
-    document.querySelectorAll('[data-lang]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var lang = btn.getAttribute('data-lang');
-        localStorage.setItem('tg-lang', lang);
-        applyLang(lang);
-      });
-    });
-    var saved = localStorage.getItem('tg-lang') || 'hu';
-    applyLang(saved);
-  }
-
-  if(document.readyState!=='loading') wire();
-  else document.addEventListener('DOMContentLoaded', wire);
-})();
-</script>
 
 <style id="tg-mobile-drawer-v3">
 /* ---- Desktop untouched ---- */
@@ -1042,70 +867,141 @@ picture,figure{display:block}
 })();
 </script>
 
-<script id="tg-i18n-v3">
-(function(){
-  var dict = {
-    hu:{ "menu.about":"Rólam","menu.work":"Munkák","menu.contact":"Kapcsolat","cta.write":"Írj nekem","why.title":"Miért válassz minket","hero.title":"TamasGem Studio",
-         "hero.subtitle":"Egyedi fejlesztés kérésre: nem sablon, nem “egy kaptafa” — hanem az üzletedhez tervezett rendszer, Apple-szintű kivitelben.",
-         "see.work":"Munkáim","contact.me":"Írj nekem","whyus.inline":"Miért mi?" },
-    en:{ "menu.about":"About","menu.work":"Work","menu.contact":"Contact","cta.write":"Write to me","why.title":"Why choose us","hero.title":"TamasGem Studio",
-         "hero.subtitle":"Custom development on request: not a template, not one-size-fits-all — a system tailored to your business, Apple-level quality.",
-         "see.work":"See my work","contact.me":"Contact me","whyus.inline":"Why us?" },
-    de:{ "menu.about":"Über mich","menu.work":"Arbeiten","menu.contact":"Kontakt","cta.write":"Schreib mir","why.title":"Warum uns wählen","hero.title":"TamasGem Studio",
-         "hero.subtitle":"Individuelle Entwicklung auf Anfrage: keine Vorlage, kein Einheitsbrei — ein System, zugeschnitten auf Ihr Geschäft, in Apple-Qualität.",
-         "see.work":"Meine Arbeiten","contact.me":"Kontaktiere mich","whyus.inline":"Warum wir?" }
-  };
-  var originals = {
-    "Rólam":"menu.about","Munkák":"menu.work","Kapcsolat":"menu.contact","Írj nekem":"cta.write",
-    "Miért válassz minket":"why.title","TamasGem Studio":"hero.title",
-    "Egyedi fejlesztés kérésre: nem sablon, nem “egy kaptafa” — hanem az üzletedhez tervezett rendszer, Apple-szintű kivitelben.":"hero.subtitle",
-    "See my work":"see.work","Contact me":"contact.me","Miért mi?":"whyus.inline","Why choose us":"why.title"
-  };
 
-  function apply(lang){
-    var table = dict[lang] || dict.hu;
+
+<style id="tg-fixes-v4">
+/* ---- Header/nav visibility on desktop ---- */
+@media (min-width: 768px){
+  header, header * { visibility: visible !important; }
+  header nav, .site-nav, .main-nav { display:flex !important; align-items:center; gap: 18px; }
+  header nav a, .site-nav a, .main-nav a { color:#0b0b0c !important; font-weight:600; text-decoration:none; }
+  header{ position:sticky; top:0; z-index: 1000; background: linear-gradient(180deg,#ffffffee,#fffef9cc) !important; backdrop-filter: blur(6px); }
+}
+
+/* ---- Mobile: our own right drawer + overlay ---- */
+@media (max-width: 767px){
+  .tg-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.32); opacity:0; pointer-events:none; z-index:9998; transition:opacity .2s; }
+  .tg-overlay.show{ opacity:1; pointer-events:auto; }
+  .tg-right-drawer{ position:fixed; top:0; right:0; width:min(86vw,360px); height:100dvh; background:#fff; 
+    border-left:1px solid rgba(0,0,0,.08); box-shadow:-10px 0 30px rgba(0,0,0,.14);
+    transform:translateX(100%); transition: transform .2s ease; z-index:9999; padding:14px 16px 24px;
+  }
+  .tg-right-drawer.show{ transform:translateX(0); }
+  .tg-right-drawer .tg-items{ list-style:none; margin:8px 0 0; padding:0; }
+  .tg-right-drawer .tg-items a{ display:block; padding:12px 14px; margin:6px 0; border-radius:14px; background:#f7f7f9; color:#0b0b0c !important; font-weight:700; }
+  /* Hide any left-side offcanvas from theme when our drawer opens */
+  body.tg-drawer-open .offcanvas, body.tg-drawer-open .mobile-menu, body.tg-drawer-open .drawer { display:none !important; }
+  /* Reduce big whitespace after hero */
+  .hero{ margin-bottom: clamp(16px, 4vh, 40px) !important; }
+  .hero + section, .hero + div, .hero + *{ margin-top: 0 !important; }
+  .spacer, .space, .section-spacer{ height:0 !important; margin:0 !important; padding:0 !important; }
+}
+
+/* General readability */
+h1,h2,h3{ letter-spacing:-.02em; }
+p{ line-height:1.7; }
+</style>
+
+<script id="tg-fixes-v4-js">
+(function(){
+  // Default language: HU if none chosen
+  try{
+    var saved = localStorage.getItem('tg-lang');
+    if(!saved || !/^(hu|en|de)$/.test(saved)){ localStorage.setItem('tg-lang','hu'); }
+  }catch(e){}
+
+  // i18n (safe): only elements with data-i18n are translated
+  var dict = {
+    hu:{ "menu.about":"Rólam","menu.work":"Munkák","menu.contact":"Kapcsolat","cta.write":"Írj nekem","why.title":"Miért válassz minket" },
+    en:{ "menu.about":"About","menu.work":"Work","menu.contact":"Contact","cta.write":"Write to me","why.title":"Why choose us" },
+    de:{ "menu.about":"Über mich","menu.work":"Arbeiten","menu.contact":"Kontakt","cta.write":"Schreib mir","why.title":"Warum uns wählen" }
+  };
+  function applyLang(lang){
+    var t = dict[lang] || dict.hu;
     document.documentElement.setAttribute('lang', lang);
-    // explicit keys
     document.querySelectorAll('[data-i18n]').forEach(function(el){
-      var k = el.getAttribute('data-i18n'); if(table[k]) el.textContent = table[k];
-    });
-    // known text replacements
-    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-    var nodes = []; while(walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function(n){
-      var t = n.textContent.trim();
-      for (var k in originals){
-        if(t === k){ n.textContent = table[originals[k]] || t; break; }
-      }
-    });
-    // also update drawer items if opened
-    document.querySelectorAll('.tg-right-drawer a').forEach(function(a){
-      var t = a.textContent.trim();
-      for (var k in originals){
-        if(t === k){ a.textContent = table[originals[k]] || t; break; }
-      }
+      var k = el.getAttribute('data-i18n'); if(t[k]) el.textContent = t[k];
     });
   }
-
-  function wire(){
+  function wireLang(){
     document.querySelectorAll('[data-lang]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var lang = btn.getAttribute('data-lang');
         try{ localStorage.setItem('tg-lang', lang); }catch(e){}
-        apply(lang);
+        applyLang(lang);
       });
     });
-    var saved = 'hu';
+    var initial = 'hu';
     try{
-      var v = localStorage.getItem('tg-lang');
-      if(/^(hu|en|de)$/.test(v)) saved = v;
-      else localStorage.setItem('tg-lang','hu');
+      var v = localStorage.getItem('tg-lang'); if(/^(hu|en|de)$/.test(v)) initial=v;
     }catch(e){}
-    apply(saved);
+    applyLang(initial);
   }
 
-  if(document.readyState!=='loading') wire();
-  else document.addEventListener('DOMContentLoaded', wire);
+  // Drawer: build without touching desktop header
+  var overlay, drawer;
+  function ensureOverlay(){
+    overlay = document.querySelector('.tg-overlay'); 
+    if(!overlay){
+      overlay = document.createElement('div');
+      overlay.className='tg-overlay';
+      overlay.addEventListener('click', closeDrawer);
+      document.body.appendChild(overlay);
+    }
+  }
+  function ensureDrawer(){
+    drawer = document.querySelector('.tg-right-drawer');
+    if(drawer) return drawer;
+    drawer = document.createElement('aside');
+    drawer.className='tg-right-drawer';
+    var ul = document.createElement('ul'); ul.className='tg-items';
+
+    // Collect visible desktop nav links (texts & href), but clone only labels
+    var header = document.querySelector('header') || document.querySelector('nav');
+    var links = [];
+    if(header){
+      header.querySelectorAll('a').forEach(function(a){
+        var label = (a.textContent||'').trim();
+        var href = a.getAttribute('href') || '#';
+        if(!label) return;
+        // normalize
+        var low = label.toLowerCase();
+        if(/munkák|work/.test(low)) href = 'munka.html';
+        if(/kapcsolat|contact/.test(low)) href = 'contact.html';
+        links.push({label:label, href:href});
+      });
+    }
+    if(!links.length){
+      links=[{label:'Rólam',href:'#rolam'},{label:'Munkák',href:'munka.html'},{label:'Kapcsolat',href:'contact.html'}];
+    }
+    links.forEach(function(it){
+      var li=document.createElement('li'); var a=document.createElement('a');
+      a.href=it.href; a.textContent=it.label; li.appendChild(a); ul.appendChild(li);
+    });
+    drawer.appendChild(ul);
+    document.body.appendChild(drawer);
+    return drawer;
+  }
+  function openDrawer(){
+    ensureOverlay(); ensureDrawer();
+    drawer.classList.add('show'); overlay.classList.add('show');
+    document.body.classList.add('tg-drawer-open'); document.body.style.overflow='hidden';
+  }
+  function closeDrawer(){
+    if(drawer) drawer.classList.remove('show');
+    if(overlay) overlay.classList.remove('show');
+    document.body.classList.remove('tg-drawer-open'); document.body.style.overflow='';
+  }
+  function wireDrawer(){
+    // pick a hamburger-like button; prefer a button in header with 3 lines icon
+    var cand = document.querySelector('header button, .hamburger, .menu-toggle, .nav-toggle, .menu-btn, [aria-label*="menu" i]');
+    if(cand){ cand.addEventListener('click', function(ev){ ev.preventDefault(); openDrawer(); }); }
+    // close on resize to desktop
+    window.addEventListener('resize', function(){ if(window.innerWidth>=768) closeDrawer(); }, {passive:true});
+  }
+
+  if(document.readyState!=='loading'){ wireLang(); wireDrawer(); }
+  else document.addEventListener('DOMContentLoaded', function(){ wireLang(); wireDrawer(); });
 })();
 </script>
 </head>
