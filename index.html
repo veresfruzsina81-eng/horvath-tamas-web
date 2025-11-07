@@ -508,6 +508,193 @@ picture,figure{display:block}
   };
 })();
 </script>
+
+<style id="tg-right-drawer-css">
+/* Right-side mobile drawer & overlay (non-transparent panel) */
+.tg-overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.25); opacity:0; pointer-events:none; z-index:9998; transition:opacity .2s ease;
+}
+.tg-overlay.show{ opacity:1; pointer-events:auto; }
+.tg-right-drawer{
+  position:fixed; top:0; right:0; left:auto;
+  width:min(85vw,380px); height:100dvh; max-height:100dvh; overflow:auto;
+  background:#ffffff; /* solid */
+  -webkit-backdrop-filter:saturate(120%) blur(8px);
+  backdrop-filter:saturate(120%) blur(8px);
+  border-left:1px solid rgba(0,0,0,.06);
+  box-shadow:-6px 0 18px rgba(0,0,0,.08);
+  z-index:9999;
+}
+/* Ensure links readable */
+.tg-right-drawer a{ color:#0b0b0c !important; text-decoration:none; font-weight:600; }
+.tg-right-drawer .menu, .tg-right-drawer .nav, .tg-right-drawer ul{ background:transparent !important; }
+@media(min-width: 768px){
+  .tg-overlay{ display:none !important; }
+  .tg-right-drawer{ position:static; height:auto; width:auto; box-shadow:none; border:none; }
+}
+</style>
+
+<script id="tg-right-drawer-js">
+(function(){
+  // create overlay once
+  var overlay = document.createElement('div');
+  overlay.className = 'tg-overlay';
+  document.addEventListener('DOMContentLoaded', function(){
+    document.body.appendChild(overlay);
+  });
+
+  function isVisible(el){
+    if(!el) return false;
+    var style = getComputedStyle(el);
+    return style.display!=='none' && style.visibility!=='hidden' && el.offsetParent !== null;
+  }
+
+  function findDrawer(){
+    // likely candidates
+    var sel = ['.mobile-menu','.menu-panel','.nav-menu','.drawer','.offcanvas','.mobile-nav','.sidebar','.menu-drawer'];
+    for(var i=0;i<sel.length;i++){
+      var nodes = document.querySelectorAll(sel[i]);
+      for(var j=0;j<nodes.length;j++){
+        var n = nodes[j];
+        // check if it contains links and is positioned
+        var links = n.querySelectorAll('a');
+        var st = getComputedStyle(n);
+        var positioned = /fixed|absolute/.test(st.position);
+        if(links.length>=2){
+          return n;
+        }
+      }
+    }
+    // fallback: a nav that has a toggle button somewhere
+    var navs = document.querySelectorAll('nav');
+    if(navs.length){ return navs[0]; }
+    return null;
+  }
+
+  function forceRightDrawer(el){
+    if(!el) return;
+    el.classList.add('tg-right-drawer');
+    el.style.left = 'auto';
+    el.style.right = '0px';
+  }
+
+  function wireToggle(drawer){
+    // find a probable hamburger button
+    var btn = document.querySelector('[aria-label*="menu" i], .hamburger, .menu-toggle, .nav-toggle, button[aria-expanded]');
+    function open(){
+      overlay.classList.add('show');
+      document.body.style.overflow='hidden';
+    }
+    function close(){
+      overlay.classList.remove('show');
+      document.body.style.overflow='';
+    }
+    if(btn){
+      btn.addEventListener('click', function(){
+        // wait a tick then enforce right-drawer position if opened
+        setTimeout(function(){
+          forceRightDrawer(drawer);
+          if(isVisible(drawer)) open(); else close();
+        }, 0);
+      });
+    }
+    overlay.addEventListener('click', function(){
+      // try to close by toggling aria-expanded buttons
+      var toggles = document.querySelectorAll('button[aria-expanded="true"], .is-open, .open');
+      toggles.forEach(function(t){ t.click && t.click(); });
+      close();
+    });
+
+    // On resize, keep right-anchored
+    window.addEventListener('resize', function(){
+      if(window.innerWidth < 768){ forceRightDrawer(drawer); }
+    }, {passive:true});
+  }
+
+  function boot(){
+    var dr = findDrawer();
+    if(dr){
+      forceRightDrawer(dr);
+      wireToggle(dr);
+    }
+  }
+
+  if(document.readyState!=='loading') boot();
+  else document.addEventListener('DOMContentLoaded', boot);
+})();
+</script>
+
+<script id="tg-i18n">
+(function(){
+  var dict = {
+    hu: {
+      "menu.about":"Rólam",
+      "menu.work":"Munkák",
+      "menu.contact":"Kapcsolat",
+      "cta.write":"Írj nekem",
+      "why.title":"Miért válassz minket",
+      "hero.title":"Valós idejű kódírás — prémium",
+      "hero.subtitle":"Egyedi tervezés és egyedi fejlesztés"
+    },
+    en: {
+      "menu.about":"About",
+      "menu.work":"Work",
+      "menu.contact":"Contact",
+      "cta.write":"Write to me",
+      "why.title":"Why choose us",
+      "hero.title":"Real‑time coding — premium",
+      "hero.subtitle":"Bespoke design & development"
+    },
+    de: {
+      "menu.about":"Über mich",
+      "menu.work":"Arbeiten",
+      "menu.contact":"Kontakt",
+      "cta.write":"Schreib mir",
+      "why.title":"Warum uns wählen",
+      "hero.title":"Echtzeit‑Coding — Premium",
+      "hero.subtitle":"Individuelles Design & Entwicklung"
+    }
+  };
+
+  // Helper to translate elements with [data-i18n="key"]
+  function applyLang(lang){
+    var table = dict[lang] || dict.hu;
+    document.documentElement.setAttribute('lang', lang);
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k = el.getAttribute('data-i18n');
+      if(table[k]) el.textContent = table[k];
+    });
+    // also translate common menu items by text if they lack data-i18n
+    var map = table;
+    document.querySelectorAll('a,button').forEach(function(el){
+      var t = el.textContent.trim();
+      // HU originals -> target
+      var hu = dict.hu;
+      for (var key in hu){
+        if(hu[key]===t && map[key]){
+          el.textContent = map[key];
+        }
+      }
+    });
+  }
+
+  // Wire language buttons if present (flags with data-lang attr)
+  function wire(){
+    document.querySelectorAll('[data-lang]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var lang = btn.getAttribute('data-lang');
+        localStorage.setItem('tg-lang', lang);
+        applyLang(lang);
+      });
+    });
+    var saved = localStorage.getItem('tg-lang') || 'hu';
+    applyLang(saved);
+  }
+
+  if(document.readyState!=='loading') wire();
+  else document.addEventListener('DOMContentLoaded', wire);
+})();
+</script>
 </head>
 <body>
 
@@ -539,7 +726,7 @@ picture,figure{display:block}
             <a href="#showreel" class="nav-link nav-label" data-i18n="work">Munkáim</a>
             <!-- Eltávolítva a sima nav-link 'Miért' – csak a kiemelt marad -->
             <a href="contact.html"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
-            <a href="#why"      class="nav-cta secondary">Miért válassz minket</a>
+            <a href="#why"      class="nav-cta secondary" data-i18n="why.title">Miért válassz minket</a>
             <a href="contact.html"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
@@ -590,7 +777,7 @@ picture,figure{display:block}
         <a href="#showreel" class="menu-link nav-label" data-i18n="work">Munkáim</a>
         <!-- Eltávolítva a duplikált 'Miért' menü-link – csak a CTA marad -->
         <a href="contact.html"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
-        <a href="#why"      class="cta">Miért válassz minket</a>
+        <a href="#why"      class="cta" data-i18n="why.title">Miért válassz minket</a>
         <a href="contact.html"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
           <div class="lang-switch">
@@ -705,7 +892,7 @@ picture,figure{display:block}
 
           <!-- Szöveg oszlop -->
           <div class="about-col">
-            <h2 class="revealY" data-delay="0">Rólam</h2>
+            <h2 class="revealY" data-delay="0" data-i18n="menu.about">Rólam</h2>
             <p class="revealY" data-delay="1">
               Horváth Tamás vagyok. <b>Teljesen egyedi rendszereket</b> építek vállalkozásoknak:
               prémium weboldal, <b>teljes webshop</b> (termékkezelés, fizetés, admin), <b>Admin PRO</b>,
@@ -766,7 +953,7 @@ picture,figure{display:block}
             </div>
 
             <div class="sr-cta">
-              <a class="btn-gold" href="contact.html">Kapcsolat</a>
+              <a class="btn-gold" href="contact.html" data-i18n="menu.contact">Kapcsolat</a>
               <a class="btn-ghost" href="#work">Munkáim</a>
             </div>
           </div>
@@ -808,7 +995,7 @@ picture,figure{display:block}
       <!-- ===== WHY / HŰHA BLOKK + BUBORÉKOS GÉPÍRÁS ===== -->
       <section id="why">
         <div class="inner">
-          <h2>Miért válassz minket</h2>
+          <h2 data-i18n="why.title">Miért válassz minket</h2>
           <p class="lead">Nem sablont kapsz, hanem üzleti célra hangolt, mérhetően jobb megoldást — prémium kivitelben.</p>
 
           <div class="why-grid">
