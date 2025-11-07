@@ -489,6 +489,74 @@
   else document.addEventListener('DOMContentLoaded', wire);
 })();
 </script>
+
+<style id="tg-dd-forcehide">
+/* Amikor a saját dropdownunk nyitva van, MINDEN téma-menüt elrejtünk */
+body.tg-dd-open .offcanvas,
+body.tg-dd-open .mobile-menu,
+body.tg-dd-open .drawer,
+body.tg-dd-open .menu-panel,
+body.tg-dd-open header nav ul,
+body.tg-dd-open header .menu,
+body.tg-dd-open header .nav,
+body.tg-dd-open header .navbar-collapse,
+body.tg-dd-open .navbar-collapse,
+body.tg-dd-open .site-nav,
+body.tg-dd-open .main-nav {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+/* A panel mindig a legfelül legyen */
+.tg-dd{ z-index: 99999 !important; }
+</style>
+
+<script id="tg-dd-forcehide-js">
+(function(){
+  var body=document.body;
+  function $(s, r){ return (r||document).querySelector(s); }
+  // find the hamburger reliably
+  var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
+  var panel = document.querySelector('.tg-dd');
+  var overlay = document.querySelector('.tg-dd-overlay');
+  if(!btn || !panel || !overlay) return;
+
+  // Prevent the theme's own toggle if possible
+  btn.addEventListener('click', function(e){
+    e.preventDefault(); e.stopPropagation();
+  }, true);
+
+  // Re-bind our own toggle on top
+  btn.addEventListener('click', function(ev){
+    ev.preventDefault();
+    if(panel.classList.contains('show')){
+      panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
+    }else{
+      // add open class to body to hide other menus
+      body.classList.add('tg-dd-open');
+      overlay.classList.add('show');
+      panel.classList.add('show');
+      // position under button
+      var r = btn.getBoundingClientRect();
+      var w = Math.min(320, window.innerWidth*0.9);
+      var left = Math.min(r.right - w, window.innerWidth - w - 8);
+      var top = r.bottom + 8;
+      panel.style.left = left + 'px';
+      panel.style.top = top + 'px';
+    }
+  });
+
+  // clicking overlay closes and restores
+  overlay.addEventListener('click', function(){
+    panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
+  });
+
+  // close on resize
+  window.addEventListener('resize', function(){
+    panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
+  }, {passive:true});
+})();
+</script>
 </head>
 <body>
 
@@ -1165,7 +1233,75 @@
         '<head>',
         '  <meta charset="utf-8">',
         '  <title>TamasGem Studio</title>',
-        '</head>',
+        '
+<style id="tg-dd-forcehide">
+/* Amikor a saját dropdownunk nyitva van, MINDEN téma-menüt elrejtünk */
+body.tg-dd-open .offcanvas,
+body.tg-dd-open .mobile-menu,
+body.tg-dd-open .drawer,
+body.tg-dd-open .menu-panel,
+body.tg-dd-open header nav ul,
+body.tg-dd-open header .menu,
+body.tg-dd-open header .nav,
+body.tg-dd-open header .navbar-collapse,
+body.tg-dd-open .navbar-collapse,
+body.tg-dd-open .site-nav,
+body.tg-dd-open .main-nav {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+/* A panel mindig a legfelül legyen */
+.tg-dd{ z-index: 99999 !important; }
+</style>
+
+<script id="tg-dd-forcehide-js">
+(function(){
+  var body=document.body;
+  function $(s, r){ return (r||document).querySelector(s); }
+  // find the hamburger reliably
+  var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
+  var panel = document.querySelector('.tg-dd');
+  var overlay = document.querySelector('.tg-dd-overlay');
+  if(!btn || !panel || !overlay) return;
+
+  // Prevent the theme's own toggle if possible
+  btn.addEventListener('click', function(e){
+    e.preventDefault(); e.stopPropagation();
+  }, true);
+
+  // Re-bind our own toggle on top
+  btn.addEventListener('click', function(ev){
+    ev.preventDefault();
+    if(panel.classList.contains('show')){
+      panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
+    }else{
+      // add open class to body to hide other menus
+      body.classList.add('tg-dd-open');
+      overlay.classList.add('show');
+      panel.classList.add('show');
+      // position under button
+      var r = btn.getBoundingClientRect();
+      var w = Math.min(320, window.innerWidth*0.9);
+      var left = Math.min(r.right - w, window.innerWidth - w - 8);
+      var top = r.bottom + 8;
+      panel.style.left = left + 'px';
+      panel.style.top = top + 'px';
+    }
+  });
+
+  // clicking overlay closes and restores
+  overlay.addEventListener('click', function(){
+    panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
+  });
+
+  // close on resize
+  window.addEventListener('resize', function(){
+    panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
+  }, {passive:true});
+})();
+</script>
+</head>',
         '<body>',
         '  <main>',
         '    <section id="intro">',
