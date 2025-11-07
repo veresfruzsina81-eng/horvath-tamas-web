@@ -490,71 +490,117 @@
 })();
 </script>
 
-<style id="tg-dd-forcehide">
-/* Amikor a saját dropdownunk nyitva van, MINDEN téma-menüt elrejtünk */
-body.tg-dd-open .offcanvas,
-body.tg-dd-open .mobile-menu,
-body.tg-dd-open .drawer,
-body.tg-dd-open .menu-panel,
-body.tg-dd-open header nav ul,
-body.tg-dd-open header .menu,
-body.tg-dd-open header .nav,
-body.tg-dd-open header .navbar-collapse,
-body.tg-dd-open .navbar-collapse,
-body.tg-dd-open .site-nav,
-body.tg-dd-open .main-nav {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
+<style id="tg-dd-safe-v6">
+/* Container inside header to anchor the dropdown */
+header{ position:sticky; top:0; z-index:1000; }
+header .tg-dd-wrap{ position:relative; }
+
+/* Gold, solid dropdown */
+.tg-dd{ position:absolute; top:100%; right:0; width:min(320px, 90vw);
+  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
+  border:1px solid rgba(190,150,20,.6);
+  border-radius:16px; box-shadow: 0 18px 50px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.6) inset;
+  display:none; padding:10px; margin-top:8px;
 }
-/* A panel mindig a legfelül legyen */
-.tg-dd{ z-index: 99999 !important; }
+.tg-dd.show{ display:block; }
+.tg-dd .tg-dd-item{ display:block; padding:12px 14px; margin:4px 0; border-radius:12px;
+  background:#fff8d9; font-weight:700; color:#0b0b0c; text-decoration:none;
+}
+.tg-dd .tg-dd-item:active{ background:#fff1b8; }
+.tg-dd-caret{ position:absolute; top:-7px; right:18px; width:14px; height:14px; transform:rotate(45deg);
+  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
+  border-left:1px solid rgba(190,150,20,.6); border-top:1px solid rgba(190,150,20,.6);
+}
+
+/* Light overlay that doesn't block scrolling or other events */
+.tg-dd-overlay{
+  position:fixed; inset:0; pointer-events:none;
+}
+.tg-dd-overlay.show{ pointer-events:auto; }
 </style>
 
-<script id="tg-dd-forcehide-js">
+<script id="tg-dd-safe-v6-js">
 (function(){
-  var body=document.body;
-  function $(s, r){ return (r||document).querySelector(s); }
-  // find the hamburger reliably
-  var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
-  var panel = document.querySelector('.tg-dd');
-  var overlay = document.querySelector('.tg-dd-overlay');
-  if(!btn || !panel || !overlay) return;
+  function $(sel, root){ return (root||document).querySelector(sel); }
+  function $$ (sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
 
-  // Prevent the theme's own toggle if possible
-  btn.addEventListener('click', function(e){
-    e.preventDefault(); e.stopPropagation();
-  }, true);
-
-  // Re-bind our own toggle on top
-  btn.addEventListener('click', function(ev){
-    ev.preventDefault();
-    if(panel.classList.contains('show')){
-      panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
-    }else{
-      // add open class to body to hide other menus
-      body.classList.add('tg-dd-open');
-      overlay.classList.add('show');
-      panel.classList.add('show');
-      // position under button
-      var r = btn.getBoundingClientRect();
-      var w = Math.min(320, window.innerWidth*0.9);
-      var left = Math.min(r.right - w, window.innerWidth - w - 8);
-      var top = r.bottom + 8;
-      panel.style.left = left + 'px';
-      panel.style.top = top + 'px';
+  function ensureWrap(){
+    var header = $('header') || $('nav'); if(!header) return null;
+    var wrap = header.querySelector('.tg-dd-wrap');
+    if(!wrap){
+      wrap = document.createElement('div'); wrap.className='tg-dd-wrap';
+      // place as the last child in header to avoid breaking layout
+      header.appendChild(wrap);
     }
-  });
+    return wrap;
+  }
 
-  // clicking overlay closes and restores
-  overlay.addEventListener('click', function(){
-    panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
-  });
+  function createMenu(wrap){
+    var panel = document.createElement('div');
+    panel.className='tg-dd';
+    var caret = document.createElement('div'); caret.className='tg-dd-caret'; panel.appendChild(caret);
+    var list = document.createElement('div'); panel.appendChild(list);
 
-  // close on resize
-  window.addEventListener('resize', function(){
-    panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
-  }, {passive:true});
+    // Collect header links (labels & href), normalize important ones
+    var links = [];
+    var header = $('header') || $('nav');
+    if(header){
+      $$('a', header).forEach(function(a){
+        var label = (a.textContent||'').trim();
+        var href = a.getAttribute('href') || '#';
+        if(!label) return;
+        var low = label.toLowerCase();
+        if(/munkák|work/.test(low)) href = 'munkak.html';
+        if(/kapcsolat|contact|írd|irj|write/.test(low)) href = 'contact.html';
+        links.push({label:label, href:href});
+      });
+    }
+    if(!links.length){
+      links = [
+        {label:'Rólam', href:'#rolam'},
+        {label:'Munkáim', href:'munkak.html'},
+        {label:'Kapcsolat', href:'contact.html'}
+      ];
+    }
+    links.forEach(function(it){
+      var a = document.createElement('a'); a.className='tg-dd-item'; a.href = it.href; a.textContent = it.label;
+      list.appendChild(a);
+    });
+
+    var overlay = document.createElement('div'); overlay.className='tg-dd-overlay';
+
+    wrap.appendChild(panel);
+    document.body.appendChild(overlay);
+    return {panel:panel, overlay:overlay};
+  }
+
+  function wire(){
+    var wrap = ensureWrap(); if(!wrap) return;
+    var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
+    if(!btn) return;
+    var store = createMenu(wrap);
+    var panel = store.panel, overlay = store.overlay;
+
+    function open(){
+      panel.classList.add('show'); overlay.classList.add('show');
+    }
+    function close(){
+      panel.classList.remove('show'); overlay.classList.remove('show');
+    }
+
+    btn.addEventListener('click', function(ev){
+      // Do not stop propagation — let theme run too; just toggle our panel
+      if(panel.classList.contains('show')) close(); else open();
+    });
+
+    overlay.addEventListener('click', close);
+    window.addEventListener('resize', close, {passive:true});
+    // Close when user navigates via a link
+    panel.addEventListener('click', function(e){ if(e.target.closest('a')) close(); });
+  }
+
+  if(document.readyState!=='loading') wire();
+  else document.addEventListener('DOMContentLoaded', wire);
 })();
 </script>
 </head>
@@ -1234,71 +1280,117 @@ body.tg-dd-open .main-nav {
         '  <meta charset="utf-8">',
         '  <title>TamasGem Studio</title>',
         '
-<style id="tg-dd-forcehide">
-/* Amikor a saját dropdownunk nyitva van, MINDEN téma-menüt elrejtünk */
-body.tg-dd-open .offcanvas,
-body.tg-dd-open .mobile-menu,
-body.tg-dd-open .drawer,
-body.tg-dd-open .menu-panel,
-body.tg-dd-open header nav ul,
-body.tg-dd-open header .menu,
-body.tg-dd-open header .nav,
-body.tg-dd-open header .navbar-collapse,
-body.tg-dd-open .navbar-collapse,
-body.tg-dd-open .site-nav,
-body.tg-dd-open .main-nav {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
+<style id="tg-dd-safe-v6">
+/* Container inside header to anchor the dropdown */
+header{ position:sticky; top:0; z-index:1000; }
+header .tg-dd-wrap{ position:relative; }
+
+/* Gold, solid dropdown */
+.tg-dd{ position:absolute; top:100%; right:0; width:min(320px, 90vw);
+  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
+  border:1px solid rgba(190,150,20,.6);
+  border-radius:16px; box-shadow: 0 18px 50px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.6) inset;
+  display:none; padding:10px; margin-top:8px;
 }
-/* A panel mindig a legfelül legyen */
-.tg-dd{ z-index: 99999 !important; }
+.tg-dd.show{ display:block; }
+.tg-dd .tg-dd-item{ display:block; padding:12px 14px; margin:4px 0; border-radius:12px;
+  background:#fff8d9; font-weight:700; color:#0b0b0c; text-decoration:none;
+}
+.tg-dd .tg-dd-item:active{ background:#fff1b8; }
+.tg-dd-caret{ position:absolute; top:-7px; right:18px; width:14px; height:14px; transform:rotate(45deg);
+  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
+  border-left:1px solid rgba(190,150,20,.6); border-top:1px solid rgba(190,150,20,.6);
+}
+
+/* Light overlay that doesn't block scrolling or other events */
+.tg-dd-overlay{
+  position:fixed; inset:0; pointer-events:none;
+}
+.tg-dd-overlay.show{ pointer-events:auto; }
 </style>
 
-<script id="tg-dd-forcehide-js">
+<script id="tg-dd-safe-v6-js">
 (function(){
-  var body=document.body;
-  function $(s, r){ return (r||document).querySelector(s); }
-  // find the hamburger reliably
-  var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
-  var panel = document.querySelector('.tg-dd');
-  var overlay = document.querySelector('.tg-dd-overlay');
-  if(!btn || !panel || !overlay) return;
+  function $(sel, root){ return (root||document).querySelector(sel); }
+  function $$ (sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
 
-  // Prevent the theme's own toggle if possible
-  btn.addEventListener('click', function(e){
-    e.preventDefault(); e.stopPropagation();
-  }, true);
-
-  // Re-bind our own toggle on top
-  btn.addEventListener('click', function(ev){
-    ev.preventDefault();
-    if(panel.classList.contains('show')){
-      panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
-    }else{
-      // add open class to body to hide other menus
-      body.classList.add('tg-dd-open');
-      overlay.classList.add('show');
-      panel.classList.add('show');
-      // position under button
-      var r = btn.getBoundingClientRect();
-      var w = Math.min(320, window.innerWidth*0.9);
-      var left = Math.min(r.right - w, window.innerWidth - w - 8);
-      var top = r.bottom + 8;
-      panel.style.left = left + 'px';
-      panel.style.top = top + 'px';
+  function ensureWrap(){
+    var header = $('header') || $('nav'); if(!header) return null;
+    var wrap = header.querySelector('.tg-dd-wrap');
+    if(!wrap){
+      wrap = document.createElement('div'); wrap.className='tg-dd-wrap';
+      // place as the last child in header to avoid breaking layout
+      header.appendChild(wrap);
     }
-  });
+    return wrap;
+  }
 
-  // clicking overlay closes and restores
-  overlay.addEventListener('click', function(){
-    panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
-  });
+  function createMenu(wrap){
+    var panel = document.createElement('div');
+    panel.className='tg-dd';
+    var caret = document.createElement('div'); caret.className='tg-dd-caret'; panel.appendChild(caret);
+    var list = document.createElement('div'); panel.appendChild(list);
 
-  // close on resize
-  window.addEventListener('resize', function(){
-    panel.classList.remove('show'); overlay.classList.remove('show'); body.classList.remove('tg-dd-open');
-  }, {passive:true});
+    // Collect header links (labels & href), normalize important ones
+    var links = [];
+    var header = $('header') || $('nav');
+    if(header){
+      $$('a', header).forEach(function(a){
+        var label = (a.textContent||'').trim();
+        var href = a.getAttribute('href') || '#';
+        if(!label) return;
+        var low = label.toLowerCase();
+        if(/munkák|work/.test(low)) href = 'munkak.html';
+        if(/kapcsolat|contact|írd|irj|write/.test(low)) href = 'contact.html';
+        links.push({label:label, href:href});
+      });
+    }
+    if(!links.length){
+      links = [
+        {label:'Rólam', href:'#rolam'},
+        {label:'Munkáim', href:'munkak.html'},
+        {label:'Kapcsolat', href:'contact.html'}
+      ];
+    }
+    links.forEach(function(it){
+      var a = document.createElement('a'); a.className='tg-dd-item'; a.href = it.href; a.textContent = it.label;
+      list.appendChild(a);
+    });
+
+    var overlay = document.createElement('div'); overlay.className='tg-dd-overlay';
+
+    wrap.appendChild(panel);
+    document.body.appendChild(overlay);
+    return {panel:panel, overlay:overlay};
+  }
+
+  function wire(){
+    var wrap = ensureWrap(); if(!wrap) return;
+    var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
+    if(!btn) return;
+    var store = createMenu(wrap);
+    var panel = store.panel, overlay = store.overlay;
+
+    function open(){
+      panel.classList.add('show'); overlay.classList.add('show');
+    }
+    function close(){
+      panel.classList.remove('show'); overlay.classList.remove('show');
+    }
+
+    btn.addEventListener('click', function(ev){
+      // Do not stop propagation — let theme run too; just toggle our panel
+      if(panel.classList.contains('show')) close(); else open();
+    });
+
+    overlay.addEventListener('click', close);
+    window.addEventListener('resize', close, {passive:true});
+    // Close when user navigates via a link
+    panel.addEventListener('click', function(e){ if(e.target.closest('a')) close(); });
+  }
+
+  if(document.readyState!=='loading') wire();
+  else document.addEventListener('DOMContentLoaded', wire);
 })();
 </script>
 </head>',
