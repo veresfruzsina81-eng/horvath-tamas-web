@@ -376,6 +376,33 @@
     .bubble .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
     @keyframes bubbleIn{to{opacity:1; transform:none}}
   </style>
+
+<style id="emphasis-tweaks">
+/* Emphasis & readability tweaks (non-breaking) */
+:root{
+  --tg-text:#0b0b0c;
+  --tg-muted:#4a4f57;
+}
+html{scroll-behavior:smooth;}
+body{color:var(--tg-text); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;}
+:where(h1){font-weight:800; letter-spacing:-0.02em;}
+:where(h2){font-weight:700; letter-spacing:-0.01em;}
+:where(h3){font-weight:700;}
+:where(p,li){font-size:1.03rem; line-height:1.7; color:var(--tg-text);}
+strong, b{font-weight:800;}
+.emph{font-weight:800;}
+.highlight{
+  background:linear-gradient(180deg, rgba(255,241,180,0) 60%, rgba(255,230,150,.8) 60%);
+  padding:0 .1em;
+}
+/* Buttons/links contrast */
+a.button, .btn, button, [role="button"]{
+  font-weight:700;
+}
+/* Hero text bump without breaking layout */
+.hero h1, .hero .title{font-size:clamp(2rem, 3.5vw, 3.25rem);}
+.hero p{font-size:clamp(1rem, 1.3vw, 1.15rem);}
+</style>
 </head>
 <body>
 
@@ -406,9 +433,9 @@
             <a href="#about"    class="nav-link nav-label" data-i18n="about">Rólam</a>
             <a href="#showreel" class="nav-link nav-label" data-i18n="work">Munkáim</a>
             <!-- Eltávolítva a sima nav-link 'Miért' – csak a kiemelt marad -->
-            <a href="#contact"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
+            <a href="contact.html"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
             <a href="#why"      class="nav-cta secondary">Miért válassz minket</a>
-            <a href="#contact"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
+            <a href="contact.html"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
           <div class="right-controls">
@@ -457,9 +484,9 @@
         <a href="#about"    class="menu-link nav-label" data-i18n="about">Rólam</a>
         <a href="#showreel" class="menu-link nav-label" data-i18n="work">Munkáim</a>
         <!-- Eltávolítva a duplikált 'Miért' menü-link – csak a CTA marad -->
-        <a href="#contact"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
+        <a href="contact.html"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
         <a href="#why"      class="cta">Miért válassz minket</a>
-        <a href="#contact"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
+        <a href="contact.html"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
           <div class="lang-switch">
             <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
@@ -634,7 +661,7 @@
             </div>
 
             <div class="sr-cta">
-              <a class="btn-gold" href="#contact">Kapcsolat</a>
+              <a class="btn-gold" href="contact.html">Kapcsolat</a>
               <a class="btn-ghost" href="#work">Munkáim</a>
             </div>
           </div>
