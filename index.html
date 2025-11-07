@@ -403,6 +403,111 @@ a.button, .btn, button, [role="button"]{
 .hero h1, .hero .title{font-size:clamp(2rem, 3.5vw, 3.25rem);}
 .hero p{font-size:clamp(1rem, 1.3vw, 1.15rem);}
 </style>
+
+<style id="mobile-stability-fixes">
+/* ---- Mobile stability & CLS fixes ---- */
+img{display:block;max-width:100%;height:auto;}
+picture,figure{display:block}
+/* Prevent layout jump in hero/slider */
+.hero,.carousel,.slider,.slides{overflow:hidden}
+/* Prefer modern viewport units to avoid iOS URL bar jumps */
+@supports (height: 100svh){
+  .hero, .vh-100, .fullscreen{min-height:100svh}
+}
+@supports (height: 100dvh){
+  .hero, .vh-100, .fullscreen{min-height:100dvh}
+}
+/* Avoid reflow-heavy animations on mobile */
+@media (max-width: 640px){
+  .parallax{transform:none !important; will-change:auto !important;}
+  .animated, .animate, [data-animate]{animation-duration:.6s}
+}
+/* Use GPU-accelerated transforms for sliders */
+.carousel-track, .slider-track, .slides{
+  will-change: transform;
+  backface-visibility:hidden;
+  transform: translate3d(0,0,0);
+  contain: content;
+}
+/* Text readability bump on mobile */
+@media (max-width: 640px){
+  h1{font-size:clamp(1.8rem,6vw,2.2rem)}
+  h2{font-size:clamp(1.4rem,4.8vw,1.8rem)}
+  p{font-size:1.05rem;line-height:1.75}
+}
+/* Utility to reserve aspect ratio if wrapper has data-ratio */
+.media[data-ratio]{aspect-ratio: attr(data-ratio);}
+</style>
+
+<script id="mobile-stability-script">
+(function(){
+  // 1) Stabilize 100vh on older browsers (fallback)
+  function setVH(){
+    document.documentElement.style.setProperty('--vh', (window.innerHeight*0.01)+'px');
+  }
+  setVH();
+  window.addEventListener('resize', setVH, {passive:true});
+
+  // 2) Reserve space for images to prevent CLS (set aspect-ratio inline)
+  function setImgAspect(){
+    document.querySelectorAll('img').forEach(function(img){
+      if(img.dataset.aspectDone) return;
+      function apply(){
+        var w = img.naturalWidth, h = img.naturalHeight;
+        if(w && h){
+          img.style.aspectRatio = w + ' / ' + h;
+          img.dataset.aspectDone = '1';
+        }
+      }
+      if(img.complete) apply(); else img.addEventListener('load', apply, {once:true});
+    });
+  }
+  if(document.readyState !== 'loading') setImgAspect();
+  else document.addEventListener('DOMContentLoaded', setImgAspect);
+
+  // 3) If there is a slider, fix its height to tallest slide on resize (prevents jump)
+  function stabilizeSlider(){
+    var containers = document.querySelectorAll('.carousel, .slider, .slides');
+    containers.forEach(function(c){
+      var slides = c.querySelectorAll('.slide, .carousel-item, .slide-item');
+      if(!slides.length) return;
+      var maxH = 0;
+      slides.forEach(function(s){ maxH = Math.max(maxH, s.offsetHeight); });
+      if(maxH>0){ c.style.minHeight = maxH + 'px'; }
+    });
+  }
+  window.addEventListener('load', stabilizeSlider, {once:true});
+  window.addEventListener('resize', stabilizeSlider, {passive:true});
+
+  // 4) Force transform-based animations for slider tracks (avoid left/top)
+  function upgradeSliderTracks(){
+    var tracks = document.querySelectorAll('.carousel-track, .slider-track, .slides');
+    tracks.forEach(function(t){
+      var left = getComputedStyle(t).left;
+      if(left && left !== 'auto'){
+        t.style.left = '0px';
+      }
+      // Ensure we start at a transform basis
+      if(!/matrix|translate/.test(getComputedStyle(t).transform)){
+        t.style.transform = 'translate3d(0,0,0)';
+      }
+    });
+  }
+  if(document.readyState !== 'loading') upgradeSliderTracks();
+  else document.addEventListener('DOMContentLoaded', upgradeSliderTracks);
+
+  // 5) Make scroll listeners passive to avoid main-thread jank
+  var _add = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function(type, listener, options){
+    if(type === 'scroll'){
+      if(typeof options === 'boolean'){ options = {passive:true}; }
+      else if(typeof options === 'object'){ options.passive = true; }
+      else { options = {passive:true}; }
+    }
+    return _add.call(this, type, listener, options);
+  };
+})();
+</script>
 </head>
 <body>
 
