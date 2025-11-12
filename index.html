@@ -22,28 +22,17 @@
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text); overflow-x:hidden;
-      /* FINOMÍTOTT HÁTTÉR, HOGY A VIDEÓ LÁTSZÓDJON */
       background:
-        radial-gradient(1200px 380px at 72% 8%, rgba(255,241,200,.08), rgba(255,255,255,0) 70%),
-        linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0));
+        radial-gradient(1200px 380px at 72% 8%, rgba(255,241,200,.18), rgba(255,255,255,0) 70%),
+        linear-gradient(180deg,#fffef9,#ffffff);
       background-attachment: fixed, fixed;
     }
 
-    /* === ÚJ: GLOBÁLIS HÁTTÉRVIDEÓ A LEGALJON === */
-    #bgVideo{
-      position:fixed; inset:0;
-      width:100vw; height:100vh;
-      object-fit:cover;
-      z-index:0;            /* legalul */
-      pointer-events:none;  /* ne blokkoljon klikket */
-      filter:brightness(.88) contrast(1.08) saturate(1.12);
-    }
+    /* Globális háttér-canvas – klikket nem blokkol */
+    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; opacity:.92; display:block;}
 
-    /* Globális háttér-canvas – klikket nem blokkol (EGGYEL FELJEBB) */
-    #bgAll{position:fixed; inset:0; width:100vw; height:100vh; z-index:1; pointer-events:none; opacity:.92; display:block;}
-
-    /* Dísz csíkok a canvas felett (MÉG FELJEBB) */
-    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden}
+    /* Dísz csíkok a canvas felett */
+    .bg-stripes{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
     .bg-stripes .stripe{
       position:absolute; left:-30%; width:160%; height:1px;
       background:linear-gradient(90deg, rgba(212,175,55,0), rgba(212,175,55,.45), rgba(212,175,55,0));
@@ -56,8 +45,8 @@
     .bg-stripes .stripe:nth-child(5){ top:80%; transform:rotate(-3deg); animation-delay:2.4s;}
     @keyframes stripesMove{0%{transform:translateX(-30%) rotate(0)}50%{opacity:.5}100%{transform:translateX(30%) rotate(0)}}
 
-    /* Tartalom a háttér fölött (LEGFELÜL A TARTALOM) */
-    .wrap{position:relative; z-index:3}
+    /* Tartalom a háttér fölött */
+    .wrap{position:relative; z-index:2}
 
     /* ===== HEADER ===== */
     header{
@@ -94,6 +83,8 @@
     .nav-link:hover{transform:translateY(-2px)}
     .nav-cta{border:1px solid rgba(212,175,55,.35); border-radius:14px; background:linear-gradient(90deg,#fdf7d4,#f3e1a1); box-shadow:0 10px 24px rgba(212,175,55,.18);}
     .nav-cta:hover{transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,175,55,.25)}
+
+    /* ÚJ: második kiemelt CTA (ezt használjuk a "Miért minket" gombra) */
     .nav-cta.secondary{
       border-color:rgba(212,175,55,.45);
       background:linear-gradient(90deg,#fff7e1,#f7dfa3);
@@ -376,240 +367,8 @@
     .bubble .caret{display:inline-block; width:10px; margin-left:2px; opacity:.9; animation:blink 1s step-start infinite;}
     @keyframes bubbleIn{to{opacity:1; transform:none}}
   </style>
-
-<style id="tg-dropdown-css">
-/* Gold, non-transparent dropdown under hamburger */
-.tg-dd{ position:fixed; inset:auto auto auto auto; width:min(320px, 90vw); 
-  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
-  border:1px solid rgba(190,150,20,.6);
-  border-radius:16px; box-shadow: 0 18px 50px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.6) inset;
-  display:none; z-index: 20000; padding:10px;
-}
-.tg-dd.show{ display:block; }
-.tg-dd .tg-dd-item{ display:block; padding:12px 14px; margin:4px 0; border-radius:12px; 
-  background:#fff8d9; font-weight:700; color:#0b0b0c; text-decoration:none;
-}
-.tg-dd .tg-dd-item:active{ background:#fff1b8; }
-.tg-dd-caret{ position:absolute; top:-8px; right:16px; width:14px; height:14px; transform:rotate(45deg);
-  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
-  border-left:1px solid rgba(190,150,20,.6); border-top:1px solid rgba(190,150,20,.6);
-}
-/* click-out overlay */
-.tg-dd-overlay{ position:fixed; inset:0; background:transparent; display:none; z-index:19999; }
-.tg-dd-overlay.show{ display:block; }
-@media (min-width: 992px){
-  /* desktop: hagyjuk meg az eredeti menüt; a dropdown csak hamburgerhez használatos, ha van */
-}
-</style>
-
-<script id="tg-dropdown-js">
-(function(){
-  function $(sel, root){ return (root||document).querySelector(sel); }
-  function $all(sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
-
-  function createMenu(){
-    var panel = document.createElement('div');
-    panel.className='tg-dd';
-    var caret = document.createElement('div'); caret.className='tg-dd-caret'; panel.appendChild(caret);
-    var list = document.createElement('div'); panel.appendChild(list);
-
-    // Gyűjtsük a header linkeket
-    var links = [];
-    var header = $('header') || $('nav');
-    if(header){
-      $all('a', header).forEach(function(a){
-        var label = (a.textContent||'').trim();
-        var href = a.getAttribute('href') || '#';
-        if(!label) return;
-        // normalizáljuk a fontosakat
-        var low = label.toLowerCase();
-        if(/munkák|work/.test(low)) href = 'munkak.html';
-        if(/kapcsolat|contact/.test(low) || /írd|irj|write/.test(low)) href = 'contact.html';
-        links.push({label:label, href:href});
-      });
-    }
-    if(!links.length){
-      links = [
-        {label:'Rólam', href:'#rolam'},
-        {label:'Munkáim', href:'munkak.html'},
-        {label:'Kapcsolat', href:'contact.html'}
-      ];
-    }
-    links.forEach(function(it){
-      var a = document.createElement('a'); a.className='tg-dd-item'; a.href = it.href; a.textContent = it.label;
-      list.appendChild(a);
-    });
-
-    var overlay = document.createElement('div'); overlay.className='tg-dd-overlay';
-    overlay.addEventListener('click', function(){ hide(panel, overlay); });
-
-    document.body.appendChild(panel);
-    document.body.appendChild(overlay);
-    return {panel:panel, overlay:overlay};
-  }
-
-  function positionUnder(anchor, panel){
-    var r = anchor.getBoundingClientRect();
-    var w = Math.min(320, window.innerWidth*0.9);
-    var left = Math.min(r.right - w, window.innerWidth - w - 8);
-    var top = r.bottom + 8;
-    panel.style.left = left + 'px';
-    panel.style.top = top + 'px';
-  }
-
-  function show(panel, overlay, anchor){
-    positionUnder(anchor, panel);
-    panel.classList.add('show'); overlay.classList.add('show');
-  }
-  function hide(panel, overlay){
-    panel.classList.remove('show'); overlay.classList.remove('show');
-  }
-
-  function wire(){
-    // próbáljuk megtalálni a hamburger gombot
-    var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
-    if(!btn) return;
-
-    var store = createMenu();
-    var panel = store.panel, overlay = store.overlay;
-    btn.addEventListener('click', function(ev){
-      ev.preventDefault();
-      if(panel.classList.contains('show')) hide(panel, overlay);
-      else show(panel, overlay, btn);
-    });
-    window.addEventListener('resize', function(){
-      if(panel.classList.contains('show')) positionUnder(btn, panel);
-    }, {passive:true});
-    window.addEventListener('scroll', function(){
-      if(panel.classList.contains('show')) positionUnder(btn, panel);
-    }, {passive:true});
-  }
-
-  if(document.readyState !== 'loading') wire();
-  else document.addEventListener('DOMContentLoaded', wire);
-})();
-</script>
-
-<style id="tg-dd-safe-v6">
-/* Container inside header to anchor the dropdown */
-header{ position:sticky; top:0; z-index:1000; }
-header .tg-dd-wrap{ position:relative; }
-
-/* Gold, solid dropdown */
-.tg-dd{ position:absolute; top:100%; right:0; width:min(320px, 90vw);
-  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
-  border:1px solid rgba(190,150,20,.6);
-  border-radius:16px; box-shadow: 0 18px 50px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.6) inset;
-  display:none; padding:10px; margin-top:8px;
-}
-.tg-dd.show{ display:block; }
-.tg-dd .tg-dd-item{ display:block; padding:12px 14px; margin:4px 0; border-radius:12px;
-  background:#fff8d9; font-weight:700; color:#0b0b0c; text-decoration:none;
-}
-.tg-dd .tg-dd-item:active{ background:#fff1b8; }
-.tg-dd-caret{ position:absolute; top:-7px; right:18px; width:14px; height:14px; transform:rotate(45deg);
-  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
-  border-left:1px solid rgba(190,150,20,.6); border-top:1px solid rgba(190,150,20,.6);
-}
-
-/* Light overlay that doesn't block scrolling or other events */
-.tg-dd-overlay{
-  position:fixed; inset:0; pointer-events:none;
-}
-.tg-dd-overlay.show{ pointer-events:auto; }
-</style>
-
-<script id="tg-dd-safe-v6-js">
-(function(){
-  function $(sel, root){ return (root||document).querySelector(sel); }
-  function $$ (sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
-
-  function ensureWrap(){
-    var header = $('header') || $('nav'); if(!header) return null;
-    var wrap = header.querySelector('.tg-dd-wrap');
-    if(!wrap){
-      wrap = document.createElement('div'); wrap.className='tg-dd-wrap';
-      // place as the last child in header to avoid breaking layout
-      header.appendChild(wrap);
-    }
-    return wrap;
-  }
-
-  function createMenu(wrap){
-    var panel = document.createElement('div');
-    panel.className='tg-dd';
-    var caret = document.createElement('div'); caret.className='tg-dd-caret'; panel.appendChild(caret);
-    var list = document.createElement('div'); panel.appendChild(list);
-
-    // Collect header links (labels & href), normalize important ones
-    var links = [];
-    var header = $('header') || $('nav');
-    if(header){
-      $$('a', header).forEach(function(a){
-        var label = (a.textContent||'').trim();
-        var href = a.getAttribute('href') || '#';
-        if(!label) return;
-        var low = label.toLowerCase();
-        if(/munkák|work/.test(low)) href = 'munkak.html';
-        if(/kapcsolat|contact|írd|irj|write/.test(low)) href = 'contact.html';
-        links.push({label:label, href:href});
-      });
-    }
-    if(!links.length){
-      links = [
-        {label:'Rólam', href:'#rolam'},
-        {label:'Munkáim', href:'munkak.html'},
-        {label:'Kapcsolat', href:'contact.html'}
-      ];
-    }
-    links.forEach(function(it){
-      var a = document.createElement('a'); a.className='tg-dd-item'; a.href = it.href; a.textContent = it.label;
-      list.appendChild(a);
-    });
-
-    var overlay = document.createElement('div'); overlay.className='tg-dd-overlay';
-
-    wrap.appendChild(panel);
-    document.body.appendChild(overlay);
-    return {panel:panel, overlay:overlay};
-  }
-
-  function wire(){
-    var wrap = ensureWrap(); if(!wrap) return;
-    var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
-    if(!btn) return;
-    var store = createMenu(wrap);
-    var panel = store.panel, overlay = store.overlay;
-
-    function open(){
-      panel.classList.add('show'); overlay.classList.add('show');
-    }
-    function close(){
-      panel.classList.remove('show'); overlay.classList.remove('show');
-    }
-
-    btn.addEventListener('click', function(ev){
-      // Do not stop propagation — let theme run too; just toggle our panel
-      if(panel.classList.contains('show')) close(); else open();
-    });
-
-    overlay.addEventListener('click', close);
-    window.addEventListener('resize', close, {passive:true});
-    // Close when user navigates via a link
-    panel.addEventListener('click', function(e){ if(e.target.closest('a')) close(); });
-  }
-
-  if(document.readyState!=='loading') wire();
-  else document.addEventListener('DOMContentLoaded', wire);
-})();
-</script>
 </head>
 <body>
-
-  <!-- ÚJ: Globális háttérvideó (minden szekció mögött fut) -->
-  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-    <source src="hatter.mp4" type="video/mp4">
-  </video>
 
   <!-- Globális 3D háttér -->
   <canvas id="bgAll" aria-hidden="true"></canvas>
@@ -633,9 +392,9 @@ header .tg-dd-wrap{ position:relative; }
             <a href="#about"    class="nav-link nav-label" data-i18n="about">Rólam</a>
             <a href="#showreel" class="nav-link nav-label" data-i18n="work">Munkáim</a>
             <!-- Eltávolítva a sima nav-link 'Miért' – csak a kiemelt marad -->
-            <a href="contact.html"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
+            <a href="#contact"  class="nav-link nav-label" data-i18n="contact">Kapcsolat</a>
             <a href="#why"      class="nav-cta secondary">Miért válassz minket</a>
-            <a href="contact.html"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
+            <a href="#contact"  class="nav-cta nav-label" data-i18n="hire">Írj nekem</a>
           </nav>
 
           <div class="right-controls">
@@ -684,9 +443,9 @@ header .tg-dd-wrap{ position:relative; }
         <a href="#about"    class="menu-link nav-label" data-i18n="about">Rólam</a>
         <a href="#showreel" class="menu-link nav-label" data-i18n="work">Munkáim</a>
         <!-- Eltávolítva a duplikált 'Miért' menü-link – csak a CTA marad -->
-        <a href="contact.html"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
+        <a href="#contact"  class="menu-link nav-label" data-i18n="contact">Kapcsolat</a>
         <a href="#why"      class="cta">Miért válassz minket</a>
-        <a href="contact.html"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
+        <a href="#contact"  class="cta nav-label" data-i18n="hire">Írj nekem</a>
         <div class="row">
           <div class="lang-switch">
             <button class="lang-btn" data-lang="hu" title="Magyar" aria-label="Hungarian">
@@ -861,7 +620,7 @@ header .tg-dd-wrap{ position:relative; }
             </div>
 
             <div class="sr-cta">
-              <a class="btn-gold" href="contact.html">Kapcsolat</a>
+              <a class="btn-gold" href="#contact">Kapcsolat</a>
               <a class="btn-ghost" href="#work">Munkáim</a>
             </div>
           </div>
@@ -1212,9 +971,10 @@ header .tg-dd-wrap{ position:relative; }
             const b = document.createElement('div');
             b.className = 'bubble';
             container.appendChild(b);
-            await sleep(120);
+            await sleep(120); // belépő anim indul
             await typeInto(b, lines[i]);
-            await sleep(800);
+            await sleep(800); // olvasási pici szünet két buborék közt
+            // képernyőn max 4 buborék – a legrégebbit elhalványítjuk
             if(container.children.length>4){
               container.firstElementChild.style.opacity = '.25';
             }
@@ -1279,121 +1039,7 @@ header .tg-dd-wrap{ position:relative; }
         '<head>',
         '  <meta charset="utf-8">',
         '  <title>TamasGem Studio</title>',
-        '
-<style id="tg-dd-safe-v6">
-/* Container inside header to anchor the dropdown */
-header{ position:sticky; top:0; z-index:1000; }
-header .tg-dd-wrap{ position:relative; }
-
-/* Gold, solid dropdown */
-.tg-dd{ position:absolute; top:100%; right:0; width:min(320px, 90vw);
-  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
-  border:1px solid rgba(190,150,20,.6);
-  border-radius:16px; box-shadow: 0 18px 50px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.6) inset;
-  display:none; padding:10px; margin-top:8px;
-}
-.tg-dd.show{ display:block; }
-.tg-dd .tg-dd-item{ display:block; padding:12px 14px; margin:4px 0; border-radius:12px;
-  background:#fff8d9; font-weight:700; color:#0b0b0c; text-decoration:none;
-}
-.tg-dd .tg-dd-item:active{ background:#fff1b8; }
-.tg-dd-caret{ position:absolute; top:-7px; right:18px; width:14px; height:14px; transform:rotate(45deg);
-  background: linear-gradient(180deg,#fff6d6 0%, #f7e3a8 60%, #ffe08a 100%);
-  border-left:1px solid rgba(190,150,20,.6); border-top:1px solid rgba(190,150,20,.6);
-}
-
-/* Light overlay that doesn't block scrolling or other events */
-.tg-dd-overlay{
-  position:fixed; inset:0; pointer-events:none;
-}
-.tg-dd-overlay.show{ pointer-events:auto; }
-</style>
-
-<script id="tg-dd-safe-v6-js">
-(function(){
-  function $(sel, root){ return (root||document).querySelector(sel); }
-  function $$ (sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
-
-  function ensureWrap(){
-    var header = $('header') || $('nav'); if(!header) return null;
-    var wrap = header.querySelector('.tg-dd-wrap');
-    if(!wrap){
-      wrap = document.createElement('div'); wrap.className='tg-dd-wrap';
-      // place as the last child in header to avoid breaking layout
-      header.appendChild(wrap);
-    }
-    return wrap;
-  }
-
-  function createMenu(wrap){
-    var panel = document.createElement('div');
-    panel.className='tg-dd';
-    var caret = document.createElement('div'); caret.className='tg-dd-caret'; panel.appendChild(caret);
-    var list = document.createElement('div'); panel.appendChild(list);
-
-    // Collect header links (labels & href), normalize important ones
-    var links = [];
-    var header = $('header') || $('nav');
-    if(header){
-      $$('a', header).forEach(function(a){
-        var label = (a.textContent||'').trim();
-        var href = a.getAttribute('href') || '#';
-        if(!label) return;
-        var low = label.toLowerCase();
-        if(/munkák|work/.test(low)) href = 'munkak.html';
-        if(/kapcsolat|contact|írd|irj|write/.test(low)) href = 'contact.html';
-        links.push({label:label, href:href});
-      });
-    }
-    if(!links.length){
-      links = [
-        {label:'Rólam', href:'#rolam'},
-        {label:'Munkáim', href:'munkak.html'},
-        {label:'Kapcsolat', href:'contact.html'}
-      ];
-    }
-    links.forEach(function(it){
-      var a = document.createElement('a'); a.className='tg-dd-item'; a.href = it.href; a.textContent = it.label;
-      list.appendChild(a);
-    });
-
-    var overlay = document.createElement('div'); overlay.className='tg-dd-overlay';
-
-    wrap.appendChild(panel);
-    document.body.appendChild(overlay);
-    return {panel:panel, overlay:overlay};
-  }
-
-  function wire(){
-    var wrap = ensureWrap(); if(!wrap) return;
-    var btn = $('[aria-label*="menu" i]') || $('.hamburger') || $('.menu-toggle') || $('.nav-toggle') || $('.menu-btn') || $('header button');
-    if(!btn) return;
-    var store = createMenu(wrap);
-    var panel = store.panel, overlay = store.overlay;
-
-    function open(){
-      panel.classList.add('show'); overlay.classList.add('show');
-    }
-    function close(){
-      panel.classList.remove('show'); overlay.classList.remove('show');
-    }
-
-    btn.addEventListener('click', function(ev){
-      // Do not stop propagation — let theme run too; just toggle our panel
-      if(panel.classList.contains('show')) close(); else open();
-    });
-
-    overlay.addEventListener('click', close);
-    window.addEventListener('resize', close, {passive:true});
-    // Close when user navigates via a link
-    panel.addEventListener('click', function(e){ if(e.target.closest('a')) close(); });
-  }
-
-  if(document.readyState!=='loading') wire();
-  else document.addEventListener('DOMContentLoaded', wire);
-})();
-</script>
-</head>',
+        '</head>',
         '<body>',
         '  <main>',
         '    <section id="intro">',
